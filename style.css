@@ -1,0 +1,15 @@
+body {
+    background-color: rgb(255, 252, 211);
+}
+
+#SemlTitle {
+    color:rgb(125, 188, 145);
+    background-color: rgb(255, 252, 211);
+    font-size: 100px;
+    font-weight: bold;
+    font-family: Spoqa Han Sans Neo, sans-serif;
+}
+
+header {
+    display: inline;
+}
