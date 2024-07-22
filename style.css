@@ -2,14 +2,79 @@ body {
     background-color: rgb(255, 252, 211);
 }
 
-#SemlTitle {
+#topnav {
+	background-color: rgb(46, 11, 8);
+	height: 50px;
+  	border-radius: 10px;
+  	margin-bottom: 25px;
+  	position: sticky;
+    margin-top: 0;
+    border-top: 0;
+  	top: 0;
+}
+
+#logo {
+	display: inline-block;
+	text-decoration: none;
+	font-size: 32px;
+	vertical-align: middle;
+    font-weight: bold;
+    margin-top: 0;
+    padding-left: 10px;
+}
+
+#logo a {
+    text-decoration: none;
+	color: white;
+	font-weight: bold;
+}
+
+#menu {
+	list-style: none;
+	padding: 0px;
+    padding-right: 5px;
+	float: right;
+	vertical-align: middle;
+}
+
+#menu li {
+	float: left;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#menu li a {
+	text-decoration: none;
+	color: white;
+	font-weight: bold;
+}
+
+#seml-image {
+    display: block;
+}
+
+.BigTitle {
     color:rgb(125, 188, 145);
     background-color: rgb(255, 252, 211);
     font-size: 100px;
     font-weight: bold;
     font-family: Spoqa Han Sans Neo, sans-serif;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    display: inline-block;
 }
 
-header {
-    display: inline;
+#seml-sns {
+    display: inline-block;
+    color:rgb(125, 188, 145);
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Spoqa Han Sans Neo, sans-serif;
 }
+
+#seml-sns li a{
+    text-decoration: underline;
+    color:rgb(125, 188, 145);
+}
+
+#seml-descripttion
