@@ -1,40 +1,38 @@
-body {
-    background-color: rgb(255, 252, 211);
+html {
+	scroll-behavior: smooth;
 }
 
-#topnav {
-	background-color: rgb(46, 11, 8);
+body {
+	background-color: #fffcd3;
+}
+
+#nav {
+	background-color: #4a1712;
 	height: 50px;
+	border: 1px solid #4a1712;
   	border-radius: 10px;
   	margin-bottom: 25px;
   	position: sticky;
-    margin-top: 0;
-    border-top: 0;
   	top: 0;
 }
 
 #logo {
 	display: inline-block;
+	color: white;
 	text-decoration: none;
 	font-size: 32px;
 	vertical-align: middle;
-    font-weight: bold;
-    margin-top: 0;
-    padding-left: 10px;
-}
-
-#logo a {
-    text-decoration: none;
-	color: white;
 	font-weight: bold;
+	margin-left: 10px;
 }
 
 #menu {
+	display: inline-block;
 	list-style: none;
 	padding: 0px;
-    padding-right: 5px;
 	float: right;
 	vertical-align: middle;
+	margin-right: 10px;
 }
 
 #menu li {
@@ -43,38 +41,170 @@ body {
 	padding-right: 10px;
 }
 
+.helper {
+	height: 100%;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#description {
+	font-size: 20px;
+}
+
 #menu li a {
-	text-decoration: none;
-	color: white;
+	text-decoration: underline;
+	color: rgb(255, 255, 255);
 	font-weight: bold;
 }
 
-#seml-image {
-    display: block;
+#profile {
+	width: 300px;
+	float: left;
+	padding-right: 15px;
 }
 
-.BigTitle {
-    color:rgb(125, 188, 145);
-    background-color: rgb(255, 252, 211);
-    font-size: 100px;
-    font-weight: bold;
-    font-family: Spoqa Han Sans Neo, sans-serif;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    display: inline-block;
+#goldenpaper {
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 65px;
 }
 
-#seml-sns {
-    display: inline-block;
-    color:rgb(125, 188, 145);
-    font-size: 20px;
-    font-weight: bold;
-    font-family: Spoqa Han Sans Neo, sans-serif;
+.first {
+	clear: left;
 }
 
-#seml-sns li a{
-    text-decoration: underline;
-    color:rgb(125, 188, 145);
+.third {
+	clear: left;
 }
 
-#seml-descripttion
+.fix-float {
+	clear: left;
+}
+
+.paragraph {
+	font-size: 50px;
+	text-align: center;
+}
+
+#qna {
+	list-style: none;
+	padding: 0px;
+	margin-left: 150px;
+	margin-right: 150px;
+}
+
+#qna li {
+	background-color: #7dbc90;
+	order: 1px solid #7dbc90;
+  	border-radius: 10px;
+  	padding: 10px;
+  	margin-top: 10px;
+  	margin-bottom: 10px;
+	font-weight: 550;
+	font-size: 20px;
+}
+
+#balance {
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	font-weight: bold;
+
+}
+
+.balance-question {
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-top: 25px;
+	margin-bottom: 25px;
+	width: 40%;
+	float: left;
+	font-size: 20px;
+}
+
+.first-item {
+	height: 60px;
+	margin-top: 15px;
+	margin-bottom: 5px;
+}
+
+.second-item {
+	height: 60px;
+	margin-top: 5px;
+	margin-bottom: 15px;
+}
+
+.winner {
+	background-color: #00ff008f;
+	order: 1px solid #00ff008f;
+  	border-radius: 5px;
+}
+
+.loser {
+	background-color: #555555;
+	order: 1px solid #555555;
+  	border-radius: 5px;
+	color: white;
+}
+
+.winner p {
+	display: inline-block;
+	vertical-align: middle;
+	padding-left: 10px;
+}
+
+.loser p {
+	display: inline-block;
+	vertical-align: middle;
+	padding-left: 10px;
+}
+
+#links {
+	text-align: center;
+}
+
+#links-title {
+	font-size: 50px;
+	text-align: center;
+}
+
+#link-list li {
+	font-size: 32px;
+	text-align: center;
+	display: inline-block;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+#link-list li img {
+	margin-bottom: -10px;
+	width: 40px;
+	height: 40px;
+}
+
+#works {
+	text-align: center;
+}
+
+#works-title {
+	font-size: 50px;
+
+}
+
+#works-list li {
+	display: inline-block;
+}
+
+#works-list li a {
+	font-size: 24px;
+	color:black;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+#works-list li img {
+	margin-bottom: -10px;
+	width: 40px;
+	height: 40px;
+}
