@@ -1,0 +1,10 @@
+교실 : class
+게임 : game
+창문 : window
+따라하다 : folow
+파일 : file
+분 : minute
+나이 : ago
+좋아하는 : Favorite
+도구 : tool
+달리다 : run
