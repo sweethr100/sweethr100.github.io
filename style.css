@@ -4,16 +4,32 @@ html {
 
 body {
 	background-color: #fffcd3;
+	font-family: "Noto Sans KR", sans-serif;
 }
+
+/* <uniquifier>: Use a unique and descriptive class name
+   <weight>: Use a value from 100 to 900 */
+
+/* .noto-sans-kr {
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+} */
 
 #nav {
 	background-color: #4a1712;
 	height: 50px;
 	border: 1px solid #4a1712;
   	border-radius: 10px;
-  	margin-bottom: 25px;
-  	position: sticky;
-  	top: 0;
+	margin-top: 10px;
+	margin-bottom: 25px;
+	margin-left: 10px;
+	margin-right: 10px;
+  	position:sticky;
+	top: 0;
+	left: 0;  /* 왼쪽 끝에서 시작 */
+	right: 0; /* 오른쪽 끝까지 확장 */
 }
 
 #logo {
@@ -170,17 +186,16 @@ body {
 }
 
 #link-list li {
-	font-size: 32px;
 	text-align: center;
 	display: inline-block;
 	margin-left: 20px;
 	margin-right: 20px;
 }
 
-#link-list li img {
-	margin-bottom: -10px;
-	width: 40px;
-	height: 40px;
+#link-list li a {
+	font-size: 40px;
+	vertical-align: sub;
+	text-decoration: none;
 }
 
 #works {
