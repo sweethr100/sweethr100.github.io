@@ -7,16 +7,6 @@ body {
 	font-family: "Noto Sans KR", sans-serif;
 }
 
-/* <uniquifier>: Use a unique and descriptive class name
-   <weight>: Use a value from 100 to 900 */
-
-/* .noto-sans-kr {
-  font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-} */
-
 #nav {
 	background-color: #4a1712;
 	height: 50px;
