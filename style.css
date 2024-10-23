@@ -175,17 +175,28 @@ body {
 	text-align: center;
 }
 
-#link-list li {
-	text-align: center;
-	display: inline-block;
-	margin-left: 20px;
-	margin-right: 20px;
+#links-box {
+	background-color: #7dbc90;
+	margin: 0 auto;
+	width: fit-content;
+	border-radius: 40px;
+}
+
+#link-list {
+    display: flex;
+    gap: 40px;
+    padding: 0;
+    list-style: none;
+	margin-left: 40px;
+	margin-right: 40px;
+	padding: 15px 0; /* 상하 여백 늘리기 */
 }
 
 #link-list li a {
 	font-size: 40px;
 	vertical-align: sub;
 	text-decoration: none;
+	color:black;
 }
 
 #works {
@@ -208,6 +219,7 @@ body {
 	color:black;
 	margin-left: 10px;
 	margin-right: 10px;
+	text-decoration:none;
 }
 
 #works-list li img {
