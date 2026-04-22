@@ -3,44 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEML Works</title>
-    <link rel="stylesheet" type="text/css" href="../style.css">
-
-    <link rel="icon" href="../seml.png">
-    <link rel="apple-touch-icon" href="../seml.png">
-
+    <title>심호령 Works</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="../seml.webp">
+    <link rel="apple-touch-icon" href="../seml.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script>
+        // 페이지 깜빡임 방지: 로드 전에 저장된 테마 적용
+        (function() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+            } else if (saved === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
 </head>
 <body>
-    <div id="nav">
-        <div class="helper"></div><a href="https://gpgolden.dooboo1.repl.co/#" id="logo" target="_blank">SEML</a>
-        <ul id="menu">
+    <nav class="navbar">
+        <a href="../index.html" class="logo">심호령</a>
+        <ul class="nav-links">
             <li><a href="../index.html">Intro</a></li>
-            <li><a href="./index.html">Works</a></li>
-            <li><a href="https://gpgolden.dooboo1.repl.co/#project">Goldenpaper</a></li>
+            <li><a href="./index.html" class="active">Works</a></li>
         </ul>
-    </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="테마 전환">🌙</button>
+    </nav>
 
-    <div id="works">
-        <h1 id="works-title">작품</h1>
-        <ul id="works-list">
-            <li><img src="./find_the_vaccine-icon.png"><a href="./find_the_vaccine/index.html" target="_blank">Find the vaccine</a></li>
-            <li><img src="./entry-icon.png"><a href="https://playentry.org/profile/5f217bf93ede63015a3fcd74" target="_blank">엔트리 계정 1</a></li>         
-            <li><img src="./entry-icon.png"><a href="https://playentry.org/profile/5f8e7c2a606db901811bf0ca" target="_blank">엔트리 계정 2</a></li>
-            <li><img src="./search-icon.png"><a href="https://6b6b9c93-0779-4d6e-9a63-8f925b8680d7-00-12n3oqnp9d2nj.spock.replit.dev/" target="_blank">Sweethr100's Search</a></li>
-            <li><img src="./witch_adventure-icon.png"><a href="https://drive.google.com/file/d/16c3MMU8qDjA3uQdmH4JVJtiJ_XRC4Dt-/view?usp=sharing" target="_blank">witch adventure</a></li>
-            <br>
-            <li><img src="./second_game-icon.png"><a href="https://drive.google.com/file/d/1aI64VIQa-2F25WAxqH5Z78rn5_A4T_Ye/view?usp=sharing" target="_blank">Second Game</a></li>         
-            <li><img src="./second_game-icon.png"><a href="https://drive.google.com/file/d/1T8HWiQRnx3hZZBznANcNqp1mYjKsCKsi/view?usp=sharing" target="_blank">SuperHard Game</a></li>
-            <li><img src="./jumpup-icon.png"><a href="https://drive.google.com/file/d/1bCU469-Lc6UZzIl4cfmpRVM_NavZmmoz/view?usp=sharing" target="_blank">JumpUp</a></li>         
-            <li><img src="./second_3d_game-icon.png"><a href="https://drive.google.com/file/d/18_j4za1chMlTXQg7XcdozE7HFWJGMXZb/view?usp=sharing" target="_blank">Second 3D Game</a></li>
-            <li><img src="./python-icon.png"><a href="https://drive.google.com/drive/folders/1JUGusgp0PveuVIB8myGHwKAEzhjgsjlI?usp=sharing" target="_blank">Python 작품들</a></li>
+    <main class="container">
+        <section class="works-section">
+            <h1 class="section-title">작품</h1>
+            <div class="works-grid">
+                
+                <a href="./find_the_vaccine/index.html" target="_blank" class="work-card">
+                    <div class="work-icon-wrapper">
+                        <img src="./find_the_vaccine-icon.png" alt="Find the vaccine" class="work-icon">
+                    </div>
+                    <h3 class="work-title">Find the vaccine</h3>
+                </a>
 
-        </ul>
+                <a href="https://playentry.org/profile/5f217bf93ede63015a3fcd74" target="_blank" class="work-card entry-card">
+                    <div class="work-icon-wrapper">
+                        <img src="./entry-icon.png" alt="엔트리 계정 1" class="work-icon">
+                    </div>
+                    <h3 class="work-title">엔트리 계정 1</h3>
+                </a>
 
-    </div>
+                <a href="https://playentry.org/profile/5f8e7c2a606db901811bf0ca" target="_blank" class="work-card entry-card">
+                    <div class="work-icon-wrapper">
+                        <img src="./entry-icon.png" alt="엔트리 계정 2" class="work-icon">
+                    </div>
+                    <h3 class="work-title">엔트리 계정 2</h3>
+                </a>
 
+                <a href="https://6b6b9c93-0779-4d6e-9a63-8f925b8680d7-00-12n3oqnp9d2nj.spock.replit.dev/" target="_blank" class="work-card search-card">
+                    <div class="work-icon-wrapper">
+                        <img src="./search-icon.png" alt="Sweethr100's Search" class="work-icon">
+                    </div>
+                    <h3 class="work-title">Sweethr100's Search</h3>
+                </a>
+
+                <a href="https://drive.google.com/file/d/16c3MMU8qDjA3uQdmH4JVJtiJ_XRC4Dt-/view?usp=sharing" target="_blank" class="work-card game-card">
+                    <div class="work-icon-wrapper">
+                        <img src="./witch_adventure-icon.png" alt="Witch Adventure" class="work-icon">
+                    </div>
+                    <h3 class="work-title">Witch Adventure</h3>
+                </a>
+
+                <a href="https://drive.google.com/file/d/1aI64VIQa-2F25WAxqH5Z78rn5_A4T_Ye/view?usp=sharing" target="_blank" class="work-card game-card">
+                    <div class="work-icon-wrapper">
+                        <img src="./second_game-icon.png" alt="Second Game" class="work-icon">
+                    </div>
+                    <h3 class="work-title">Second Game</h3>
+                </a>
+
+                <a href="https://drive.google.com/file/d/1T8HWiQRnx3hZZBznANcNqp1mYjKsCKsi/view?usp=sharing" target="_blank" class="work-card game-card">
+                    <div class="work-icon-wrapper">
+                        <img src="./second_game-icon.png" alt="SuperHard Game" class="work-icon">
+                    </div>
+                    <h3 class="work-title">SuperHard Game</h3>
+                </a>
+
+                <a href="https://drive.google.com/file/d/1bCU469-Lc6UZzIl4cfmpRVM_NavZmmoz/view?usp=sharing" target="_blank" class="work-card game-card">
+                    <div class="work-icon-wrapper">
+                        <img src="./jumpup-icon.png" alt="JumpUp" class="work-icon">
+                    </div>
+                    <h3 class="work-title">JumpUp</h3>
+                </a>
+
+                <a href="https://drive.google.com/file/d/18_j4za1chMlTXQg7XcdozE7HFWJGMXZb/view?usp=sharing" target="_blank" class="work-card game-card">
+                    <div class="work-icon-wrapper">
+                        <img src="./second_3d_game-icon.png" alt="Second 3D Game" class="work-icon">
+                    </div>
+                    <h3 class="work-title">Second 3D Game</h3>
+                </a>
+
+                <a href="https://drive.google.com/drive/folders/1JUGusgp0PveuVIB8myGHwKAEzhjgsjlI?usp=sharing" target="_blank" class="work-card python-card">
+                    <div class="work-icon-wrapper">
+                        <img src="./python-icon.png" alt="Python 작품들" class="work-icon">
+                    </div>
+                    <h3 class="work-title">Python 작품들</h3>
+                </a>
+
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // 테마 토글 기능
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        function updateThemeIcon() {
+            const isDark = html.getAttribute('data-theme') !== 'light';
+            themeToggle.textContent = isDark ? '🌙' : '☀️';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = html.getAttribute('data-theme') !== 'light';
+            const newTheme = isDark ? 'light' : 'dark';
+            
+            if (newTheme === 'dark') {
+                html.removeAttribute('data-theme');
+            } else {
+                html.setAttribute('data-theme', 'light');
+            }
+            
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon();
+        });
+
+        // 시스템 테마 변경 실시간 감지
+        window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
+            // 사용자가 수동으로 테마를 설정하지 않은 경우에만 시스템 테마를 따라감
+            if (!localStorage.getItem('theme')) {
+                if (e.matches) {
+                    html.setAttribute('data-theme', 'light');
+                } else {
+                    html.removeAttribute('data-theme');
+                }
+                updateThemeIcon();
+            }
+        });
+
+        // 초기 아이콘 설정
+        updateThemeIcon();
+    </script>
 </body>
 </html>

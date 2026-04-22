@@ -1,119 +1,260 @@
 <!DOCTYPE html>
-<!-- saved from url=(0033)https://gpgolden.dooboo1.repl.co/ -->
-<html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>SEML Introduction</title>
-		
-		<link rel="stylesheet" type="text/css" href="style.css">
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>심호령 Introduction</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="./seml.webp">
+    <link rel="apple-touch-icon" href="./seml.webp">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-brands/css/uicons-brands.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script>
+        // 페이지 깜빡임 방지: 로드 전에 저장된 테마 적용
+        (function() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+            } else if (saved === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo">심호령</a>
+        <ul class="nav-links">
+            <li><a href="./index.html" class="active">Intro</a></li>
+            <li><a href="./work/index.html">Works</a></li>
+        </ul>
+        <button class="theme-toggle" id="themeToggle" aria-label="테마 전환">🌙</button>
+    </nav>
 
-		<link rel="icon" href="./seml.png">
-		<link rel="apple-touch-icon" href="./seml.png">
+    <main class="container">
+        <section class="hero">
+            <div class="profile-wrapper">
+                <img src="./seml.webp" alt="Profile" class="profile-img">
+            </div>
+            <div class="hero-text">
+                <h1 class="title">심호령</h1>
+            </div>
+        </section>
 
-		<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-brands/css/uicons-brands.css'>
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
-	</head>
-	<body>
-		<div id="nav">
-			<div class="helper"></div><a href="https://gpgolden.dooboo1.repl.co/#" id="logo">SEML</a>
-			<ul id="menu">
-				<li><a href="./index.html">Intro</a></li>
-				<li><a href="./work/index.html">Works</a></li>
-				<li><a href="https://gpgolden.dooboo1.repl.co/#project" target="_blank">Goldenpaper</a></li>
-			</ul>
-		</div>
-		
-		<div id="intro">
-			<div id="goldenpaper">
-				<img src="./seml.png" id="profile">
-				<div class="helper"></div><div id="intro-text">
-					<h1 id="title">SEML (세믈)</h1>
-					<p id="description">세믈은 세믈이며 세믈은 천재입니다.
-						<br> 닉네임이 매우 많이 바뀌었다.
-						<br> 스위터 -> 제타 -> 세미콜론/세미 -> 세믈.</p>
-				</div>
-				<div class="fix-float"></div>
-			</div>
+        </section>
 
-			<div id="detail">
-				<ul id="qna">
-					<li>
-						<div class="question">
-							<p>Q. 코딩을 하게 된 계기는?</p>
-						</div>
-						<div class="answer">
-							<p>A. 어릴 때 잠깐 코딩을 접하고, 몇 년 뒤 그 때의 생각이 나서 제대로 시작하게 되었다.</p>
-						</div>
-					</li>
-					<li>
-						<div class="question">
-							<p>Q. 코딩을 해온 과정은?</p>
-						</div>
-						<div class="answer">
-							<p>A. 엔트리를 하다 점점 파이썬과 유니티, 웹 개발로 넘어왔다.</p>
-						</div>
-					</li>
-					<li>
-						<div class="question">
-							<p>Q. 코딩을 제외하고 좋아하는 일은?</p>
-						</div>
-						<div class="answer">
-							<p>A. Game!</p>
-						</div>
-					</li>
-				</ul>
-			</div>
-		</div>
+        <section class="projects-section">
+            <h2 class="section-title">프로젝트</h2>
+            <div class="projects-grid">
+                <a href="./work/find_the_vaccine/index.html" target="_blank" class="project-card">
+                    <div class="project-icon">🦠</div>
+                    <div class="project-info">
+                        <h3>Find the Vaccine</h3>
+                        <p>웹 기반 게임 프로젝트</p>
+                    </div>
+                </a>
+                <a href="https://drive.google.com/file/d/16c3MMU8qDjA3uQdmH4JVJtiJ_XRC4Dt-/view?usp=sharing" target="_blank" class="project-card">
+                    <div class="project-icon">🧙‍♀️</div>
+                    <div class="project-info">
+                        <h3>Witch Adventure</h3>
+                        <p>Unity 게임 프로젝트</p>
+                    </div>
+                </a>
+                <a href="https://drive.google.com/file/d/1bCU469-Lc6UZzIl4cfmpRVM_NavZmmoz/view?usp=sharing" target="_blank" class="project-card">
+                    <div class="project-icon">🕹️</div>
+                    <div class="project-info">
+                        <h3>JumpUp</h3>
+                        <p>Unity 게임 프로젝트</p>
+                    </div>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1JUGusgp0PveuVIB8myGHwKAEzhjgsjlI?usp=sharing" target="_blank" class="project-card">
+                    <div class="project-icon">🐍</div>
+                    <div class="project-info">
+                        <h3>Python 작품들</h3>
+                        <p>다양한 Python 프로젝트 모음</p>
+                    </div>
+                </a>
+            </div>
+            <div class="projects-more">
+                <a href="./work/index.html" class="more-btn">모든 작품 보기 →</a>
+            </div>
+        </section>
 
-		<div id="balance">
-			<h2 class="paragraph">밸런스 게임</h2>
-			<div class="balance-question first">
-				<div class="first-item loser">
-					<div class="helper"></div><p>고양이</p>
-				</div>
-				<div class="second-item winner">
-					<div class="helper"></div><p>강아지</p>
-				</div>
-			</div>
-			<div class="balance-question second">
-				<div class="first-item winner">
-					<div class="helper"></div><p>짜장면</p>
-				</div>
-				<div class="second-item loser">
-					<div class="helper"></div><p>짬뽕</p>
-				</div>
-			</div>
-			<div class="balance-question third">
-				<div class="first-item loser">
-					<div class="helper"></div><p>탕수육 부먹</p>
-				</div>
-				<div class="second-item winner">
-					<div class="helper"></div><p>탕수육 찍먹</p>
-				</div>
-			</div>
-			<div class="balance-question fourth">
-				<div class="first-item winner">
-					<div class="helper"></div><p>겨울</p>
-				</div>
-				<div class="second-item winner">
-					<div class="helper"></div><p>여름</p>
-				</div>
-			</div>
-			<div class="fix-float"></div>
-		</div>
+        <section class="featured-section">
+            <h2 class="section-title">YouTube 대표 영상</h2>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/RiYA19LdzSc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="profile-link-container">
+                <a href="https://www.youtube.com/@%EC%84%B8%EB%AF%88" target="_blank" class="profile-btn youtube-profile-btn">
+                    <i class="fi fi-brands-youtube"></i>
+                    <span>YouTube 채널 방문</span>
+                </a>
+            </div>
+        </section>
 
-		<div id="links">
-			<h2 id="links-title">Links</h2>
-			<div id="links-box">
-				<ul id="link-list">
-					<li><a href="https://discord.gg/3k3gyXYBeS" target="_blank"><i class="fi fi-brands-discord"></i></a></li>
-					<li><a href="https://www.youtube.com/@%EC%84%B8%EB%AF%88" target="_blank"><i class="fi fi-brands-youtube"></i></a></li>
-					<li><a href="https://github.com/sweethr100" target="_blank"><i class="fi fi-brands-github"></i></a></li>
-				</ul>
-			</div>
-		</div>
-	
+        <section class="github-section">
+            <h2 class="section-title">GitHub 최근 활동</h2>
+            <div class="github-list" id="githubRepoList">
+                <p style="text-align: center; color: var(--text-secondary);">Loading repositories...</p>
+            </div>
+            
+            <div class="profile-link-container">
+                <a href="https://github.com/sweethr100" target="_blank" class="profile-btn github-profile-btn">
+                    <i class="fi fi-brands-github"></i>
+                    <span>GitHub 프로필 방문</span>
+                </a>
+            </div>
+        </section>
 
-</body></html>
+        <section class="contact-section">
+            <h2 class="section-title">연락처 및 링크</h2>
+            <div class="contact-grid">
+                <div class="contact-card discord-card" onclick="copyDiscordId()" style="cursor: pointer;" title="클릭하여 아이디 복사">
+                    <div class="contact-icon"><i class="fi fi-brands-discord"></i></div>
+                    <div class="contact-info">
+                        <h3>Discord</h3>
+                        <p id="discordText">seml_</p>
+                    </div>
+                </div>
+                <a href="https://www.instagram.com/5_ryung/" target="_blank" class="contact-card instagram-card">
+                    <div class="contact-icon"><i class="fi fi-brands-instagram"></i></div>
+                    <div class="contact-info">
+                        <h3>Instagram</h3>
+                        <p>@5_ryung</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="visitor-counter">
+                <span>👀</span>
+                <img src="https://hits.sh/sweethr100.github.io.svg?style=flat-square&label=visitors&color=58a6ff&labelColor=0d1117" alt="Visitor Count">
+            </div>
+            <p class="footer-text">© 2026 심호령. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 테마 토글 기능
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        function updateThemeIcon() {
+            const isDark = html.getAttribute('data-theme') !== 'light';
+            themeToggle.textContent = isDark ? '🌙' : '☀️';
+        }
+
+        // 깃허브 실시간 레포지토리 로드 기능
+        async function fetchGitHubRepos() {
+            const listContainer = document.getElementById('githubRepoList');
+            try {
+                // 가장 최근에 업데이트(push)된 퍼블릭 레포지토리 3개 가져오기
+                const response = await fetch('https://api.github.com/users/sweethr100/repos?sort=pushed&per_page=3');
+                if (!response.ok) throw new Error('Network response was not ok');
+                const repos = await response.json();
+                
+                listContainer.innerHTML = ''; // 기존 로딩 텍스트 제거
+                
+                repos.forEach(repo => {
+                    const langClass = repo.language ? repo.language.toLowerCase() : 'unknown';
+                    const langBadge = repo.language ? `<span class="lang-badge ${langClass}">${repo.language}</span>` : '';
+                    const description = repo.description || '설명이 없습니다.';
+                    
+                    // 기존 정보
+                    const stars = repo.stargazers_count > 0 ? `<span class="repo-stat" title="별표 수"><i class="fi fi-rr-star"></i> ${repo.stargazers_count}</span>` : '';
+                    const forks = repo.forks_count > 0 ? `<span class="repo-stat" title="포크 수"><i class="fi fi-rr-code-branch"></i> ${repo.forks_count}</span>` : '';
+                    const dateObj = new Date(repo.pushed_at);
+                    const dateStr = `${dateObj.getFullYear()}.${String(dateObj.getMonth() + 1).padStart(2, '0')}.${String(dateObj.getDate()).padStart(2, '0')}`;
+                    
+                    // 추가 정보 (이슈)
+                    const issues = repo.open_issues_count > 0 ? `<span class="repo-stat" title="열린 이슈"><i class="fi fi-rr-info"></i> ${repo.open_issues_count}</span>` : '';
+                    
+                    const cardHTML = `
+                        <a href="${repo.html_url}" target="_blank" class="github-list-card">
+                            <div class="github-card-content">
+                                <h3><i class="fi fi-brands-github"></i> ${repo.name}</h3>
+                                <p>${description}</p>
+                                <div class="repo-meta">
+                                    <span class="repo-stat update-date" title="최근 업데이트 날짜">업데이트: ${dateStr}</span>
+                                    ${stars}
+                                    ${forks}
+                                    ${issues}
+                                </div>
+                            </div>
+                            ${langBadge}
+                        </a>
+                    `;
+                    listContainer.insertAdjacentHTML('beforeend', cardHTML);
+                });
+            } catch (error) {
+                console.error('Failed to fetch GitHub repos:', error);
+                listContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">GitHub 데이터를 불러오지 못했습니다.</p>';
+            }
+        }
+
+        // 페이지 로드 시 즉시 실행
+        fetchGitHubRepos();
+
+
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = html.getAttribute('data-theme') !== 'light';
+            const newTheme = isDark ? 'light' : 'dark';
+            
+            if (newTheme === 'dark') {
+                html.removeAttribute('data-theme');
+            } else {
+                html.setAttribute('data-theme', 'light');
+            }
+            
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon();
+            updateGitHubImages();
+        });
+
+        // 시스템 테마 변경 실시간 감지
+        window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
+            // 사용자가 수동으로 테마를 설정하지 않은 경우에만 시스템 테마를 따라감
+            if (!localStorage.getItem('theme')) {
+                if (e.matches) {
+                    html.setAttribute('data-theme', 'light');
+                } else {
+                    html.removeAttribute('data-theme');
+                }
+                updateThemeIcon();
+                updateGitHubImages();
+            }
+        });
+
+        // 초기 아이콘 설정
+        updateThemeIcon();
+        updateGitHubImages();
+
+        // 디스코드 아이디 복사 기능
+        function copyDiscordId() {
+            navigator.clipboard.writeText("seml_").then(() => {
+                const textElement = document.getElementById('discordText');
+                const originalText = "seml_";
+                textElement.innerText = "복사 완료!";
+                textElement.style.color = "var(--accent)";
+                
+                setTimeout(() => {
+                    textElement.innerText = originalText;
+                    textElement.style.color = "var(--text-secondary)";
+                }, 2000);
+            }).catch(err => {
+                alert("복사에 실패했습니다.");
+            });
+        }
+    </script>
+</body>
+</html>
