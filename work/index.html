@@ -7,32 +7,73 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="icon" href="../seml.webp">
     <link rel="apple-touch-icon" href="../seml.webp">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-brands/css/uicons-brands.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
     <script>
         // 페이지 깜빡임 방지: 로드 전에 저장된 테마 적용
         (function() {
-            const saved = localStorage.getItem('theme');
+            const saved = localStorage.getItem('theme') || 'auto';
             if (saved === 'dark') {
                 document.documentElement.removeAttribute('data-theme');
             } else if (saved === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
-            } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-                document.documentElement.setAttribute('data-theme', 'light');
+            } else if (saved === 'auto') {
+                if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                } else {
+                    document.documentElement.removeAttribute('data-theme');
+                }
             }
         })();
     </script>
 </head>
 <body>
-    <nav class="navbar">
-        <a href="../index.html" class="logo">심호령</a>
+    <a href="../index.html" class="floating-logo">심호령</a>
+    <nav class="navbar floating-nav">
         <ul class="nav-links">
-            <li><a href="../index.html">Intro</a></li>
-            <li><a href="./index.html" class="active">Works</a></li>
+            <li>
+                <a href="../index.html">
+                    <span>프로필</span>
+                </a>
+            </li>
+            <li>
+                <a href="./index.html" class="active">
+                    <span>앱</span>
+                </a>
+            </li>
         </ul>
-        <button class="theme-toggle" id="themeToggle" aria-label="테마 전환">🌙</button>
     </nav>
+
+    <div class="theme-controls">
+        <div class="theme-bar floating-nav">
+            <button class="theme-toggle" id="themeToggle" aria-label="테마 전환">
+                <div class="theme-icon-wrapper" style="font-size: 1.5rem; line-height: 1;">🌙</div>
+            </button>
+            <button class="settings-btn" id="settingsBtn" aria-label="설정">
+                <i class="fi fi-rr-settings"></i>
+            </button>
+        </div>
+
+        <!-- Theme Settings Dropdown -->
+        <div class="settings-dropdown" id="settingsModal">
+            <div class="dropdown-header">
+                <h3>설정</h3>
+            </div>
+            <div class="dropdown-body">
+                <div class="setting-item">
+                    <label for="themeSelect">테마 설정</label>
+                    <select id="themeSelect" class="custom-select">
+                        <option value="light">라이트 모드</option>
+                        <option value="dark">다크 모드</option>
+                        <option value="auto">시스템 설정 사용</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <main class="container">
         <section class="works-section">
@@ -114,44 +155,90 @@
     </main>
 
     <script>
-        // 테마 토글 기능
+        // 테마 및 설정 기능
         const themeToggle = document.getElementById('themeToggle');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsDropdown = document.getElementById('settingsModal');
+        const themeSelect = document.getElementById('themeSelect');
         const html = document.documentElement;
 
         function updateThemeIcon() {
-            const isDark = html.getAttribute('data-theme') !== 'light';
-            themeToggle.textContent = isDark ? '🌙' : '☀️';
+            const savedTheme = localStorage.getItem('theme') || 'auto';
+            const iconWrapper = themeToggle.querySelector('.theme-icon-wrapper');
+            if (!iconWrapper) return;
+
+            if (savedTheme === 'auto') {
+                iconWrapper.textContent = '🌓';
+            } else {
+                const isDark = html.getAttribute('data-theme') !== 'light';
+                iconWrapper.textContent = isDark ? '🌙' : '☀️';
+            }
         }
 
-        themeToggle.addEventListener('click', () => {
-            const isDark = html.getAttribute('data-theme') !== 'light';
-            const newTheme = isDark ? 'light' : 'dark';
-            
-            if (newTheme === 'dark') {
+        function applyTheme(theme) {
+            if (theme === 'dark') {
                 html.removeAttribute('data-theme');
-            } else {
+            } else if (theme === 'light') {
                 html.setAttribute('data-theme', 'light');
-            }
-            
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon();
-        });
-
-        // 시스템 테마 변경 실시간 감지
-        window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
-            // 사용자가 수동으로 테마를 설정하지 않은 경우에만 시스템 테마를 따라감
-            if (!localStorage.getItem('theme')) {
-                if (e.matches) {
+            } else if (theme === 'auto') {
+                if (window.matchMedia('(prefers-color-scheme: light)').matches) {
                     html.setAttribute('data-theme', 'light');
                 } else {
                     html.removeAttribute('data-theme');
                 }
-                updateThemeIcon();
+            }
+            updateThemeIcon();
+            
+            // 드랍다운 상태 동기화
+            const savedTheme = localStorage.getItem('theme') || 'auto';
+            if (themeSelect.value !== savedTheme) {
+                themeSelect.value = savedTheme;
+            }
+        }
+
+        // 초기 테마 설정 및 드랍다운 동기화
+        const initialTheme = localStorage.getItem('theme') || 'auto';
+        themeSelect.value = initialTheme;
+        applyTheme(initialTheme);
+
+        // 테마 토글 버튼 (라이트 <-> 다크만 전환)
+        themeToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isDark = html.getAttribute('data-theme') !== 'light';
+            const newTheme = isDark ? 'light' : 'dark';
+            
+            localStorage.setItem('theme', newTheme);
+            themeSelect.value = newTheme;
+            applyTheme(newTheme);
+        });
+
+        // 설정 버튼 클릭 시 드롭다운 토글
+        settingsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            settingsDropdown.classList.toggle('active');
+        });
+
+        // 외부 클릭 시 드롭다운 닫기
+        document.addEventListener('click', (e) => {
+            if (!settingsDropdown.contains(e.target) && e.target !== settingsBtn) {
+                settingsDropdown.classList.remove('active');
             }
         });
 
-        // 초기 아이콘 설정
-        updateThemeIcon();
+        // 테마 선택 드랍다운 변경 시
+        themeSelect.addEventListener('change', (e) => {
+            const selectedTheme = e.target.value;
+            localStorage.setItem('theme', selectedTheme);
+            applyTheme(selectedTheme);
+        });
+
+        // 시스템 테마 변경 실시간 감지
+        window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
+            const savedTheme = localStorage.getItem('theme') || 'auto';
+            if (savedTheme === 'auto') {
+                applyTheme('auto');
+            }
+        });
     </script>
 </body>
 </html>
