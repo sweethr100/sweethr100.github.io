@@ -58,16 +58,65 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     padding-bottom: 2rem;
-    background-image: 
-        radial-gradient(circle at 15% 50%, var(--bg-gradient-1) 0%, transparent 50%),
-        radial-gradient(circle at 85% 30%, var(--bg-gradient-2) 0%, transparent 50%);
-    background-attachment: fixed;
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 15% 50%, var(--bg-gradient-1) 0%, transparent 70%),
+        radial-gradient(circle at 85% 30%, var(--bg-gradient-2) 0%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
+    background-attachment: fixed;
+    /* GPU acceleration to prevent seams */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+[data-theme="light"] body::before {
+    opacity: 0.6;
 }
 
 html {
     scroll-behavior: smooth;
     overflow-y: scroll;
+}
+
+/* Custom Floating Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5) !important;
+    background-clip: padding-box;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.5) !important;
 }
 
 /* Floating Navbar (Center) */
@@ -150,9 +199,11 @@ html {
     border-radius: 50px;
 }
 
-.nav-links a:hover, .theme-toggle:hover, .settings-btn:hover {
-    color: var(--accent);
-    background: rgba(var(--accent-rgb), 0.1);
+@media (hover: hover) {
+    .nav-links a:hover, .theme-toggle:hover, .settings-btn:hover {
+        color: var(--accent);
+        background: rgba(var(--accent-rgb), 0.1);
+    }
 }
 
 .nav-links a.active {
@@ -164,15 +215,19 @@ html {
     background: rgba(0, 0, 0, 0.08);
 }
 
-[data-theme="light"] .nav-links a:hover, 
-[data-theme="light"] .theme-toggle:hover,
-[data-theme="light"] .settings-btn:hover,
-[data-theme="light"] .nav-links a.active:hover {
-    background: rgba(var(--accent-rgb), 0.05);
+@media (hover: hover) {
+    [data-theme="light"] .nav-links a:hover, 
+    [data-theme="light"] .theme-toggle:hover,
+    [data-theme="light"] .settings-btn:hover,
+    [data-theme="light"] .nav-links a.active:hover {
+        background: rgba(var(--accent-rgb), 0.05);
+    }
 }
 
-.nav-links a.active:hover {
-    color: var(--accent);
+@media (hover: hover) {
+    .nav-links a.active:hover {
+        color: var(--accent);
+    }
 }
 
 .theme-toggle, .settings-btn {
@@ -380,10 +435,12 @@ html {
     cursor: pointer;
 }
 
-.video-container:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    border-color: var(--accent);
+@media (hover: hover) {
+    .video-container:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        border-color: var(--accent);
+    }
 }
 
 .video-container iframe {
@@ -408,10 +465,15 @@ html {
     max-width: 900px;
     margin: 0 auto;
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    /* Rendering Fixes for Mobile */
+    transform: translateZ(0);
+    will-change: transform;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .discord-wide-widget.theme-spotify {
@@ -424,10 +486,12 @@ html {
     border-color: rgba(88, 101, 242, 0.3);
 }
 
-.discord-wide-widget:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    border-color: var(--accent);
+@media (hover: hover) {
+    .discord-wide-widget:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        border-color: var(--accent);
+    }
 }
 
 .discord-header {
@@ -505,11 +569,13 @@ html {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-.discord-copy-btn-compact:hover {
-    background: rgba(88, 101, 242, 0.2);
-    color: var(--text-primary);
-    border-color: rgba(88, 101, 242, 0.4);
-    transform: translateY(-2px);
+@media (hover: hover) {
+    .discord-copy-btn-compact:hover {
+        background: rgba(88, 101, 242, 0.2);
+        color: var(--text-primary);
+        border-color: rgba(88, 101, 242, 0.4);
+        transform: translateY(-2px);
+    }
 }
 
 .discord-copy-btn-compact i {
@@ -528,6 +594,8 @@ html {
     font-weight: 600;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
+    word-break: break-word;
+    max-width: 100%;
 }
 
 [data-theme="light"] .discord-custom-status {
@@ -692,10 +760,12 @@ html {
     justify-content: space-between;
 }
 
-.insta-profile-card:hover {
-    transform: translateY(-10px);
-    border-color: var(--accent);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+@media (hover: hover) {
+    .insta-profile-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--accent);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
 }
 
 .insta-card-header {
@@ -737,10 +807,12 @@ html {
     background: rgba(0, 0, 0, 0.05);
 }
 
-.insta-profile-card:hover .insta-card-btn {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
+@media (hover: hover) {
+    .insta-profile-card:hover .insta-card-btn {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+    }
 }
 
 /* GitHub Section */
@@ -774,10 +846,12 @@ html {
     margin-bottom: 1rem;
 }
 
-.github-list-card:hover {
-    transform: translateY(-10px);
-    border-color: var(--accent);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+@media (hover: hover) {
+    .github-list-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--accent);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
 }
 
 .github-card-content {
@@ -840,9 +914,11 @@ html {
     transition: all 0.3s ease;
 }
 
-.profile-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+@media (hover: hover) {
+    .profile-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
 }
 
 [data-theme="light"] .profile-btn {
@@ -878,6 +954,74 @@ html {
     color: var(--text-secondary);
     opacity: 0.7;
 }
+
+/* Works Section (App Page) */
+.works-section {
+    padding: 2rem 0;
+}
+
+.works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.work-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 28px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+@media (hover: hover) {
+    .work-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--accent);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+}
+
+.work-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] .work-icon-wrapper {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.work-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.work-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+/* Specific Card Theme (Optional) */
+.entry-card .work-icon-wrapper { background: #fff; }
+.search-card:hover { border-color: #2ea043; }
+.python-card:hover { border-color: #3572a5; }
 
 /* Floating Logo */
 .floating-logo {
@@ -1024,6 +1168,17 @@ html {
     .title {
         font-size: 2.8rem;
     }
+    body::before {
+        background-attachment: scroll;
+        position: absolute;
+        /* Simplify gradient on mobile to prevent tiling bugs */
+        background-image: radial-gradient(circle at 50% 40%, var(--bg-gradient-1) 0%, transparent 80%);
+    }
+    .discord-wide-widget, .insta-profile-card, .github-list-card, .discord-custom-status, .work-card {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: var(--card-bg) !important;
+    }
     .floating-logo, .navbar, .theme-controls {
         top: 0.8rem;
     }
@@ -1037,6 +1192,17 @@ html {
     .theme-toggle, .settings-btn {
         width: 36px;
         height: 36px;
+    }
+    .discord-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1.5rem;
+    }
+    .discord-custom-status {
+        display: block;
+        margin: 0.8rem auto 0;
+        max-width: 100%;
     }
 }
 
