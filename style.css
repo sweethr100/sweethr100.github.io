@@ -1,5 +1,6 @@
-:root {
-    --accent-rgb: 9, 105, 218;
+﻿:root {
+    color-scheme: only dark;
+    --accent-rgb: 88, 166, 255;
     --card-bg: rgba(30, 35, 45, 0.7);
     --card-border: rgba(255, 255, 255, 0.1);
     --text-primary: #f0f6fc;
@@ -10,23 +11,24 @@
     --shadow-color: rgba(0, 0, 0, 0.5);
     --navbar-bg: rgba(22, 27, 34, 0.8);
     --dropdown-bg: rgba(30, 35, 45, 0.75);
-    
+
     --bg-gradient-1: rgba(88, 166, 255, 0.05);
     --bg-gradient-2: rgba(46, 160, 67, 0.05);
-    
+
     --winner-color: rgba(46, 160, 67, 0.15);
     --winner-border: rgba(46, 160, 67, 0.4);
     --winner-text: #3fb950;
-    
+
     --loser-color: rgba(248, 81, 73, 0.1);
     --loser-border: rgba(248, 81, 73, 0.3);
     --loser-text: #ff7b72;
 }
 
 [data-theme="light"] {
-    color-scheme: light;
+    color-scheme: only light;
+    --accent-rgb: 9, 105, 218;
     --bg-color: #f0f2f5;
-    --card-bg: rgba(255, 255, 255, 0.85);
+    --card-bg: rgba(255, 255, 255, 0.7);
     --card-border: rgba(0, 0, 0, 0.06);
     --text-primary: #1f2328;
     --text-secondary: #656d76;
@@ -68,7 +70,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
+    background-image:
         radial-gradient(circle at 15% 50%, var(--bg-gradient-1) 0%, transparent 70%),
         radial-gradient(circle at 85% 30%, var(--bg-gradient-2) 0%, transparent 70%);
     z-index: -1;
@@ -168,7 +170,7 @@ html {
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
 }
 
-[data-theme="light"] .navbar, 
+[data-theme="light"] .navbar,
 [data-theme="light"] .theme-bar {
     background: var(--navbar-bg);
     border: 1px solid var(--card-border);
@@ -199,11 +201,11 @@ html {
     border-radius: 50px;
 }
 
-@media (hover: hover) {
-    .nav-links a:hover, .theme-toggle:hover, .settings-btn:hover {
-        color: var(--accent);
-        background: rgba(var(--accent-rgb), 0.1);
-    }
+.nav-links a:hover,
+.theme-toggle:hover,
+.settings-btn:hover {
+    color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.1);
 }
 
 .nav-links a.active {
@@ -215,22 +217,19 @@ html {
     background: rgba(0, 0, 0, 0.08);
 }
 
-@media (hover: hover) {
-    [data-theme="light"] .nav-links a:hover, 
-    [data-theme="light"] .theme-toggle:hover,
-    [data-theme="light"] .settings-btn:hover,
-    [data-theme="light"] .nav-links a.active:hover {
-        background: rgba(var(--accent-rgb), 0.05);
-    }
+[data-theme="light"] .nav-links a:hover,
+[data-theme="light"] .theme-toggle:hover,
+[data-theme="light"] .settings-btn:hover,
+[data-theme="light"] .nav-links a.active:hover {
+    background: rgba(var(--accent-rgb), 0.05);
 }
 
-@media (hover: hover) {
-    .nav-links a.active:hover {
-        color: var(--accent);
-    }
+.nav-links a.active:hover {
+    color: var(--accent);
 }
 
-.theme-toggle, .settings-btn {
+.theme-toggle,
+.settings-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -272,8 +271,15 @@ html {
 }
 
 @keyframes fadePageIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Hero Section */
@@ -435,12 +441,10 @@ html {
     cursor: pointer;
 }
 
-@media (hover: hover) {
-    .video-container:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        border-color: var(--accent);
-    }
+.video-container:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px var(--accent-glow);
+    border-color: var(--accent);
 }
 
 .video-container iframe {
@@ -473,7 +477,6 @@ html {
     /* Rendering Fixes for Mobile */
     transform: translateZ(0);
     will-change: transform;
-    -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .discord-wide-widget.theme-spotify {
@@ -486,12 +489,10 @@ html {
     border-color: rgba(88, 101, 242, 0.3);
 }
 
-@media (hover: hover) {
-    .discord-wide-widget:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        border-color: var(--accent);
-    }
+.discord-wide-widget:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px var(--accent-glow);
+    border-color: var(--accent);
 }
 
 .discord-header {
@@ -527,10 +528,21 @@ html {
     z-index: 2;
 }
 
-.status-indicator-large.online { background-color: #43b581; }
-.status-indicator-large.idle { background-color: #faa61a; }
-.status-indicator-large.dnd { background-color: #f04747; }
-.status-indicator-large.offline { background-color: #747f8d; }
+.status-indicator-large.online {
+    background-color: #43b581;
+}
+
+.status-indicator-large.idle {
+    background-color: #faa61a;
+}
+
+.status-indicator-large.dnd {
+    background-color: #f04747;
+}
+
+.status-indicator-large.offline {
+    background-color: #747f8d;
+}
 
 .discord-user-info h3 {
     font-size: 1.6rem;
@@ -569,13 +581,11 @@ html {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-@media (hover: hover) {
-    .discord-copy-btn-compact:hover {
-        background: rgba(88, 101, 242, 0.2);
-        color: var(--text-primary);
-        border-color: rgba(88, 101, 242, 0.4);
-        transform: translateY(-2px);
-    }
+.discord-copy-btn-compact:hover {
+    background: rgba(88, 101, 242, 0.2);
+    color: var(--text-primary);
+    border-color: rgba(88, 101, 242, 0.4);
+    transform: translateY(-2px);
 }
 
 .discord-copy-btn-compact i {
@@ -760,12 +770,10 @@ html {
     justify-content: space-between;
 }
 
-@media (hover: hover) {
-    .insta-profile-card:hover {
-        transform: translateY(-10px);
-        border-color: var(--accent);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    }
+.insta-profile-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent);
+    box-shadow: 0 20px 40px var(--accent-glow);
 }
 
 .insta-card-header {
@@ -807,12 +815,10 @@ html {
     background: rgba(0, 0, 0, 0.05);
 }
 
-@media (hover: hover) {
-    .insta-profile-card:hover .insta-card-btn {
-        background: var(--accent);
-        color: white;
-        border-color: var(--accent);
-    }
+.insta-profile-card:hover .insta-card-btn {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
 }
 
 /* GitHub Section */
@@ -846,12 +852,10 @@ html {
     margin-bottom: 1rem;
 }
 
-@media (hover: hover) {
-    .github-list-card:hover {
-        transform: translateY(-10px);
-        border-color: var(--accent);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    }
+.github-list-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent);
+    box-shadow: 0 20px 40px var(--accent-glow);
 }
 
 .github-card-content {
@@ -887,11 +891,30 @@ html {
     font-weight: 700;
 }
 
-.lang-badge.html { background: rgba(227, 76, 38, 0.15); color: #e34c26; }
-.lang-badge.javascript { background: rgba(241, 224, 90, 0.1); color: #f1e05a; }
-.lang-badge.python { background: rgba(53, 114, 165, 0.15); color: #3572a5; }
-.lang-badge.java { background: rgba(176, 114, 25, 0.15); color: #b07219; }
-.lang-badge.kotlin { background: rgba(169, 123, 255, 0.15); color: #a97bff; }
+.lang-badge.html {
+    background: rgba(227, 76, 38, 0.15);
+    color: #e34c26;
+}
+
+.lang-badge.javascript {
+    background: rgba(241, 224, 90, 0.1);
+    color: #f1e05a;
+}
+
+.lang-badge.python {
+    background: rgba(53, 114, 165, 0.15);
+    color: #3572a5;
+}
+
+.lang-badge.java {
+    background: rgba(176, 114, 25, 0.15);
+    color: #b07219;
+}
+
+.lang-badge.kotlin {
+    background: rgba(169, 123, 255, 0.15);
+    color: #a97bff;
+}
 
 .profile-link-container {
     margin-top: 2rem;
@@ -914,11 +937,9 @@ html {
     transition: all 0.3s ease;
 }
 
-@media (hover: hover) {
-    .profile-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
+.profile-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 [data-theme="light"] .profile-btn {
@@ -981,12 +1002,10 @@ html {
     -webkit-backdrop-filter: blur(20px);
 }
 
-@media (hover: hover) {
-    .work-card:hover {
-        transform: translateY(-10px);
-        border-color: var(--accent);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    }
+.work-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent);
+    box-shadow: 0 20px 40px var(--accent-glow);
 }
 
 .work-icon-wrapper {
@@ -1019,9 +1038,17 @@ html {
 }
 
 /* Specific Card Theme (Optional) */
-.entry-card .work-icon-wrapper { background: #fff; }
-.search-card:hover { border-color: #2ea043; }
-.python-card:hover { border-color: #3572a5; }
+.entry-card .work-icon-wrapper {
+    background: #fff;
+}
+
+.search-card:hover {
+    border-color: #2ea043;
+}
+
+.python-card:hover {
+    border-color: #3572a5;
+}
 
 /* Floating Logo */
 .floating-logo {
@@ -1119,7 +1146,7 @@ html {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
@@ -1131,11 +1158,21 @@ html {
     background-size: 1rem;
 }
 
+.custom-select option {
+    background-color: #1e232d !important;
+    color: #f0f6fc !important;
+}
+
 [data-theme="light"] .custom-select {
     background-color: rgba(0, 0, 0, 0.05);
     border-color: rgba(0, 0, 0, 0.15);
-    color: #1f2328;
+    color: var(--text-primary) !important;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23656d76' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+[data-theme="light"] .custom-select option {
+    background-color: #ffffff !important;
+    color: #1f2328 !important;
 }
 
 [data-theme="light"] .settings-btn.active i {
@@ -1148,14 +1185,19 @@ html {
 
 /* Responsive */
 @media (max-width: 1024px) {
-    .floating-logo, .navbar, .theme-controls {
+
+    .floating-logo,
+    .navbar,
+    .theme-controls {
         top: 1rem;
     }
+
     .floating-logo {
         left: 1rem;
         padding: 0 1.2rem;
         font-size: 0.95rem;
     }
+
     .theme-controls {
         right: 1rem;
     }
@@ -1165,61 +1207,84 @@ html {
     .container {
         padding-top: 5rem;
     }
+
     .title {
         font-size: 2.8rem;
     }
+
     body::before {
         background-attachment: scroll;
         position: absolute;
         /* Simplify gradient on mobile to prevent tiling bugs */
         background-image: radial-gradient(circle at 50% 40%, var(--bg-gradient-1) 0%, transparent 80%);
     }
-    .discord-wide-widget, .insta-profile-card, .github-list-card, .discord-custom-status, .work-card {
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-        background: var(--card-bg) !important;
-    }
-    .floating-logo, .navbar, .theme-controls {
+
+
+
+    .floating-logo,
+    .navbar,
+    .theme-controls {
         top: 0.8rem;
     }
-    .theme-bar, .navbar, .floating-logo {
+
+    .theme-bar,
+    .navbar,
+    .floating-logo {
         height: 44px;
     }
+
     .nav-links a {
         padding: 0.4rem 1rem;
         font-size: 0.9rem;
     }
-    .theme-toggle, .settings-btn {
+
+    .theme-toggle,
+    .settings-btn {
         width: 36px;
         height: 36px;
     }
+
     .discord-header {
         flex-direction: column;
         align-items: center;
         text-align: center;
         gap: 1.5rem;
     }
+
     .discord-custom-status {
-        display: block;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
         margin: 0.8rem auto 0;
         max-width: 100%;
     }
 }
 
 @media (max-width: 480px) {
-    .floating-logo, .navbar, .theme-controls {
+
+    .floating-logo,
+    .navbar,
+    .theme-controls {
         top: 0.6rem;
     }
-    .theme-bar, .navbar, .floating-logo {
+
+    .theme-bar,
+    .navbar,
+    .floating-logo {
         height: 40px;
         padding: 0 0.3rem;
     }
+
     .nav-links a {
         padding: 0.3rem 0.8rem;
         font-size: 0.85rem;
     }
-    .theme-toggle, .settings-btn {
+
+    .theme-toggle,
+    .settings-btn {
         width: 32px;
         height: 32px;
     }
 }
+
