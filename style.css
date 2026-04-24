@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     color-scheme: only dark;
     --accent-rgb: 88, 166, 255;
     --card-bg: rgba(30, 35, 45, 0.7);
@@ -180,7 +180,7 @@ html {
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 0.5rem;
+    gap: 0.3rem;
     margin: 0;
     padding: 0;
 }
@@ -197,7 +197,7 @@ html {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0.6rem 1.6rem;
+    padding: 0.6rem 1.2rem;
     border-radius: 50px;
 }
 
@@ -1234,7 +1234,7 @@ html {
     }
 
     .nav-links a {
-        padding: 0.4rem 1rem;
+        padding: 0.4rem 0.8rem;
         font-size: 0.9rem;
     }
 
@@ -1277,7 +1277,7 @@ html {
     }
 
     .nav-links a {
-        padding: 0.3rem 0.8rem;
+        padding: 0.3rem 0.6rem;
         font-size: 0.85rem;
     }
 
