@@ -87,8 +87,6 @@
             </div>
         </section>
 
-        </section>
-
 
 
         <section class="featured-section">
@@ -105,25 +103,23 @@
         </section>
 
         <!-- Discord Live Activity Section -->
-        <section class="discord-section">
+        <section class="discord-section" id="discordWideWidget">
             <h2 class="section-title">Discord 활동 상태</h2>
-            <div class="discord-wide-widget" id="discordWideWidget">
+            <div class="discord-plate-content">
                 <div class="discord-header">
                     <div class="discord-avatar-wrapper">
                         <img id="discordAvatar" src="./seml.webp" alt="Avatar" class="discord-avatar">
                         <span class="status-indicator-large" id="discordStatus"></span>
                     </div>
-                    <div class="discord-user-info">
-                        <div class="user-main">
+                    <div class="discord-header-right">
+                        <div class="discord-user-info">
                             <h3 id="discordGlobalName">로딩 중...</h3>
+                            <button class="discord-copy-btn-compact" onclick="copyDiscordId()">
+                                <i class="fi fi-rr-copy"></i> Discord ID 복사하기
+                            </button>
                         </div>
-                        <p id="discordCustomStatus" class="discord-custom-status">💬 상태 메시지를 불러오는 중...</p>
+                        <p id="discordCustomStatus" class="discord-custom-status"><span class="discord-status-text">상태 메시지를 불러오는 중...</span></p>
                     </div>
-                </div>
-                <div class="discord-header-separator">
-                    <button class="discord-copy-btn-compact" onclick="copyDiscordId()">
-                        <i class="fi fi-rr-copy"></i> Discord ID 복사하기
-                    </button>
                 </div>
                 <div class="discord-body" id="discordBody">
                     <div class="activity-label-wrapper">
@@ -156,13 +152,12 @@
                 </div>
             </div>
         </section>
-        </section>
 
         <!-- Instagram Section -->
         <section class="instagram-section">
             <h2 class="section-title">Instagram</h2>
-            <div class="social-links-grid">
-                <a href="https://www.instagram.com/5_ryung/" target="_blank" class="insta-profile-card">
+            <a href="https://www.instagram.com/5_ryung/" target="_blank" class="insta-profile-card" id="instaProfileCard">
+                <div class="insta-card-body">
                     <div class="insta-card-header">
                         <div class="insta-card-avatar-wrapper">
                             <img src="./insta_profile.jpg" alt="Instagram Profile" class="insta-card-avatar">
@@ -172,8 +167,8 @@
                         </div>
                     </div>
                     <div class="insta-card-btn">프로필 방문</div>
-                </a>
-            </div>
+                </div>
+            </a>
         </section>
 
         <section class="github-section">
@@ -181,7 +176,7 @@
             <div class="github-list" id="githubRepoList">
                 <p style="text-align: center; color: var(--text-secondary);">Loading repositories...</p>
             </div>
-            
+
             <div class="profile-link-container">
                 <a href="https://github.com/sweethr100" target="_blank" class="profile-btn github-profile-btn">
                     <i class="fi fi-brands-github"></i>
@@ -386,7 +381,8 @@
                 // 2. 커스텀 상태 메시지 업데이트
                 const customStatus = data.activities.find(a => a.type === 4);
                 if (customStatusText) {
-                    customStatusText.innerHTML = customStatus ? `💬 ${customStatus.state}` : (data.discord_status === 'offline' ? '' : '💬 상태 메시지 없음');
+                    const span = customStatusText.querySelector('.discord-status-text') || customStatusText;
+                    span.innerText = customStatus ? customStatus.state : (data.discord_status === 'offline' ? '' : '상태 메시지 없음');
                 }
 
                 // 3. 주요 활동 및 이미지 업데이트
@@ -506,11 +502,11 @@
             }
         }
 
-        // 초기 실행 및 30초마다 업데이트
+        // 초기 실행
         updateDiscordStatus();
         setInterval(updateDiscordStatus, 30000);
 
-        // 페이지 로드 시 즉시 실행
+        // 페이지 로드 시 실행
         fetchGitHubRepos();
 
         // 디스코드 아이디 복사 기능
@@ -535,6 +531,28 @@
         function updateGitHubImages() {
             // 현재 프로젝트에서는 별도의 이미지가 없으나 호환성을 위해 유지
         }
+
+        // ─── 플로팅 바 간섭 감지 → 자동 compact 축소 ───
+        // 스크롤 시 깜빡임을 막기 위해 window.innerWidth 고정 breakpoint 기준으로 판단
+        const COMPACT_BREAKPOINT = 700; // px 이하이면 compact 모드
+
+        function checkNavbarOverlap() {
+            const logo = document.querySelector('.floating-logo');
+            const navbar = document.querySelector('.navbar');
+            const themeControls = document.querySelector('.theme-controls');
+            const themeBar = document.querySelector('.theme-bar');
+            if (!logo || !navbar || !themeControls) return;
+
+            const isOverlapping = window.innerWidth < COMPACT_BREAKPOINT;
+
+            [logo, navbar, themeControls, themeBar].forEach(el => {
+                if (el) el.classList.toggle('compact', isOverlapping);
+            });
+        }
+
+        // 초기 + 리사이즈 시만 감지 (스크롤 이벤트에는 반응 안 함)
+        checkNavbarOverlap();
+        window.addEventListener('resize', checkNavbarOverlap);
     </script>
 </body>
 </html>

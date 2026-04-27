@@ -22,6 +22,7 @@
     --loser-color: rgba(248, 81, 73, 0.1);
     --loser-border: rgba(248, 81, 73, 0.3);
     --loser-text: #ff7b72;
+    --calendar-filter: invert(1) hue-rotate(180deg) brightness(1.2);
 }
 
 [data-theme="light"] {
@@ -45,6 +46,7 @@
     --loser-color: rgba(248, 81, 73, 0.08);
     --loser-border: rgba(248, 81, 73, 0.25);
     --loser-text: #cf222e;
+    --calendar-filter: none;
 }
 
 * {
@@ -60,7 +62,7 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     padding-bottom: 2rem;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body::before {
@@ -131,8 +133,8 @@ html {
     left: 50%;
     transform: translateX(-50%);
     background: rgba(30, 35, 45, 0.7);
-    backdrop-filter: blur(30px) saturate(180%);
-    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 50px;
     height: 52px;
@@ -140,8 +142,32 @@ html {
     z-index: 2000;
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
     min-width: fit-content;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* ─── Compact Mode (겹침 감지 시 자동 축소) ─── */
+.navbar.compact,
+.theme-bar.compact,
+.floating-logo.compact {
+    height: 46px !important;
+}
+
+.floating-logo.compact {
+    font-size: 0.95rem !important;
+    padding: 0 1.1rem !important;
+}
+
+.navbar.compact .nav-links a {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.9rem;
+}
+
+.theme-controls.compact .theme-toggle,
+.theme-controls.compact .settings-btn {
+    width: 34px !important;
+    height: 34px !important;
+}
+
 
 /* Theme Controls Wrapper (Right) */
 .theme-controls {
@@ -152,7 +178,7 @@ html {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Theme Bar (Right) */
@@ -160,8 +186,8 @@ html {
     display: flex;
     align-items: center;
     background: rgba(30, 35, 45, 0.7);
-    backdrop-filter: blur(30px) saturate(180%);
-    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 50px;
     height: 52px;
@@ -193,7 +219,7 @@ html {
     text-decoration: none;
     font-size: 1rem;
     font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     background: none;
     border: none;
     cursor: pointer;
@@ -240,7 +266,7 @@ html {
     background: none;
     border: none;
     color: var(--text-secondary);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     padding: 0;
     overflow: hidden;
 }
@@ -250,16 +276,14 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 0;
-    transform: translateY(1px);
+    line-height: 1;
 }
 
 .theme-icon-wrapper {
-    font-size: 1.15rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    transform: translateY(-1.5px);
+    line-height: 1;
 }
 
 /* Main Container */
@@ -283,6 +307,7 @@ html {
 }
 
 /* Hero Section */
+/* Hero Section */
 .hero {
     display: flex;
     flex-direction: column;
@@ -294,7 +319,7 @@ html {
     border: 1px solid var(--card-border);
     border-radius: 32px;
     box-shadow: 0 8px 32px var(--shadow-color);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     width: 100%;
 }
 
@@ -369,7 +394,7 @@ html {
     border-radius: 24px;
     padding: 2.5rem 1.5rem;
     text-align: center;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: default;
     backdrop-filter: blur(20px);
 }
@@ -431,13 +456,17 @@ html {
 }
 
 .video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
     max-width: 900px;
     margin: 0 auto;
     border-radius: 32px;
     overflow: hidden;
     box-shadow: 0 10px 30px var(--shadow-color);
     border: 1px solid var(--card-border);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--card-bg);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: pointer;
 }
 
@@ -448,58 +477,108 @@ html {
 }
 
 .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    height: 100%;
     border: none;
     display: block;
 }
 
-/* Discord Activity Section */
+/* Discord Wide Widget (Desktop focused, responsive) */
+/* Discord Section - Base (Narrow View) */
 .discord-section {
     margin-bottom: 5rem;
     max-width: 900px;
     margin: 0 auto 5rem auto;
+    position: relative;
+    z-index: 1;
 }
 
-.discord-wide-widget {
+.discord-plate-content {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 32px;
     padding: 2.5rem;
-    max-width: 900px;
-    margin: 0 auto;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
+    box-shadow: 0 8px 32px var(--shadow-color);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
-    /* Rendering Fixes for Mobile */
-    transform: translateZ(0);
-    will-change: transform;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.discord-wide-widget.theme-spotify {
-    background: linear-gradient(135deg, rgba(30, 215, 96, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
-    border-color: rgba(30, 215, 96, 0.3);
+/* 활동 시 그라데이션 전환 (Narrow View용) */
+.discord-plate-content::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+    pointer-events: none;
 }
 
-.discord-wide-widget.theme-gaming {
-    background: linear-gradient(135deg, rgba(88, 101, 242, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
-    border-color: rgba(88, 101, 242, 0.3);
+.discord-section.theme-spotify .discord-plate-content::before {
+    background: linear-gradient(135deg, rgba(30, 215, 96, 0.2) 0%, rgba(0, 0, 0, 0.4) 100%);
+    opacity: 1;
 }
 
-.discord-wide-widget:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px var(--accent-glow);
-    border-color: var(--accent);
+[data-theme="light"] .discord-section.theme-spotify .discord-plate-content::before {
+    background: linear-gradient(135deg, rgba(30, 215, 96, 0.08) 0%, rgba(30, 215, 96, 0.2) 100%);
 }
+
+.discord-section.theme-gaming .discord-plate-content::before {
+    background: linear-gradient(135deg, rgba(88, 101, 242, 0.25) 0%, rgba(0, 0, 0, 0.4) 100%);
+    opacity: 1;
+}
+
+[data-theme="light"] .discord-section.theme-gaming .discord-plate-content::before {
+    background: linear-gradient(135deg, rgba(88, 101, 242, 0.1) 0%, rgba(88, 101, 242, 0.25) 100%);
+}
+
+.discord-section.theme-spotify .discord-plate-content {
+    border-color: rgba(30, 215, 96, 0.5);
+    box-shadow: 0 8px 32px rgba(30, 215, 96, 0.15);
+}
+
+.discord-section.theme-gaming .discord-plate-content {
+    border-color: rgba(88, 101, 242, 0.5);
+    box-shadow: 0 8px 32px rgba(88, 101, 242, 0.2);
+}
+
+
 
 .discord-header {
     display: flex;
     align-items: center;
     gap: 1.2rem;
     margin-bottom: 1.5rem;
+}
+
+/* 아바타 오른쪽 전체 영역 */
+.discord-header-right {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    gap: 1rem;
+    min-width: 0;
+    max-height: 110px; /* 아바타 높이로 고정하여 더 커지지 않게 함 */
+}
+
+/* 닉네임 + 버튼 세로 정렬 */
+.discord-user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.8rem;
+    flex-shrink: 0;
+    min-width: 0;
 }
 
 .discord-avatar-wrapper {
@@ -545,10 +624,11 @@ html {
 }
 
 .discord-user-info h3 {
-    font-size: 1.6rem;
-    font-weight: 850;
+    font-size: 2.5rem;
+    font-weight: 900;
     color: var(--text-primary);
-    letter-spacing: -0.03rem;
+    letter-spacing: -0.04rem;
+    line-height: 1.0;
 }
 
 .discord-header-separator {
@@ -570,15 +650,15 @@ html {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     backdrop-filter: blur(15px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 [data-theme="light"] .discord-copy-btn-compact {
-    background: rgba(0, 0, 0, 0.08);
-    border-color: rgba(0, 0, 0, 0.12);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
 }
 
 .discord-copy-btn-compact:hover {
@@ -593,39 +673,51 @@ html {
 }
 
 .discord-custom-status {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     color: var(--text-primary);
-    margin-top: 0.8rem;
-    padding: 0.5rem 1.1rem;
+    padding: 1rem 1.5rem;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    display: inline-block;
+    border-radius: 18px;
     border: 1px solid rgba(255, 255, 255, 0.15);
     font-weight: 600;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
-    word-break: break-word;
-    max-width: 100%;
+    overflow: hidden;
+    /* 오른쪽 남은 공간 전체를 꽉 채우는 큰 박스 */
+    flex: 1;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.discord-status-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-all;
 }
 
 [data-theme="light"] .discord-custom-status {
-    background: rgba(0, 0, 0, 0.06);
-    border-color: rgba(0, 0, 0, 0.1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(255, 255, 255, 0.9);
+    color: var(--text-primary);
 }
 
 .discord-body {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08); /* 불투명도 상향 */
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 20px;
     padding: 1.5rem;
-    transition: all 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="light"] .discord-body {
-    background: rgba(0, 0, 0, 0.04);
-    border-color: rgba(0, 0, 0, 0.08);
-    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.02);
+    background: rgba(255, 255, 255, 0.65); /* 라이트 모드 시인성 강화 */
+    border-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 15px rgba(255, 255, 255, 0.4);
 }
 
 .activity-label-wrapper {
@@ -647,15 +739,22 @@ html {
 .activity-time-banner {
     display: flex;
     align-items: center;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(67, 181, 129, 0.2);
     color: #43b581;
     padding: 0.35rem 0.9rem;
     border-radius: 20px;
     font-size: 0.95rem;
     font-weight: 800;
-    border: 1.5px solid rgba(67, 181, 129, 0.4);
-    backdrop-filter: blur(5px);
+    border: 1.5px solid rgba(67, 181, 129, 0.5);
     line-height: 1;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="light"] .activity-time-banner {
+    background: #e6f6ed;
+    color: #22844f;
+    border-color: rgba(67, 181, 129, 0.4);
+    box-shadow: 0 2px 6px rgba(67, 181, 129, 0.15);
 }
 
 .activity-content-wrapper {
@@ -748,26 +847,29 @@ html {
     margin: 0 auto 5rem auto;
 }
 
-.social-links-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    max-width: 100%;
-    margin: 0 auto;
-}
-
 .insta-profile-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 32px;
-    padding: 1.5rem 2.5rem;
+    padding: 2.5rem;
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: inherit;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     backdrop-filter: blur(20px);
     width: 100%;
     display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 5rem;
+}
+
+.insta-card-body {
+    display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
 }
 
 .insta-profile-card:hover {
@@ -808,7 +910,7 @@ html {
     border-radius: 20px;
     font-weight: 600;
     font-size: 0.85rem;
-    transition: all 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="light"] .insta-card-btn {
@@ -831,7 +933,7 @@ html {
 .github-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.6rem;
     max-width: 900px;
     margin: 0 auto;
 }
@@ -839,23 +941,24 @@ html {
 .github-list-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 32px;
-    padding: 1.5rem 2.5rem;
+    border-radius: 24px;
+    padding: 1.2rem 2rem;
+    margin-bottom: 0;
     text-decoration: none;
     color: var(--text-primary);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 1rem;
+    box-shadow: 0 4px 16px var(--shadow-color);
 }
 
 .github-list-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-5px);
     border-color: var(--accent);
-    box-shadow: 0 20px 40px var(--accent-glow);
+    box-shadow: 0 10px 20px var(--accent-glow);
 }
 
 .github-card-content {
@@ -916,6 +1019,121 @@ html {
     color: #a97bff;
 }
 
+/* GitHub Contribution Calendar */
+.github-contribution-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 32px var(--shadow-color);
+    margin-top: 3rem;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+
+.contribution-header h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.calendar-container {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+/* GitHub Calendar Library Customization */
+.calendar {
+    border: none !important;
+    min-height: 120px;
+}
+
+.calendar .width-full > .float-left {
+    display: none !important; /* Hide original legend and stats */
+}
+
+.calendar .contrib-details {
+    display: none !important;
+}
+
+/* Square styling */
+.calendar rect.DayJS-day {
+    rx: 2px;
+    ry: 2px;
+}
+
+/* Dark mode colors for the calendar squares */
+[data-theme="dark"] .calendar rect.DayJS-day[data-level="0"] { fill: #161b22; }
+[data-theme="dark"] .calendar rect.DayJS-day[data-level="1"] { fill: #0e4429; }
+[data-theme="dark"] .calendar rect.DayJS-day[data-level="2"] { fill: #006d32; }
+[data-theme="dark"] .calendar rect.DayJS-day[data-level="3"] { fill: #26a641; }
+[data-theme="dark"] .calendar rect.DayJS-day[data-level="4"] { fill: #39d353; }
+
+/* Light mode colors for the calendar squares */
+[data-theme="light"] .calendar rect.DayJS-day[data-level="0"] { fill: #ebedf0; }
+[data-theme="light"] .calendar rect.DayJS-day[data-level="1"] { fill: #9be9a8; }
+[data-theme="light"] .calendar rect.DayJS-day[data-level="2"] { fill: #40c463; }
+[data-theme="light"] .calendar rect.DayJS-day[data-level="3"] { fill: #30a14e; }
+[data-theme="light"] .calendar rect.DayJS-day[data-level="4"] { fill: #216e39; }
+
+/* Text colors in calendar */
+.calendar text.wday, 
+.calendar text.month {
+    fill: var(--text-secondary) !important;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.contribution-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--card-border);
+}
+
+.footer-note {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.contribution-legend {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.legend-squares {
+    display: flex;
+    gap: 3px;
+}
+
+.legend-squares .square {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+}
+
+/* Legend colors match themes */
+[data-theme="dark"] .square.level-0 { background: #161b22; }
+[data-theme="dark"] .square.level-1 { background: #0e4429; }
+[data-theme="dark"] .square.level-2 { background: #006d32; }
+[data-theme="dark"] .square.level-3 { background: #26a641; }
+[data-theme="dark"] .square.level-4 { background: #39d353; }
+
+[data-theme="light"] .square.level-0 { background: #ebedf0; }
+[data-theme="light"] .square.level-1 { background: #9be9a8; }
+[data-theme="light"] .square.level-2 { background: #40c463; }
+[data-theme="light"] .square.level-3 { background: #30a14e; }
+[data-theme="light"] .square.level-4 { background: #216e39; }
+
 .profile-link-container {
     margin-top: 2rem;
     display: flex;
@@ -934,7 +1152,7 @@ html {
     font-size: 1.1rem;
     font-weight: 700;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .profile-btn:hover {
@@ -997,7 +1215,7 @@ html {
     align-items: center;
     gap: 1.2rem;
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
 }
@@ -1017,7 +1235,7 @@ html {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="light"] .work-icon-wrapper {
@@ -1061,8 +1279,8 @@ html {
     height: 52px;
     padding: 0 1.5rem;
     background: rgba(30, 35, 45, 0.7);
-    backdrop-filter: blur(30px) saturate(180%);
-    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 50px;
     color: var(--text-primary);
@@ -1071,7 +1289,7 @@ html {
     font-weight: 900;
     z-index: 2000;
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     letter-spacing: 1px;
 }
 
@@ -1102,7 +1320,7 @@ html {
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     isolation: isolate;
 }
 
@@ -1151,7 +1369,7 @@ html {
     font-weight: 600;
     cursor: pointer;
     appearance: none;
-    transition: all 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0.8rem center;
@@ -1183,8 +1401,355 @@ html {
     transform: translateY(0.5px);
 }
 
+/* --- Perfect Tight Bento Grid (1 -> 3 -> 5 Columns) --- */
+@media (min-width: 1250px) {
+    /* 그리드 아이템 기본 설정 */
+    .hero,
+    .featured-section,
+    .discord-section,
+    .instagram-section,
+    .github-section {
+        margin: 0 !important; /* margin: auto 가 그리드 확장을 막는 현상 원천 차단 */
+        max-width: none !important; /* 강제 최대 너비 해제 */
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* 데스크톱에서 모든 섹션을 판(Plate)으로 만들기 (제목이 하얀 박스 안에 들어감) */
+    .featured-section,
+    .github-section,
+    .discord-section,
+    .instagram-section {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 32px;
+        padding: 2.5rem;
+        box-shadow: 0 8px 32px var(--shadow-color);
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow: hidden;
+    }
+
+    /* 벤토 모드에서는 외부 섹션이 판이 되므로 내부 판 스타일 제거 (깃허브 카드는 제외) */
+    .discord-plate-content, .insta-profile-card {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        backdrop-filter: none !important;
+    }
+
+    /* 벤토 모드에서 내부 판의 중복 그라데이션 제거 */
+    .discord-plate-content::before {
+        display: none !important;
+    }
+
+    /* 깃허브 카드 복구 및 벤토 최적화 */
+    .github-section .github-list-card {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(10px);
+        box-shadow: none !important;
+    }
+
+    [data-theme="light"] .github-section .github-list-card {
+        background: rgba(0, 0, 0, 0.05) !important;
+        border-color: rgba(0, 0, 0, 0.12) !important;
+    }
+
+    /* 내부 박스(상태메시지, 활동)를 더 고급스러운 글래스모피즘으로 */
+    .discord-custom-status, .discord-body {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        backdrop-filter: blur(20px) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    [data-theme="light"] .discord-custom-status, 
+    [data-theme="light"] .discord-body {
+        background: rgba(255, 255, 255, 0.25) !important;
+        border-color: rgba(255, 255, 255, 0.6) !important;
+        backdrop-filter: blur(15px) !important;
+    }
+
+    /* 벤토 모드에서의 테마 그라데이션 (외부 섹션에 적용) */
+    .discord-section::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        opacity: 0;
+        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: -1;
+    }
+
+    .discord-section.theme-spotify::before {
+        background: linear-gradient(135deg, rgba(30, 215, 96, 0.2) 0%, rgba(0, 0, 0, 0.4) 100%);
+        opacity: 1;
+    }
+
+    [data-theme="light"] .discord-section.theme-spotify::before {
+        background: linear-gradient(135deg, rgba(30, 215, 96, 0.08) 0%, rgba(30, 215, 96, 0.2) 100%);
+    }
+
+    .discord-section.theme-gaming::before {
+        background: linear-gradient(135deg, rgba(88, 101, 242, 0.25) 0%, rgba(0, 0, 0, 0.4) 100%);
+        opacity: 1;
+    }
+
+    [data-theme="light"] .discord-section.theme-gaming::before {
+        background: linear-gradient(135deg, rgba(88, 101, 242, 0.1) 0%, rgba(88, 101, 242, 0.25) 100%);
+    }
+
+    .discord-section.theme-spotify { border-color: rgba(30, 215, 96, 0.5); }
+    .discord-section.theme-gaming { border-color: rgba(88, 101, 242, 0.5); }
+
+    /* 판 위에 올라가는 내부 위젯들은 자체 배경 및 그림자 제거 */
+    .featured-section .video-container {
+        box-shadow: none;
+        border: none;
+        background: transparent;
+        padding-bottom: 56.25%;
+        border-radius: 16px;
+    }
+
+    .github-section .github-contribution-card {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        margin-top: 0;
+    }
+
+    .github-section .github-contribution-card:hover {
+        background: transparent;
+        box-shadow: none;
+        border-color: transparent;
+    }
+
+    .github-section .github-list-card {
+        background: rgba(128, 128, 128, 0.07);
+        border: 1px solid rgba(128, 128, 128, 0.15);
+        box-shadow: none;
+        border-radius: 16px;
+        padding: 1.2rem 1.5rem;
+        margin-bottom: 0;
+    }
+
+    [data-theme="light"] .github-section .github-list-card {
+        background: rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .github-section .github-list-card:hover {
+        background: rgba(128, 128, 128, 0.14);
+        transform: translateY(-3px);
+        box-shadow: none;
+        border-color: var(--accent);
+    }
+
+    [data-theme="light"] .github-section .github-list-card:hover {
+        background: rgba(0, 0, 0, 0.09);
+    }
+
+    /* 위젯 내부 요소들이 그리드 셀에 꽉 차도록 설정 */
+    .discord-wide-widget, 
+    .insta-profile-card,
+    .github-contribution-card,
+    .video-container,
+    .github-list,
+    .hero-content {
+        height: 100%;
+        width: 100%;
+        max-width: none !important;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* 디스코드 판 내부 위젯 배경/그림자 제거 */
+    .discord-section .discord-wide-widget {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    /* 인스타 판 내부 위젯 - 셀 전체 채우기 */
+    .instagram-section .social-links-grid {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .instagram-section .insta-profile-card {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        flex-grow: 1;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .instagram-section .insta-profile-card:hover {
+        transform: none;
+        box-shadow: none;
+        border-color: transparent;
+    }
+
+    .instagram-section .insta-card-btn {
+        margin-top: 1rem;
+    }
+
+    .hero {
+        width: 100%;
+        max-width: none !important;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+
+    .featured-section .video-container {
+        width: 100%;
+        flex-grow: 1;
+        display: flex;
+    }
+
+    .featured-section .video-container iframe {
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 16 / 9;
+        border-radius: 32px;
+    }
+
+    .featured-section .profile-link-container {
+        display: flex !important; /* YouTube 버튼 복구 */
+        margin-top: 1.5rem;
+        justify-content: center;
+    }
+}
+
+/* --- 3열 레이아웃 (데스크톱 기본) --- */
+/* 패널 사이즈 형식:
+   [Discord 1x2] [심호령 1x1] [Insta 1x1 ]
+   [           ] [YouTube    2x1     ]
+   [GitHub              3x1         ]
+*/
+@media (min-width: 1250px) {
+    .container {
+        max-width: 1600px;
+        padding-left: 3rem;
+        padding-right: 3rem;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto auto auto;
+        gap: 1.5rem;
+        justify-content: stretch;
+        padding-top: 8rem;
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* 1x2: 왼쪽 세로 길게 */
+    .discord-section {
+        grid-column: 1;
+        grid-row: 1 / 3;
+    }
+
+    /* 1x1: 중앙 상단 */
+    .hero {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: stretch; /* 인스타와 높이 맞춤 */
+    }
+
+    /* 1x1: 오른쪽 상단 (심호령과 동일 행) */
+    .instagram-section {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    /* 2x1: 중앙+오른쪽 가로 넓게 */
+    .featured-section {
+        grid-column: 2 / 4;
+        grid-row: 2;
+    }
+
+    /* 3x1: 하단 전체 가로 */
+    .github-section {
+        grid-column: 1 / 4;
+        grid-row: 3;
+    }
+
+    /* 벤토 그리드 내부 레이아웃 최적화 (세로형 압축 및 크기 조정) */
+    .discord-header, .insta-card-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1.2rem;
+    }
+
+    .discord-header-right {
+        flex-direction: column;
+        align-items: center;
+        max-height: none;
+        gap: 1.2rem;
+        width: 100%;
+    }
+
+    .discord-user-info {
+        align-items: center;
+    }
+
+    /* 인스타그램 위젯 벤토 그리드 최적화 (크게 키우기) */
+    .instagram-section .insta-profile-card {
+        height: 100%;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 1rem !important;
+    }
+
+    .instagram-section .insta-card-body {
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+        height: 100%;
+    }
+
+    .instagram-section .insta-card-header {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .instagram-section .insta-card-avatar {
+        width: 110px;
+        height: 110px;
+        border-width: 3px;
+        padding: 3px;
+    }
+
+    .instagram-section .insta-card-info h3 {
+        font-size: 2.2rem;
+        font-weight: 900;
+    }
+
+    .instagram-section .insta-card-btn {
+        font-size: 1.1rem;
+        padding: 0.8rem 2.5rem;
+        border-radius: 30px;
+    }
+}
+
+
+
 /* Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 1249px) {
+
 
     .floating-logo,
     .navbar,
@@ -1194,8 +1759,6 @@ html {
 
     .floating-logo {
         left: 1rem;
-        padding: 0 1.2rem;
-        font-size: 0.95rem;
     }
 
     .theme-controls {
@@ -1227,37 +1790,28 @@ html {
         top: 0.8rem;
     }
 
-    .theme-bar,
-    .navbar,
-    .floating-logo {
-        height: 44px;
-    }
-
-    .nav-links a {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.9rem;
-    }
-
-    .theme-toggle,
-    .settings-btn {
-        width: 36px;
-        height: 36px;
-    }
-
     .discord-header {
         flex-direction: column;
         align-items: center;
         text-align: center;
         gap: 1.5rem;
     }
-
+    .discord-header-right {
+        flex-direction: column;
+        align-items: center;
+        max-height: none;
+        width: 100%;
+        gap: 1.2rem;
+    }
+    .discord-user-info {
+        align-items: center;
+        width: 100%;
+    }
     .discord-custom-status {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        margin: 0.8rem auto 0;
+        width: 100%;
         max-width: 100%;
+        flex: none;
+        margin: 0;
     }
 }
 
@@ -1267,24 +1821,6 @@ html {
     .navbar,
     .theme-controls {
         top: 0.6rem;
-    }
-
-    .theme-bar,
-    .navbar,
-    .floating-logo {
-        height: 40px;
-        padding: 0 0.3rem;
-    }
-
-    .nav-links a {
-        padding: 0.3rem 0.6rem;
-        font-size: 0.85rem;
-    }
-
-    .theme-toggle,
-    .settings-btn {
-        width: 32px;
-        height: 32px;
     }
 }
 
