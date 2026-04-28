@@ -7,8 +7,8 @@
     <meta name="supported-color-schemes" content="light dark">
     <title>심호령 Introduction</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="./seml.webp">
-    <link rel="apple-touch-icon" href="./seml.webp">
+    <link rel="icon" href="./favicon.jpg">
+    <link rel="apple-touch-icon" href="./favicon.jpg">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-brands/css/uicons-brands.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -80,7 +80,7 @@
     <main class="container">
         <section class="hero">
             <div class="profile-wrapper">
-                <img src="./seml.webp" alt="Profile" class="profile-img">
+                <img src="./seml.jpg" alt="Profile" class="profile-img">
             </div>
             <div class="hero-text">
                 <h1 class="title">심호령</h1>
@@ -108,7 +108,7 @@
             <div class="discord-plate-content">
                 <div class="discord-header">
                     <div class="discord-avatar-wrapper">
-                        <img id="discordAvatar" src="./seml.webp" alt="Avatar" class="discord-avatar">
+                        <img id="discordAvatar" src="./seml.jpg" alt="Avatar" class="discord-avatar">
                         <span class="status-indicator-large" id="discordStatus"></span>
                     </div>
                     <div class="discord-header-right">
@@ -382,7 +382,7 @@
                 const customStatus = data.activities.find(a => a.type === 4);
                 if (customStatusText) {
                     const span = customStatusText.querySelector('.discord-status-text') || customStatusText;
-                    span.innerText = customStatus ? customStatus.state : (data.discord_status === 'offline' ? '' : '상태 메시지 없음');
+                    span.innerText = customStatus && customStatus.state ? customStatus.state : '상태메시지가 없습니다';
                 }
 
                 // 3. 주요 활동 및 이미지 업데이트

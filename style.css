@@ -154,7 +154,7 @@ html {
 
 .floating-logo.compact {
     font-size: 0.95rem !important;
-    padding: 0 1.1rem !important;
+    width: 91px !important;
 }
 
 .navbar.compact .nav-links a {
@@ -372,6 +372,7 @@ html {
     margin-bottom: 2.5rem;
     text-align: center;
     letter-spacing: -1px;
+    transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Balance Game Section */
@@ -463,7 +464,7 @@ html {
     margin: 0 auto;
     border-radius: 32px;
     overflow: hidden;
-    box-shadow: 0 10px 30px var(--shadow-color);
+    box-shadow: 0 8px 32px var(--shadow-color);
     border: 1px solid var(--card-border);
     background: var(--card-bg);
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -502,7 +503,7 @@ html {
     border-radius: 32px;
     padding: 2.5rem;
     box-shadow: 0 8px 32px var(--shadow-color);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(20px);
@@ -512,11 +513,7 @@ html {
     gap: 1.5rem;
 }
 
-[data-theme="light"] .discord-plate-content {
-    background: #f2f3f5 !important;
-    border-color: rgba(0, 0, 0, 0.1) !important;
-    backdrop-filter: none !important;
-}
+
 
 /* 활동 시 그라데이션 전환 (Narrow View용) */
 .discord-plate-content::before {
@@ -553,7 +550,7 @@ html {
 }
 
 [data-theme="light"] .discord-section.theme-spotify .discord-plate-content {
-    background: linear-gradient(135deg, rgba(30, 215, 96, 0.05) 0%, rgba(30, 215, 96, 0.25) 100%) !important;
+    background-color: rgba(242, 243, 245, 0) !important;
 }
 
 .discord-section.theme-gaming .discord-plate-content {
@@ -562,7 +559,7 @@ html {
 }
 
 [data-theme="light"] .discord-section.theme-gaming .discord-plate-content {
-    background: linear-gradient(135deg, rgba(88, 101, 242, 0.05) 0%, rgba(88, 101, 242, 0.3) 100%) !important;
+    background-color: rgba(242, 243, 245, 0) !important;
 }
 
 
@@ -643,6 +640,7 @@ html {
     color: var(--text-primary);
     letter-spacing: -0.04rem;
     line-height: 1.0;
+    transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .discord-header-separator {
@@ -664,15 +662,15 @@ html {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     backdrop-filter: blur(15px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 [data-theme="light"] .discord-copy-btn-compact {
-    background: #ffffff !important;
-    border: 1px solid #dcdfe3 !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+    background: #f0f2f5 !important;
+    border: 2px solid #dcdfe3 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
     color: #1f2328 !important;
 }
 
@@ -680,6 +678,13 @@ html {
     background: rgba(88, 101, 242, 0.2);
     color: var(--text-primary);
     border-color: rgba(88, 101, 242, 0.4);
+    transform: translateY(-2px);
+}
+
+[data-theme="light"] .discord-copy-btn-compact:hover {
+    background: rgba(88, 101, 242, 0.1) !important;
+    border-color: rgba(88, 101, 242, 0.5) !important;
+    color: #5865F2 !important;
     transform: translateY(-2px);
 }
 
@@ -704,7 +709,7 @@ html {
     align-items: center;
     justify-content: center;
     text-align: center;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .discord-status-text {
@@ -716,9 +721,10 @@ html {
 }
 
 [data-theme="light"] .discord-custom-status {
-    background: #e3e5e8 !important;
+    background: #f0f2f5 !important;
     border: 1px solid #dcdfe3 !important;
     color: #1f2328 !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
     backdrop-filter: none !important;
 }
 
@@ -727,13 +733,13 @@ html {
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 20px;
     padding: 1.5rem;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="light"] .discord-body {
-    background: #ffffff !important;
+    background: #f0f2f5 !important;
     border: 1px solid #dcdfe3 !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
     backdrop-filter: none !important;
 }
 
@@ -812,6 +818,7 @@ html {
     font-weight: 800;
     margin-bottom: 0.2rem;
     letter-spacing: -0.02rem;
+    transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .discord-activity-details-text,
@@ -868,6 +875,7 @@ html {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 32px;
+    box-shadow: 0 8px 32px var(--shadow-color);
     padding: 2.5rem;
     text-decoration: none;
     color: inherit;
@@ -1014,6 +1022,11 @@ html {
 .lang-badge.html {
     background: rgba(227, 76, 38, 0.15);
     color: #e34c26;
+}
+
+.lang-badge.css {
+    background: rgba(86, 61, 124, 0.15);
+    color: #563d7c;
 }
 
 .lang-badge.javascript {
@@ -1173,13 +1186,19 @@ html {
 }
 
 .profile-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 25px var(--accent-glow);
 }
 
 [data-theme="light"] .profile-btn {
     border-color: rgba(0, 0, 0, 0.15);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .profile-btn:hover {
+    border-color: var(--accent);
+    box-shadow: 0 10px 25px var(--accent-glow);
 }
 
 /* Footer */
@@ -1294,7 +1313,7 @@ html {
     top: 1.5rem;
     left: 2rem;
     height: 52px;
-    padding: 0 1.5rem;
+    width: 107px;
     background: rgba(30, 35, 45, 0.7);
     backdrop-filter: blur(10px) saturate(180%);
     -webkit-backdrop-filter: blur(10px) saturate(180%);
@@ -1442,17 +1461,15 @@ html {
         border-radius: 32px;
         padding: 2.5rem;
         box-shadow: 0 8px 32px var(--shadow-color);
-        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         overflow: hidden;
     }
 
-    [data-theme="light"] .discord-section {
-        background: #f2f3f5 !important;
-        border-color: rgba(0, 0, 0, 0.1) !important;
-    }
 
     /* 벤토 모드에서는 외부 섹션이 판이 되므로 내부 판 스타일 제거 (깃허브 카드는 제외) */
-    .discord-plate-content, .insta-profile-card {
+    .discord-plate-content, .insta-profile-card,
+    [data-theme="light"] .discord-plate-content,
+    [data-theme="light"] .insta-profile-card {
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
@@ -1466,18 +1483,6 @@ html {
         display: none !important;
     }
 
-    /* 깃허브 카드 복구 및 벤토 최적화 */
-    .github-section .github-list-card {
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        backdrop-filter: blur(10px);
-        box-shadow: none !important;
-    }
-
-    [data-theme="light"] .github-section .github-list-card {
-        background: rgba(0, 0, 0, 0.05) !important;
-        border-color: rgba(0, 0, 0, 0.12) !important;
-    }
 
     /* 내부 박스(상태메시지, 활동)를 더 고급스러운 글래스모피즘으로 */
     .discord-custom-status, .discord-body {
@@ -1488,15 +1493,16 @@ html {
     }
 
     [data-theme="light"] .discord-custom-status {
-        background: #e3e5e8 !important;
+        background: #f0f2f5 !important;
         border: 1px solid #dcdfe3 !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
         backdrop-filter: none !important;
     }
 
     [data-theme="light"] .discord-body {
-        background: #ffffff !important;
+        background: #f0f2f5 !important;
         border: 1px solid #dcdfe3 !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
         backdrop-filter: none !important;
     }
 
@@ -1537,12 +1543,12 @@ html {
 
     .discord-section.theme-spotify { border-color: rgba(30, 215, 96, 0.5); }
     [data-theme="light"] .discord-section.theme-spotify { 
-        background: linear-gradient(135deg, rgba(30, 215, 96, 0.05) 0%, rgba(30, 215, 96, 0.25) 100%) !important; 
+        background-color: rgba(242, 243, 245, 0) !important; 
     }
 
     .discord-section.theme-gaming { border-color: rgba(88, 101, 242, 0.5); }
     [data-theme="light"] .discord-section.theme-gaming { 
-        background: linear-gradient(135deg, rgba(88, 101, 242, 0.05) 0%, rgba(88, 101, 242, 0.3) 100%) !important; 
+        background-color: rgba(242, 243, 245, 0) !important; 
     }
 
     /* 벤토 모드에서는 내부 판 배경이 중첩되지 않도록 강제 투명화 */
@@ -1554,10 +1560,16 @@ html {
     /* 판 위에 올라가는 내부 위젯들은 자체 배경 및 그림자 제거 */
     .featured-section .video-container {
         box-shadow: none;
-        border: none;
+        border: 1px solid transparent;
         background: transparent;
         padding-bottom: 56.25%;
-        border-radius: 16px;
+        border-radius: 32px;
+    }
+
+    .featured-section .video-container:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px var(--accent-glow);
+        border-color: var(--accent);
     }
 
     .github-section .github-contribution-card {
@@ -1581,6 +1593,7 @@ html {
         border-radius: 16px;
         padding: 1.2rem 1.5rem;
         margin-bottom: 0;
+        backdrop-filter: blur(10px);
     }
 
     [data-theme="light"] .github-section .github-list-card {
@@ -1590,13 +1603,16 @@ html {
 
     .github-section .github-list-card:hover {
         background: rgba(128, 128, 128, 0.14);
-        transform: translateY(-3px);
-        box-shadow: none;
+        transform: translateY(-5px);
         border-color: var(--accent);
+        box-shadow: 0 10px 25px var(--accent-glow);
     }
 
     [data-theme="light"] .github-section .github-list-card:hover {
         background: rgba(0, 0, 0, 0.09);
+        transform: translateY(-5px);
+        border-color: var(--accent);
+        box-shadow: 0 10px 25px var(--accent-glow);
     }
 
     /* 위젯 내부 요소들이 그리드 셀에 꽉 차도록 설정 */
