@@ -512,6 +512,12 @@ html {
     gap: 1.5rem;
 }
 
+[data-theme="light"] .discord-plate-content {
+    background: #f2f3f5 !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    backdrop-filter: none !important;
+}
+
 /* 활동 시 그라데이션 전환 (Narrow View용) */
 .discord-plate-content::before {
     content: '';
@@ -546,9 +552,17 @@ html {
     box-shadow: 0 8px 32px rgba(30, 215, 96, 0.15);
 }
 
+[data-theme="light"] .discord-section.theme-spotify .discord-plate-content {
+    background: linear-gradient(135deg, rgba(30, 215, 96, 0.05) 0%, rgba(30, 215, 96, 0.25) 100%) !important;
+}
+
 .discord-section.theme-gaming .discord-plate-content {
     border-color: rgba(88, 101, 242, 0.5);
     box-shadow: 0 8px 32px rgba(88, 101, 242, 0.2);
+}
+
+[data-theme="light"] .discord-section.theme-gaming .discord-plate-content {
+    background: linear-gradient(135deg, rgba(88, 101, 242, 0.05) 0%, rgba(88, 101, 242, 0.3) 100%) !important;
 }
 
 
@@ -656,9 +670,10 @@ html {
 }
 
 [data-theme="light"] .discord-copy-btn-compact {
-    background: rgba(255, 255, 255, 0.6);
-    border-color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    background: #ffffff !important;
+    border: 1px solid #dcdfe3 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+    color: #1f2328 !important;
 }
 
 .discord-copy-btn-compact:hover {
@@ -701,9 +716,10 @@ html {
 }
 
 [data-theme="light"] .discord-custom-status {
-    background: rgba(255, 255, 255, 0.6);
-    border-color: rgba(255, 255, 255, 0.9);
-    color: var(--text-primary);
+    background: #e3e5e8 !important;
+    border: 1px solid #dcdfe3 !important;
+    color: #1f2328 !important;
+    backdrop-filter: none !important;
 }
 
 .discord-body {
@@ -715,9 +731,10 @@ html {
 }
 
 [data-theme="light"] .discord-body {
-    background: rgba(255, 255, 255, 0.65); /* 라이트 모드 시인성 강화 */
-    border-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 2px 15px rgba(255, 255, 255, 0.4);
+    background: #ffffff !important;
+    border: 1px solid #dcdfe3 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: none !important;
 }
 
 .activity-label-wrapper {
@@ -1429,6 +1446,11 @@ html {
         overflow: hidden;
     }
 
+    [data-theme="light"] .discord-section {
+        background: #f2f3f5 !important;
+        border-color: rgba(0, 0, 0, 0.1) !important;
+    }
+
     /* 벤토 모드에서는 외부 섹션이 판이 되므로 내부 판 스타일 제거 (깃허브 카드는 제외) */
     .discord-plate-content, .insta-profile-card {
         background: transparent !important;
@@ -1465,11 +1487,24 @@ html {
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
     }
 
-    [data-theme="light"] .discord-custom-status, 
+    [data-theme="light"] .discord-custom-status {
+        background: #e3e5e8 !important;
+        border: 1px solid #dcdfe3 !important;
+        backdrop-filter: none !important;
+    }
+
     [data-theme="light"] .discord-body {
-        background: rgba(255, 255, 255, 0.25) !important;
-        border-color: rgba(255, 255, 255, 0.6) !important;
-        backdrop-filter: blur(15px) !important;
+        background: #ffffff !important;
+        border: 1px solid #dcdfe3 !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+        backdrop-filter: none !important;
+    }
+
+    /* 벤토 모드에서는 상태 메시지 생략 안 함 */
+    .discord-status-text {
+        -webkit-line-clamp: unset !important;
+        display: block !important;
+        overflow: visible !important;
     }
 
     /* 벤토 모드에서의 테마 그라데이션 (외부 섹션에 적용) */
@@ -1501,7 +1536,20 @@ html {
     }
 
     .discord-section.theme-spotify { border-color: rgba(30, 215, 96, 0.5); }
+    [data-theme="light"] .discord-section.theme-spotify { 
+        background: linear-gradient(135deg, rgba(30, 215, 96, 0.05) 0%, rgba(30, 215, 96, 0.25) 100%) !important; 
+    }
+
     .discord-section.theme-gaming { border-color: rgba(88, 101, 242, 0.5); }
+    [data-theme="light"] .discord-section.theme-gaming { 
+        background: linear-gradient(135deg, rgba(88, 101, 242, 0.05) 0%, rgba(88, 101, 242, 0.3) 100%) !important; 
+    }
+
+    /* 벤토 모드에서는 내부 판 배경이 중첩되지 않도록 강제 투명화 */
+    [data-theme="light"] .discord-section.theme-spotify .discord-plate-content,
+    [data-theme="light"] .discord-section.theme-gaming .discord-plate-content {
+        background: transparent !important;
+    }
 
     /* 판 위에 올라가는 내부 위젯들은 자체 배경 및 그림자 제거 */
     .featured-section .video-container {
