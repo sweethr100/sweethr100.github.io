@@ -11,6 +11,8 @@
     --shadow-color: rgba(0, 0, 0, 0.5);
     --navbar-bg: rgba(22, 27, 34, 0.8);
     --dropdown-bg: rgba(30, 35, 45, 0.75);
+    --floating-bar-top: 1.5rem;
+    --floating-side-x: 2rem;
 
     --bg-gradient-1: rgba(88, 166, 255, 0.05);
     --bg-gradient-2: rgba(46, 160, 67, 0.05);
@@ -136,7 +138,7 @@ html {
     justify-content: center;
     align-items: center;
     position: fixed;
-    top: 1.5rem;
+    top: var(--floating-bar-top);
     left: 50%;
     transform: translateX(-50%);
     background: rgba(30, 35, 45, 0.7);
@@ -179,8 +181,8 @@ html {
 /* Theme Controls Wrapper (Right) */
 .theme-controls {
     position: fixed;
-    top: 1.5rem;
-    right: 2rem;
+    top: var(--floating-bar-top);
+    right: var(--floating-side-x);
     z-index: 2000;
     display: flex;
     flex-direction: column;
@@ -303,6 +305,13 @@ html {
     animation: fadePageIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+html.layout-transitioning *,
+html.layout-transitioning *::before,
+html.layout-transitioning *::after {
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+}
+
 @keyframes fadePageIn {
     from {
         opacity: 0;
@@ -328,7 +337,7 @@ html {
     border: 1px solid var(--card-border);
     border-radius: 32px;
     box-shadow: 0 8px 32px var(--shadow-color);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     width: 100%;
 }
 
@@ -476,7 +485,7 @@ html {
     box-shadow: 0 8px 32px var(--shadow-color);
     border: 1px solid var(--card-border);
     background: var(--card-bg);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: pointer;
 }
 
@@ -911,7 +920,7 @@ html {
     box-shadow: 0 8px 32px var(--shadow-color);
     padding: 2.5rem;
     color: inherit;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     backdrop-filter: blur(20px);
     width: 100%;
     overflow: hidden;
@@ -1281,7 +1290,7 @@ html {
     padding: 2.5rem;
     text-decoration: none;
     color: inherit;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     backdrop-filter: blur(20px);
     width: 100%;
     display: flex;
@@ -1749,8 +1758,8 @@ html {
     align-items: center;
     justify-content: center;
     position: fixed;
-    top: 1.5rem;
-    left: 2rem;
+    top: var(--floating-bar-top);
+    left: var(--floating-side-x);
     height: 52px;
     width: 107px;
     background: rgba(30, 35, 45, 0.7);
@@ -1783,8 +1792,8 @@ html {
 /* Settings Dropdown Styles */
 .settings-dropdown {
     position: fixed;
-    top: 5.5rem;
-    right: 2rem;
+    top: calc(var(--floating-bar-top) + 4rem);
+    right: var(--floating-side-x);
     z-index: 3000;
     background: rgba(30, 35, 45, 0.7);
     backdrop-filter: blur(30px) saturate(180%);
@@ -2269,7 +2278,7 @@ html {
     }
 
     .hero .title {
-        font-size: 4.2rem;
+        font-size: calc(4.2rem + 4px);
         margin-bottom: 0;
     }
 
@@ -2327,7 +2336,7 @@ html {
         justify-content: center;
         align-items: start;
         padding-top: 8rem;
-        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: none;
     }
 
     .featured-section,
@@ -2355,7 +2364,7 @@ html {
     .hero {
         order: 1;
         grid-column: auto;
-        width: 300px;
+        width: 304px;
         min-height: 0;
         height: fit-content;
         align-self: start;
@@ -2711,23 +2720,14 @@ html {
         opacity: 1;
     }
 
-
-    .floating-logo,
-    .navbar,
-    .theme-controls {
-        top: 1rem;
-    }
-
-    .floating-logo {
-        left: 1rem;
-    }
-
-    .theme-controls {
-        right: 1rem;
-    }
 }
 
 @media (max-width: 768px) {
+    :root {
+        --floating-bar-top: 0.8rem;
+        --floating-side-x: 1rem;
+    }
+
     .container {
         padding-top: 5rem;
     }
@@ -2741,14 +2741,6 @@ html {
         position: absolute;
         /* Simplify gradient on mobile to prevent tiling bugs */
         background-image: radial-gradient(circle at 50% 40%, var(--bg-gradient-1) 0%, transparent 80%);
-    }
-
-
-
-    .floating-logo,
-    .navbar,
-    .theme-controls {
-        top: 0.8rem;
     }
 
     .discord-header {
@@ -2841,11 +2833,9 @@ html {
 }
 
 @media (max-width: 480px) {
-
-    .floating-logo,
-    .navbar,
-    .theme-controls {
-        top: 0.6rem;
+    :root {
+        --floating-bar-top: 0.6rem;
+        --floating-side-x: 0.75rem;
     }
 }
 

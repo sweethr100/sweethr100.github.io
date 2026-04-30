@@ -390,10 +390,13 @@
         wideBentoToggle.addEventListener('change', (e) => {
             const enabled = e.target.checked;
             localStorage.setItem(WIDE_BENTO_KEY, enabled ? 'on' : 'off');
+            html.classList.add('layout-transitioning');
+            if (typeof rememberLayoutRects === 'function') rememberLayoutRects();
 
             if (typeof window.applyWideBentoPreference === 'function') {
                 window.applyWideBentoPreference(enabled);
             }
+            if (typeof animateLayoutShift === 'function') animateLayoutShift();
         });
 
         // 시스템 테마 변경 실시간 감지
@@ -922,6 +925,104 @@
 
         // ─── 플로팅 바 간섭 감지 → 자동 compact 축소 ───
         // 스크롤 시 깜빡임을 막기 위해 window.innerWidth 고정 breakpoint 기준으로 판단
+        const LAYOUT_CARD_SELECTOR = '.hero, .instagram-section, .discord-section, .overwatch-section, .github-section, .featured-section';
+        const bentoModeQuery = window.matchMedia('(min-width: 1250px)');
+        let layoutRects = new Map();
+        let layoutTransitionCleanupTimer = 0;
+        let layoutTransitionRun = 0;
+        let layoutResizeFrame = 0;
+        const LAYOUT_ANIMATION_EASING = 'cubic-bezier(0.22, 1, 0.36, 1)';
+        const LAYOUT_ANIMATION_DURATION = 720;
+        const LAYOUT_RESIZE_ANIMATION_DURATION = 560;
+
+        function getLayoutCards() {
+            return Array.from(document.querySelectorAll(LAYOUT_CARD_SELECTOR));
+        }
+
+        function isBentoLayoutActive() {
+            return bentoModeQuery.matches && html.getAttribute('data-wide-bento') !== 'off';
+        }
+
+        function rememberLayoutRects() {
+            layoutRects = new Map(getLayoutCards().map(card => [card, card.getBoundingClientRect()]));
+        }
+
+        function animateLayoutShift({ duration = LAYOUT_ANIMATION_DURATION } = {}) {
+            const cards = getLayoutCards();
+            const runId = ++layoutTransitionRun;
+            html.classList.add('layout-transitioning');
+            window.clearTimeout(layoutTransitionCleanupTimer);
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    const animations = [];
+                    let released = false;
+                    const releaseLayoutTransition = () => {
+                        if (released || runId !== layoutTransitionRun) return;
+                        released = true;
+                        window.clearTimeout(layoutTransitionCleanupTimer);
+                        html.classList.remove('layout-transitioning');
+                        rememberLayoutRects();
+                    };
+
+                    cards.forEach(card => {
+                        const previous = layoutRects.get(card);
+                        const current = card.getBoundingClientRect();
+                        if (!previous) return;
+
+                        const deltaX = previous.left - current.left;
+                        const deltaY = previous.top - current.top;
+                        if (Math.abs(deltaX) < 1 && Math.abs(deltaY) < 1) return;
+
+                        if (card.__layoutAnimation) {
+                            card.__layoutAnimation.cancel();
+                        }
+
+                        card.__layoutAnimation = card.animate(
+                            [
+                                { transform: `translate(${deltaX}px, ${deltaY}px)` },
+                                { transform: 'translate(0, 0)' }
+                            ],
+                            {
+                                duration,
+                                easing: LAYOUT_ANIMATION_EASING
+                            }
+                        );
+                        animations.push(card.__layoutAnimation.finished.catch(() => {}));
+                    });
+
+                    rememberLayoutRects();
+                    if (animations.length === 0) {
+                        releaseLayoutTransition();
+                        return;
+                    }
+
+                    Promise.all(animations).then(releaseLayoutTransition);
+                    layoutTransitionCleanupTimer = window.setTimeout(releaseLayoutTransition, duration + 180);
+                });
+            });
+        }
+
+        function queueBentoResizeLayoutShift() {
+            if (layoutResizeFrame) return;
+
+            layoutResizeFrame = window.requestAnimationFrame(() => {
+                layoutResizeFrame = 0;
+
+                if (isBentoLayoutActive()) {
+                    animateLayoutShift({ duration: LAYOUT_RESIZE_ANIMATION_DURATION });
+                    return;
+                }
+
+                rememberLayoutRects();
+            });
+        }
+
+        rememberLayoutRects();
+        bentoModeQuery.addEventListener('change', () => animateLayoutShift());
+        window.addEventListener('resize', queueBentoResizeLayoutShift);
+        window.addEventListener('load', rememberLayoutRects);
+
         const COMPACT_BREAKPOINT = 700; // px 이하이면 compact 모드
 
         function checkNavbarOverlap() {
