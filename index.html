@@ -30,6 +30,65 @@
                 }
             }
         })();
+
+        (function() {
+            const WIDE_BENTO_KEY = 'wideBentoMode';
+            const WIDE_BENTO_DISABLED_MEDIA = 'not all';
+            const NARROW_LAYOUT_ENABLED_MEDIA = 'all';
+
+            function getResponsiveLayoutRules() {
+                if (window.__responsiveLayoutRules) return window.__responsiveLayoutRules;
+
+                const ruleGroups = {
+                    wide: [],
+                    narrow: []
+                };
+
+                Array.from(document.styleSheets).forEach(sheet => {
+                    if (!sheet.href || !sheet.href.endsWith('style.css')) return;
+
+                    let cssRules;
+                    try {
+                        cssRules = sheet.cssRules;
+                    } catch (error) {
+                        return;
+                    }
+
+                    Array.from(cssRules).forEach(rule => {
+                        if (!(rule instanceof CSSMediaRule)) return;
+
+                        const mediaText = rule.media.mediaText;
+                        if (mediaText.includes('min-width: 1250px')) {
+                            rule.__originalMediaText = mediaText;
+                            ruleGroups.wide.push(rule);
+                        } else if (mediaText.includes('max-width: 1249px')) {
+                            rule.__originalMediaText = mediaText;
+                            ruleGroups.narrow.push(rule);
+                        }
+                    });
+                });
+
+                if (ruleGroups.wide.length > 0 || ruleGroups.narrow.length > 0) {
+                    window.__responsiveLayoutRules = ruleGroups;
+                }
+
+                return ruleGroups;
+            }
+
+            window.applyWideBentoPreference = function(enabled) {
+                document.documentElement.setAttribute('data-wide-bento', enabled ? 'on' : 'off');
+
+                const { wide, narrow } = getResponsiveLayoutRules();
+                wide.forEach(rule => {
+                    rule.media.mediaText = enabled ? rule.__originalMediaText : WIDE_BENTO_DISABLED_MEDIA;
+                });
+                narrow.forEach(rule => {
+                    rule.media.mediaText = enabled ? rule.__originalMediaText : NARROW_LAYOUT_ENABLED_MEDIA;
+                });
+            };
+
+            window.applyWideBentoPreference(localStorage.getItem(WIDE_BENTO_KEY) !== 'off');
+        })();
     </script>
 </head>
 <body>
@@ -73,6 +132,13 @@
                         <option value="auto">시스템 설정 사용</option>
                     </select>
                 </div>
+                <div class="setting-item setting-item-row">
+                    <label for="wideBentoToggle">넓은 화면에서 카드형 배치 사용</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="wideBentoToggle" aria-label="넓은 화면에서 카드형 배치 사용">
+                        <span class="toggle-switch-slider" aria-hidden="true"></span>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
@@ -104,7 +170,7 @@
 
         <!-- Discord Live Activity Section -->
         <section class="discord-section" id="discordWideWidget">
-            <h2 class="section-title">Discord 활동 상태</h2>
+            <h2 class="section-title">Discord</h2>
             <div class="discord-plate-content">
                 <div class="discord-header">
                     <div class="discord-avatar-wrapper">
@@ -114,8 +180,9 @@
                     <div class="discord-header-right">
                         <div class="discord-user-info">
                             <h3 id="discordGlobalName">로딩 중...</h3>
-                            <button class="discord-copy-btn-compact" onclick="copyDiscordId()">
-                                <i class="fi fi-rr-copy"></i> Discord ID 복사하기
+                            <button class="discord-copy-btn-compact" onclick="copyDiscordId(this)">
+                                <i class="fi fi-rr-copy"></i>
+                                <span id="discordCopyText">Discord ID 복사하기</span>
                             </button>
                         </div>
                         <p id="discordCustomStatus" class="discord-custom-status"><span class="discord-status-text">상태 메시지를 불러오는 중...</span></p>
@@ -153,6 +220,42 @@
             </div>
         </section>
 
+        <!-- Overwatch Profile Section -->
+        <section class="overwatch-section">
+            <h2 class="section-title">Overwatch</h2>
+            <div class="overwatch-profile-card" id="overwatchProfileCard">
+                <div class="overwatch-card-body">
+                    <div class="overwatch-card-header" id="overwatchNamecard">
+                        <div class="overwatch-avatar-wrapper">
+                            <img src="" alt="Overwatch player icon" class="overwatch-avatar" id="overwatchAvatar" hidden>
+                            <div class="overwatch-emblem" id="overwatchFallbackAvatar" aria-hidden="true">OW</div>
+                        </div>
+                        <div class="overwatch-card-info">
+                            <span class="overwatch-label">Battle.net</span>
+                            <div class="overwatch-name-row">
+                                <h3 id="overwatchName">프로필 불러오는 중...</h3>
+                                <img src="" alt="Endorsement level" class="overwatch-endorsement-badge" id="overwatchEndorsement" hidden>
+                            </div>
+                            <p id="overwatchTitle">공개 프로필 정보를 확인하고 있습니다.</p>
+                        </div>
+                    </div>
+                    <div class="overwatch-card-actions">
+                        <button type="button" class="overwatch-card-btn" onclick="copyOverwatchId()">
+                            <i class="fi fi-rr-copy"></i>
+                            <span id="overwatchCopyText">ID 복사</span>
+                        </button>
+                        <a href="https://overwatch.blizzard.com/ko-kr/career/" target="_blank" class="overwatch-card-btn overwatch-link-btn" id="overwatchCareerLink">
+                            <i class="fi fi-rr-arrow-up-right-from-square"></i>
+                            <span>프로필 보기</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="overwatch-stats-grid" id="overwatchStats">
+                    <div class="overwatch-state">Loading...</div>
+                </div>
+            </div>
+        </section>
+
         <!-- Instagram Section -->
         <section class="instagram-section">
             <h2 class="section-title">Instagram</h2>
@@ -166,7 +269,7 @@
                             <h3>5_ryung</h3>
                         </div>
                     </div>
-                    <div class="insta-card-btn">프로필 방문</div>
+                    <div class="insta-card-btn"><span>프로필 방문</span></div>
                 </div>
             </a>
         </section>
@@ -201,7 +304,9 @@
         const settingsBtn = document.getElementById('settingsBtn');
         const settingsDropdown = document.getElementById('settingsModal');
         const themeSelect = document.getElementById('themeSelect');
+        const wideBentoToggle = document.getElementById('wideBentoToggle');
         const html = document.documentElement;
+        const WIDE_BENTO_KEY = 'wideBentoMode';
 
         function updateThemeIcon() {
             const savedTheme = localStorage.getItem('theme') || 'auto';
@@ -243,6 +348,12 @@
         themeSelect.value = initialTheme;
         applyTheme(initialTheme);
 
+        const initialWideBento = localStorage.getItem(WIDE_BENTO_KEY) !== 'off';
+        wideBentoToggle.checked = initialWideBento;
+        if (typeof window.applyWideBentoPreference === 'function') {
+            window.applyWideBentoPreference(initialWideBento);
+        }
+
         // 테마 토글 버튼 (라이트 <-> 다크만 전환)
         themeToggle.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -274,6 +385,15 @@
             const selectedTheme = e.target.value;
             localStorage.setItem('theme', selectedTheme);
             applyTheme(selectedTheme);
+        });
+
+        wideBentoToggle.addEventListener('change', (e) => {
+            const enabled = e.target.checked;
+            localStorage.setItem(WIDE_BENTO_KEY, enabled ? 'on' : 'off');
+
+            if (typeof window.applyWideBentoPreference === 'function') {
+                window.applyWideBentoPreference(enabled);
+            }
         });
 
         // 시스템 테마 변경 실시간 감지
@@ -337,8 +457,12 @@
         let activityInterval;
 
         function formatTime(ms) {
-            const minutes = Math.floor(ms / 60000);
+            const hours = Math.floor(ms / 3600000);
+            const minutes = Math.floor((ms % 3600000) / 60000);
             const seconds = Math.floor((ms % 60000) / 1000);
+            if (hours > 0) {
+                return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
             return `${minutes}:${seconds.toString().padStart(2, '0')}`;
         }
 
@@ -509,18 +633,282 @@
         // 페이지 로드 시 실행
         fetchGitHubRepos();
 
+        const OVERWATCH_PLATFORM = 'pc';
+        const OVERWATCH_BATTLETAG = 'SEML#3291';
+        const OVERWATCH_PROFILE_ID = 'e15ba1a6fe22c9f4b8|a37cc2ea7991d102f763cb593b8348d5';
+        const OVERWATCH_PROFILE_URL = `https://overwatch.blizzard.com/ko-kr/career/${encodeURIComponent(OVERWATCH_PROFILE_ID)}/`;
+        let currentOverwatchBattletag = OVERWATCH_BATTLETAG;
+
+        function escapeHTML(value) {
+            return String(value ?? '').replace(/[&<>"']/g, char => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[char]));
+        }
+
+        function formatStatValue(value) {
+            if (value === null || value === undefined || value === '') return '-';
+            if (typeof value === 'number') return value.toLocaleString('ko-KR');
+            return value;
+        }
+
+        function isValidBattletag(battletag) {
+            return /^[^\s#-]+[-#]\d{3,}$/.test(battletag.trim());
+        }
+
+        function normalizeBattletag(battletag) {
+            return battletag.trim().replace('#', '-');
+        }
+
+        function displayBattletag(battletag) {
+            return battletag.trim().replace('-', '#');
+        }
+
+        function setOverwatchState(message) {
+            const stats = document.getElementById('overwatchStats');
+            if (stats) stats.innerHTML = `<div class="overwatch-state">${escapeHTML(message)}</div>`;
+        }
+
+        function setOverwatchProfileHeader({ name, title, icon, namecard, endorsement }, battletag) {
+            const nameElement = document.getElementById('overwatchName');
+            const titleElement = document.getElementById('overwatchTitle');
+            const avatar = document.getElementById('overwatchAvatar');
+            const fallbackAvatar = document.getElementById('overwatchFallbackAvatar');
+            const namecardElement = document.getElementById('overwatchNamecard');
+            const endorsementElement = document.getElementById('overwatchEndorsement');
+            const careerLink = document.getElementById('overwatchCareerLink');
+
+            if (nameElement) nameElement.innerText = name || battletag || 'BattleTag 필요';
+            if (titleElement) titleElement.innerText = title || '오버워치 공개 프로필';
+            if (endorsementElement) {
+                const level = typeof endorsement === 'object' ? endorsement?.level : endorsement;
+                const frame = typeof endorsement === 'object' ? endorsement?.frame : '';
+                if (level) {
+                    if (frame) endorsementElement.src = frame;
+                    endorsementElement.title = `칭찬 레벨 ${level}`;
+                    endorsementElement.hidden = false;
+                } else {
+                    endorsementElement.hidden = true;
+                }
+            }
+
+            if (avatar && fallbackAvatar) {
+                if (icon) {
+                    avatar.src = icon;
+                    avatar.hidden = false;
+                    fallbackAvatar.hidden = true;
+                } else {
+                    avatar.hidden = true;
+                    fallbackAvatar.hidden = false;
+                }
+            }
+
+            if (namecardElement) {
+                if (namecard) {
+                    namecardElement.style.setProperty('--overwatch-namecard', `url("${namecard}")`);
+                    namecardElement.classList.add('has-namecard');
+                } else {
+                    namecardElement.style.removeProperty('--overwatch-namecard');
+                    namecardElement.classList.remove('has-namecard');
+                }
+            }
+
+            if (careerLink && battletag) {
+                careerLink.href = OVERWATCH_PROFILE_URL;
+            }
+        }
+
+        function statCard(label, value) {
+            return `
+                <div class="overwatch-stat-card">
+                    <span>${escapeHTML(label)}</span>
+                    <strong>${escapeHTML(formatStatValue(value))}</strong>
+                </div>
+            `;
+        }
+
+        function rankCard(label, rank) {
+            const roleIcon = rank?.role_icon ? `<img src="${escapeHTML(rank.role_icon)}" alt="" class="overwatch-role-icon">` : '';
+            const rankIcon = rank?.rank_icon ? `<img src="${escapeHTML(rank.rank_icon)}" alt="" class="overwatch-rank-icon">` : '';
+            const tierIcon = rank?.tier_icon ? `<img src="${escapeHTML(rank.tier_icon)}" alt="" class="overwatch-tier-icon">` : '';
+
+            return `
+                <div class="overwatch-stat-card overwatch-rank-card">
+                    <div class="overwatch-rank-card-header">
+                        ${roleIcon}
+                        <span>${escapeHTML(label)}</span>
+                    </div>
+                    <div class="overwatch-rank-emblem">
+                        ${rankIcon}
+                        ${tierIcon}
+                    </div>
+                    <strong>${escapeHTML(rankLabel(rank))}</strong>
+                </div>
+            `;
+        }
+
+        function rankLabel(rank) {
+            if (!rank) return '-';
+            const division = rank.division ? rank.division.charAt(0).toUpperCase() + rank.division.slice(1) : '';
+            return `${division} ${rank.tier || ''}`.trim() || '-';
+        }
+
+        function renderOverwatchSummary(data, battletag) {
+            const stats = document.getElementById('overwatchStats');
+            if (!stats) return;
+
+            const competitive = data.competitive?.pc || {};
+            setOverwatchProfileHeader({
+                name: battletag,
+                title: data.title || '오버워치 공개 프로필',
+                icon: data.avatar,
+                namecard: data.namecard,
+                endorsement: data.endorsement
+            }, battletag);
+
+            stats.innerHTML = `
+                ${rankCard('돌격', competitive.tank)}
+                ${rankCard('공격', competitive.damage)}
+                ${rankCard('지원', competitive.support)}
+                ${rankCard('자유 경쟁전', competitive.open)}
+                ${statCard('경쟁전 시즌', competitive.season)}
+            `;
+        }
+
+        function renderOverwatchProfile(data, battletag) {
+            const stats = document.getElementById('overwatchStats');
+            if (!stats) return;
+
+            const quick = data.quickplayStats || data.quickPlayStats || {};
+            const competitive = data.competitiveStats || {};
+            const ratings = Array.isArray(data.ratings) ? data.ratings : [];
+            const rankText = ratings.length
+                ? ratings.map(rating => `${rating.role || 'Role'} ${rating.group || rating.tier || ''} ${rating.rank || ''}`.trim()).join(' · ')
+                : '랭크 정보 없음';
+
+            setOverwatchProfileHeader({ ...data, name: battletag, endorsement: data.endorsement }, battletag);
+
+            stats.innerHTML = `
+                ${statCard('경쟁전 등급', rankText)}
+                ${statCard('빠른 대전 승리', quick.gamesWon)}
+                ${statCard('빠른 대전 플레이', quick.timePlayed)}
+                ${statCard('빠른 대전 주 영웅', quick.mostPlayedHero)}
+                ${statCard('경쟁전 시즌', competitive.season)}
+                ${statCard('경쟁전 승리', competitive.gamesWon)}
+                ${statCard('경쟁전 주 영웅', competitive.mostPlayedHero)}
+            `;
+        }
+
+        async function fetchJSON(url) {
+            const response = await fetch(url);
+            let body = null;
+
+            try {
+                body = await response.clone().json();
+            } catch (parseError) {
+                // 일부 오류 응답은 JSON이 아닐 수 있음
+            }
+
+            if (!response.ok) {
+                const message = body?.message || body?.error?.error || body?.error || `HTTP ${response.status}`;
+                throw new Error(typeof message === 'string' ? message : JSON.stringify(message));
+            }
+
+            return body ?? await response.json();
+        }
+
+        async function fetchOverwatchProfile(battletag) {
+            const normalizedBattletag = normalizeBattletag(battletag);
+            const visibleBattletag = displayBattletag(battletag);
+            currentOverwatchBattletag = visibleBattletag;
+            setOverwatchProfileHeader({ name: visibleBattletag, title: '프로필 정보를 불러오는 중...' }, visibleBattletag);
+            setOverwatchState('Loading...');
+
+            try {
+                const summary = await fetchJSON(`https://overfast-api.tekrop.fr/players/${encodeURIComponent(OVERWATCH_PROFILE_ID)}/summary`);
+                renderOverwatchSummary(summary, visibleBattletag);
+            } catch (error) {
+                console.warn('OverFast profile ID lookup failed, trying BattleTag APIs:', error);
+
+                try {
+                    const summary = await fetchJSON(`https://overfast-api.tekrop.fr/players/${encodeURIComponent(normalizedBattletag)}/summary`);
+                    renderOverwatchSummary(summary, visibleBattletag);
+                } catch (fallbackError) {
+                    console.warn('OverFast BattleTag lookup failed, trying OWAPI:', fallbackError);
+
+                    try {
+                        const profile = await fetchJSON(`https://owapi.eu/stats/${OVERWATCH_PLATFORM}/${encodeURIComponent(normalizedBattletag)}/profile`);
+                        if (profile.private) {
+                            setOverwatchProfileHeader({ ...profile, name: visibleBattletag }, visibleBattletag);
+                            setOverwatchState('프로필이 비공개입니다.');
+                            return;
+                        }
+
+                        renderOverwatchProfile(profile, visibleBattletag);
+                    } catch (secondFallbackError) {
+                        console.error('Failed to fetch Overwatch profile:', secondFallbackError);
+                        setOverwatchProfileHeader({ name: visibleBattletag, title: '공개 프로필 정보를 아직 가져오지 못했습니다.' }, visibleBattletag);
+                        const isNetworkOrCorsError = secondFallbackError instanceof TypeError || fallbackError instanceof TypeError || error instanceof TypeError;
+                        const message = isNetworkOrCorsError
+                            ? '브라우저가 API 응답을 읽지 못했습니다. 네트워크 또는 CORS 상태를 확인해주세요.'
+                            : '공개 프로필을 찾지 못했습니다. 공식 프로필 링크를 확인해주세요.';
+                        setOverwatchState(message);
+                    }
+                }
+            }
+        }
+
+        function initOverwatchProfile() {
+            if (isValidBattletag(OVERWATCH_BATTLETAG)) {
+                fetchOverwatchProfile(OVERWATCH_BATTLETAG);
+            } else {
+                setOverwatchProfileHeader({ name: OVERWATCH_BATTLETAG, title: 'BattleTag 형식을 확인해주세요.' }, OVERWATCH_BATTLETAG);
+                setOverwatchState('올바른 BattleTag가 필요합니다.');
+            }
+        }
+
+        initOverwatchProfile();
+
         // 디스코드 아이디 복사 기능
-        function copyDiscordId() {
+        let discordCopyResetTimer;
+
+        function copyDiscordId(button) {
             navigator.clipboard.writeText("seml_").then(() => {
-                const textElement = document.getElementById('discordText');
-                if (!textElement) return;
-                const originalText = "seml_";
+                const textElement = document.getElementById('discordCopyText');
+                if (!button || !textElement) return;
+                const originalText = textElement.dataset.originalText || textElement.innerText;
+                textElement.dataset.originalText = originalText;
                 textElement.innerText = "복사 완료!";
-                textElement.style.color = "var(--accent)";
+                button.classList.add('is-copied');
+                clearTimeout(discordCopyResetTimer);
                 
+                discordCopyResetTimer = setTimeout(() => {
+                    textElement.innerText = originalText;
+                    button.classList.remove('is-copied');
+                }, 2000);
+            }).catch(err => {
+                alert("복사에 실패했습니다.");
+            });
+        }
+
+        // 오버워치 아이디 복사 기능
+        function copyOverwatchId() {
+            if (!currentOverwatchBattletag) {
+                alert("복사할 BattleTag가 없습니다.");
+                return;
+            }
+
+            navigator.clipboard.writeText(currentOverwatchBattletag).then(() => {
+                const textElement = document.getElementById('overwatchCopyText');
+                if (!textElement) return;
+                const originalText = "ID 복사";
+                textElement.innerText = "복사 완료!";
+
                 setTimeout(() => {
                     textElement.innerText = originalText;
-                    textElement.style.color = "var(--text-secondary)";
                 }, 2000);
             }).catch(err => {
                 alert("복사에 실패했습니다.");
