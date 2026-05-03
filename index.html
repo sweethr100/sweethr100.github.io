@@ -33,8 +33,17 @@
 
         (function() {
             const WIDE_BENTO_KEY = 'wideBentoMode';
+            const BENTO_MEDIA_QUERY = '(min-width: 1250px)';
             const WIDE_BENTO_DISABLED_MEDIA = 'not all';
+            const WIDE_LAYOUT_FORCED_MEDIA = 'all';
             const NARROW_LAYOUT_ENABLED_MEDIA = 'all';
+            const NARROW_LAYOUT_DISABLED_MEDIA = 'not all';
+            const bentoMediaQuery = window.matchMedia(BENTO_MEDIA_QUERY);
+
+            function applyDiscordCardMode(enabled) {
+                const isBentoActive = enabled && bentoMediaQuery.matches;
+                document.documentElement.setAttribute('data-discord-card', isBentoActive ? 'off' : 'on');
+            }
 
             function getResponsiveLayoutRules() {
                 if (window.__responsiveLayoutRules) return window.__responsiveLayoutRules;
@@ -75,17 +84,45 @@
                 return ruleGroups;
             }
 
-            window.applyWideBentoPreference = function(enabled) {
-                document.documentElement.setAttribute('data-wide-bento', enabled ? 'on' : 'off');
-
+            window.setResponsiveLayoutMode = function(mode) {
                 const { wide, narrow } = getResponsiveLayoutRules();
+
                 wide.forEach(rule => {
-                    rule.media.mediaText = enabled ? rule.__originalMediaText : WIDE_BENTO_DISABLED_MEDIA;
+                    if (mode === 'wide') {
+                        rule.media.mediaText = WIDE_LAYOUT_FORCED_MEDIA;
+                    } else if (mode === 'narrow') {
+                        rule.media.mediaText = WIDE_BENTO_DISABLED_MEDIA;
+                    } else {
+                        rule.media.mediaText = rule.__originalMediaText;
+                    }
                 });
+
                 narrow.forEach(rule => {
-                    rule.media.mediaText = enabled ? rule.__originalMediaText : NARROW_LAYOUT_ENABLED_MEDIA;
+                    if (mode === 'wide') {
+                        rule.media.mediaText = NARROW_LAYOUT_DISABLED_MEDIA;
+                    } else if (mode === 'narrow') {
+                        rule.media.mediaText = NARROW_LAYOUT_ENABLED_MEDIA;
+                    } else {
+                        rule.media.mediaText = rule.__originalMediaText;
+                    }
                 });
             };
+
+            window.applyWideBentoPreference = function(enabled) {
+                document.documentElement.setAttribute('data-wide-bento', enabled ? 'on' : 'off');
+                window.setResponsiveLayoutMode(enabled ? 'normal' : 'narrow');
+                applyDiscordCardMode(enabled);
+            };
+
+            function handleBentoMediaChange() {
+                applyDiscordCardMode(localStorage.getItem(WIDE_BENTO_KEY) !== 'off');
+            }
+
+            if (bentoMediaQuery.addEventListener) {
+                bentoMediaQuery.addEventListener('change', handleBentoMediaChange);
+            } else if (bentoMediaQuery.addListener) {
+                bentoMediaQuery.addListener(handleBentoMediaChange);
+            }
 
             window.applyWideBentoPreference(localStorage.getItem(WIDE_BENTO_KEY) !== 'off');
         })();
@@ -169,7 +206,7 @@
         </section>
 
         <!-- Discord Live Activity Section -->
-        <section class="discord-section" id="discordWideWidget">
+        <section class="discord-section bento-span-1x1" id="discordWideWidget">
             <h2 class="section-title">Discord</h2>
             <div class="discord-plate-content">
                 <div class="discord-header">
@@ -248,6 +285,10 @@
                             <i class="fi fi-rr-arrow-up-right-from-square"></i>
                             <span>프로필 보기</span>
                         </a>
+                        <button type="button" class="overwatch-card-btn overwatch-stats-btn" id="overwatchStatsButton" onclick="openOverwatchStatsModal()" disabled>
+                            <i class="fi fi-rr-chart-histogram"></i>
+                            <span>모든 통계 보기</span>
+                        </button>
                     </div>
                 </div>
                 <div class="overwatch-stats-grid" id="overwatchStats">
@@ -255,6 +296,24 @@
                 </div>
             </div>
         </section>
+
+        <div class="overwatch-modal" id="overwatchStatsModal" hidden aria-hidden="true">
+            <div class="overwatch-modal-backdrop" onclick="closeOverwatchStatsModal()"></div>
+            <section class="overwatch-modal-panel" role="dialog" aria-modal="true" aria-labelledby="overwatchStatsModalTitle">
+                <div class="overwatch-modal-header">
+                    <div>
+                        <span class="overwatch-modal-kicker">Overwatch Stats</span>
+                        <h3 id="overwatchStatsModalTitle">모든 통계</h3>
+                    </div>
+                    <button type="button" class="overwatch-modal-close" onclick="closeOverwatchStatsModal()" aria-label="Close Overwatch stats">
+                        <i class="fi fi-rr-cross-small"></i>
+                    </button>
+                </div>
+                <div class="overwatch-modal-body" id="overwatchStatsModalBody">
+                    <div class="overwatch-inline-state">통계를 불러오는 중입니다.</div>
+                </div>
+            </section>
+        </div>
 
         <!-- Instagram Section -->
         <section class="instagram-section">
@@ -307,6 +366,280 @@
         const wideBentoToggle = document.getElementById('wideBentoToggle');
         const html = document.documentElement;
         const WIDE_BENTO_KEY = 'wideBentoMode';
+        const LAYOUT_MOTION_SELECTOR = [
+            '.container > .hero',
+            '.container > .featured-section',
+            '.container > .discord-section',
+            '.container > .overwatch-section',
+            '.container > .instagram-section',
+            '.container > .github-section'
+        ].join(', ');
+        const LAYOUT_MOTION_DURATION = 560;
+        const LAYOUT_GRADIENT_MUTE_DURATION = LAYOUT_MOTION_DURATION + 120;
+        const LAYOUT_MOTION_EASING = 'cubic-bezier(0.16, 1, 0.3, 1)';
+        const BENTO_MEDIA_QUERY = '(min-width: 1250px)';
+        let layoutMotionRects = new Map();
+        let layoutMotionFrame = 0;
+        let layoutMotionSnapshotFrame = 0;
+        let layoutGradientMuteTimer = 0;
+        let layoutMotionViewportWidth = window.innerWidth;
+        let layoutMotionViewportHeight = window.innerHeight;
+        let layoutMotionWasBentoActive = isBentoLayoutActive();
+        let layoutMotionResizeObserver;
+        let layoutMotionReady = false;
+
+        function getLayoutMotionItems() {
+            return Array.from(document.querySelectorAll(LAYOUT_MOTION_SELECTOR))
+                .filter(item => item.isConnected && item.offsetWidth > 0 && item.offsetHeight > 0);
+        }
+
+        function captureLayoutRects(items = getLayoutMotionItems()) {
+            const rects = new Map();
+
+            items.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                rects.set(item, {
+                    left: rect.left,
+                    top: rect.top,
+                    width: rect.width,
+                    height: rect.height
+                });
+            });
+
+            return rects;
+        }
+
+        function rememberLayoutMotionRects(rects = captureLayoutRects()) {
+            layoutMotionRects = rects;
+            layoutMotionViewportWidth = window.innerWidth;
+            layoutMotionViewportHeight = window.innerHeight;
+            layoutMotionWasBentoActive = isBentoLayoutActive();
+        }
+
+        function cancelQueuedLayoutMotionSnapshot() {
+            if (layoutMotionSnapshotFrame) {
+                cancelAnimationFrame(layoutMotionSnapshotFrame);
+                layoutMotionSnapshotFrame = 0;
+            }
+        }
+
+        function queueLayoutMotionSnapshot() {
+            cancelQueuedLayoutMotionSnapshot();
+            layoutMotionSnapshotFrame = requestAnimationFrame(() => {
+                layoutMotionSnapshotFrame = 0;
+
+                if (!html.classList.contains('layout-motion-active')) {
+                    rememberLayoutMotionRects();
+                }
+            });
+        }
+
+        function viewportChangedSinceLayoutSnapshot() {
+            return window.innerWidth !== layoutMotionViewportWidth ||
+                window.innerHeight !== layoutMotionViewportHeight;
+        }
+
+        function prefersReducedLayoutMotion() {
+            return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        }
+
+        function muteDiscordLayoutGradient(duration = LAYOUT_GRADIENT_MUTE_DURATION) {
+            html.classList.add('layout-discord-gradient-muted');
+
+            if (layoutGradientMuteTimer) {
+                clearTimeout(layoutGradientMuteTimer);
+            }
+
+            layoutGradientMuteTimer = setTimeout(() => {
+                html.classList.remove('layout-discord-gradient-muted');
+                layoutGradientMuteTimer = 0;
+            }, duration);
+        }
+
+        function isBentoLayoutActive() {
+            return html.getAttribute('data-wide-bento') === 'on' &&
+                window.matchMedia(BENTO_MEDIA_QUERY).matches;
+        }
+
+        function hasActiveLayoutMotion(items = getLayoutMotionItems()) {
+            return items.some(item => item.__layoutMotionAnimation);
+        }
+
+        function finishLayoutMotion(item, animation) {
+            if (item.__layoutMotionAnimation !== animation) return;
+
+            const childAnimations = item.__layoutMotionChildAnimations || [];
+            delete item.__layoutMotionAnimation;
+            delete item.__layoutMotionChildAnimations;
+            animation.cancel();
+            childAnimations.forEach(childAnimation => childAnimation.cancel());
+            item.classList.remove('is-layout-moving');
+
+            if (!document.querySelector('.is-layout-moving')) {
+                html.classList.remove('layout-motion-active');
+                queueLayoutMotionSnapshot();
+            }
+        }
+
+        function cancelLayoutMotion(items = getLayoutMotionItems()) {
+            items.forEach(item => {
+                if (item.__layoutMotionAnimation) {
+                    item.__layoutMotionAnimation.cancel();
+                    delete item.__layoutMotionAnimation;
+                }
+                if (item.__layoutMotionChildAnimations) {
+                    item.__layoutMotionChildAnimations.forEach(animation => animation.cancel());
+                    delete item.__layoutMotionChildAnimations;
+                }
+                item.classList.remove('is-layout-moving');
+            });
+
+            html.classList.remove('layout-motion-active');
+        }
+
+        function playLayoutMotionFromRects(firstRects, duration = LAYOUT_MOTION_DURATION) {
+            const items = getLayoutMotionItems();
+
+            cancelLayoutMotion(items);
+
+            const nextRects = captureLayoutRects(items);
+
+            if (!layoutMotionReady || prefersReducedLayoutMotion()) {
+                rememberLayoutMotionRects(nextRects);
+                return;
+            }
+
+            let animatedCount = 0;
+
+            items.forEach(item => {
+                const first = firstRects.get(item);
+                const last = nextRects.get(item);
+                if (!first || !last) return;
+
+                const deltaX = first.left - last.left;
+                const deltaY = first.top - last.top;
+                const scaleX = last.width ? first.width / last.width : 1;
+                const scaleY = last.height ? first.height / last.height : 1;
+                const movedOrResized = Math.max(
+                    Math.abs(deltaX),
+                    Math.abs(deltaY),
+                    Math.abs(first.width - last.width),
+                    Math.abs(first.height - last.height)
+                );
+
+                if (movedOrResized < 1) return;
+
+                item.classList.add('is-layout-moving');
+                const animation = item.animate([
+                    { transform: `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})` },
+                    { transform: 'translate(0, 0) scale(1, 1)' }
+                ], {
+                    duration,
+                    easing: LAYOUT_MOTION_EASING,
+                    fill: 'both'
+                });
+                const childAnimations = Array.from(item.children).map(child => child.animate([
+                    { transform: `scale(${1 / scaleX}, ${1 / scaleY})` },
+                    { transform: 'scale(1, 1)' }
+                ], {
+                    duration,
+                    easing: LAYOUT_MOTION_EASING,
+                    fill: 'both'
+                }));
+
+                item.__layoutMotionAnimation = animation;
+                item.__layoutMotionChildAnimations = childAnimations;
+                animation.addEventListener('finish', () => finishLayoutMotion(item, animation));
+                animation.addEventListener('cancel', () => finishLayoutMotion(item, animation));
+                animatedCount += 1;
+            });
+
+            rememberLayoutMotionRects(nextRects);
+
+            if (animatedCount > 0) {
+                html.classList.add('layout-motion-active');
+            } else {
+                html.classList.remove('layout-motion-active');
+            }
+        }
+
+        function runWithLayoutMotion(changeLayout) {
+            const items = getLayoutMotionItems();
+            const firstRects = captureLayoutRects(items);
+            const wasBentoActive = isBentoLayoutActive();
+
+            if (!layoutMotionReady || prefersReducedLayoutMotion()) {
+                changeLayout();
+                if (wasBentoActive !== isBentoLayoutActive()) {
+                    muteDiscordLayoutGradient();
+                }
+                cancelQueuedLayoutMotionSnapshot();
+                layoutMotionSnapshotFrame = requestAnimationFrame(() => {
+                    layoutMotionSnapshotFrame = 0;
+                    rememberLayoutMotionRects();
+                    layoutMotionReady = true;
+                });
+                return;
+            }
+
+            changeLayout();
+            if (wasBentoActive !== isBentoLayoutActive()) {
+                muteDiscordLayoutGradient();
+            }
+            if (layoutMotionFrame) cancelAnimationFrame(layoutMotionFrame);
+            layoutMotionFrame = requestAnimationFrame(() => {
+                layoutMotionFrame = 0;
+                playLayoutMotionFromRects(firstRects);
+            });
+        }
+
+        function scheduleLayoutMotionSnapshot() {
+            if (!layoutMotionReady || layoutMotionFrame || layoutMotionSnapshotFrame || hasActiveLayoutMotion() || viewportChangedSinceLayoutSnapshot()) {
+                return;
+            }
+
+            queueLayoutMotionSnapshot();
+        }
+
+        function handleWindowResize() {
+            cancelQueuedLayoutMotionSnapshot();
+
+            if (layoutMotionFrame) {
+                cancelAnimationFrame(layoutMotionFrame);
+                layoutMotionFrame = 0;
+            }
+
+            const wasBentoActive = layoutMotionWasBentoActive;
+            const isBentoActive = isBentoLayoutActive();
+            if (wasBentoActive !== isBentoActive) {
+                muteDiscordLayoutGradient();
+            }
+
+            cancelLayoutMotion();
+
+            if (!layoutMotionReady || prefersReducedLayoutMotion()) {
+                queueLayoutMotionSnapshot();
+                return;
+            }
+
+            rememberLayoutMotionRects();
+        }
+
+        function initLayoutMotion() {
+            cancelQueuedLayoutMotionSnapshot();
+            layoutMotionSnapshotFrame = requestAnimationFrame(() => {
+                layoutMotionSnapshotFrame = 0;
+                rememberLayoutMotionRects();
+                layoutMotionReady = true;
+
+                if ('ResizeObserver' in window) {
+                    layoutMotionResizeObserver = new ResizeObserver(scheduleLayoutMotionSnapshot);
+                    const container = document.querySelector('.container');
+                    if (container) layoutMotionResizeObserver.observe(container);
+                    getLayoutMotionItems().forEach(item => layoutMotionResizeObserver.observe(item));
+                }
+            });
+        }
 
         function updateThemeIcon() {
             const savedTheme = localStorage.getItem('theme') || 'auto';
@@ -353,6 +686,7 @@
         if (typeof window.applyWideBentoPreference === 'function') {
             window.applyWideBentoPreference(initialWideBento);
         }
+        initLayoutMotion();
 
         // 테마 토글 버튼 (라이트 <-> 다크만 전환)
         themeToggle.addEventListener('click', (e) => {
@@ -390,13 +724,12 @@
         wideBentoToggle.addEventListener('change', (e) => {
             const enabled = e.target.checked;
             localStorage.setItem(WIDE_BENTO_KEY, enabled ? 'on' : 'off');
-            html.classList.add('layout-transitioning');
-            if (typeof rememberLayoutRects === 'function') rememberLayoutRects();
 
-            if (typeof window.applyWideBentoPreference === 'function') {
-                window.applyWideBentoPreference(enabled);
-            }
-            if (typeof animateLayoutShift === 'function') animateLayoutShift();
+            runWithLayoutMotion(() => {
+                if (typeof window.applyWideBentoPreference === 'function') {
+                    window.applyWideBentoPreference(enabled);
+                }
+            });
         });
 
         // 시스템 테마 변경 실시간 감지
@@ -469,11 +802,20 @@
             return `${minutes}:${seconds.toString().padStart(2, '0')}`;
         }
 
-        async function updateDiscordStatus() {
+        async function fetchDiscordStatus() {
             try {
                 const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
                 const { data } = await response.json();
-                
+                renderDiscordStatus(data);
+            } catch (error) {
+                console.error('Failed to fetch Discord status:', error);
+            }
+        }
+
+        function renderDiscordStatus(data) {
+            try {
+                if (!data) return;
+
                 const widget = document.getElementById('discordWideWidget');
                 const avatar = document.getElementById('discordAvatar');
                 const statusIndicator = document.getElementById('discordStatus');
@@ -487,7 +829,7 @@
                 const globalNameText = document.getElementById('discordGlobalName');
                 const activityLabel = document.getElementById('activityTypeLabel');
                 
-                if (!statusIndicator || !activityText) return;
+                if (!widget || !statusIndicator || !activityText) return;
 
                 // 초기화
                 clearInterval(spotifyInterval);
@@ -495,7 +837,7 @@
                 if(activityTime) activityTime.innerText = '';
                 if(activityParty) activityParty.innerText = '';
                 if(spotifyProgress) spotifyProgress.style.display = 'none';
-                widget.classList.remove('theme-spotify', 'theme-gaming');
+                widget.classList.remove('theme-spotify', 'theme-gaming', 'bento-span-1x1', 'bento-span-2x1');
 
                 // 1. 프로필 정보 업데이트
                 statusIndicator.className = 'status-indicator-large ' + data.discord_status;
@@ -507,6 +849,7 @@
 
                 // 2. 커스텀 상태 메시지 업데이트
                 const customStatus = data.activities.find(a => a.type === 4);
+                let useWideDiscordBento = Boolean(customStatus && customStatus.state && customStatus.state.length > 42);
                 if (customStatusText) {
                     const span = customStatusText.querySelector('.discord-status-text') || customStatusText;
                     span.innerText = customStatus && customStatus.state ? customStatus.state : '상태메시지가 없습니다';
@@ -525,6 +868,7 @@
 
                 if (data.listening_to_spotify) {
                     const spotify = data.spotify;
+                    useWideDiscordBento = true;
                     widget.classList.add('theme-spotify');
                     activityLabel.innerText = 'Spotify 듣는 중';
                     activityImageWrapper.innerHTML = `<img src="${spotify.album_art_url}" alt="Spotify Album Art">`;
@@ -549,6 +893,7 @@
 
                 } else if (activities.length > 0) {
                     const activity = activities[0];
+                    useWideDiscordBento = true;
                     widget.classList.add('theme-gaming');
 
                     activityLabel.innerText = typeMap[activity.type] || '활동 중';
@@ -624,14 +969,130 @@
                     activityDetail.innerText = '';
                     activityText.classList.remove('active');
                 }
+
+                widget.classList.toggle('bento-span-2x1', useWideDiscordBento);
+                widget.classList.toggle('bento-span-1x1', !useWideDiscordBento);
             } catch (error) {
-                console.error('Failed to fetch Discord status:', error);
+                console.error('Failed to render Discord status:', error);
             }
         }
 
         // 초기 실행
-        updateDiscordStatus();
-        setInterval(updateDiscordStatus, 30000);
+        const LANYARD_SOCKET_URL = 'wss://api.lanyard.rest/socket';
+        let lanyardSocket;
+        let lanyardHeartbeatInterval;
+        let lanyardReconnectTimer;
+        let lanyardReconnectDelay = 1000;
+        let lanyardInitialFallbackTimer;
+        let lanyardClosingForPageUnload = false;
+
+        function getPresenceFromLanyardMessage(message) {
+            if (!message || message.op !== 0) return null;
+
+            if (message.t === 'INIT_STATE') {
+                return message.d?.discord_user ? message.d : message.d?.[DISCORD_ID] || null;
+            }
+
+            if (message.t === 'PRESENCE_UPDATE') {
+                const presenceUserId = message.d?.user_id || message.d?.discord_user?.id;
+                return presenceUserId === DISCORD_ID ? message.d : null;
+            }
+
+            return null;
+        }
+
+        function clearLanyardTimers() {
+            clearInterval(lanyardHeartbeatInterval);
+            clearTimeout(lanyardReconnectTimer);
+            clearTimeout(lanyardInitialFallbackTimer);
+            lanyardHeartbeatInterval = null;
+            lanyardReconnectTimer = null;
+            lanyardInitialFallbackTimer = null;
+        }
+
+        function scheduleLanyardReconnect() {
+            if (lanyardClosingForPageUnload || lanyardReconnectTimer) return;
+
+            lanyardReconnectTimer = setTimeout(() => {
+                lanyardReconnectTimer = null;
+                connectLanyardSocket();
+            }, lanyardReconnectDelay);
+            lanyardReconnectDelay = Math.min(lanyardReconnectDelay * 1.8, 30000);
+        }
+
+        function connectLanyardSocket() {
+            if (!('WebSocket' in window)) {
+                fetchDiscordStatus();
+                return;
+            }
+
+            if (lanyardSocket && [WebSocket.OPEN, WebSocket.CONNECTING].includes(lanyardSocket.readyState)) {
+                return;
+            }
+
+            clearLanyardTimers();
+            lanyardSocket = new WebSocket(LANYARD_SOCKET_URL);
+
+            clearTimeout(lanyardInitialFallbackTimer);
+            lanyardInitialFallbackTimer = setTimeout(fetchDiscordStatus, 2500);
+
+            lanyardSocket.addEventListener('open', () => {
+                lanyardReconnectDelay = 1000;
+            });
+
+            lanyardSocket.addEventListener('message', (event) => {
+                let message;
+
+                try {
+                    message = JSON.parse(event.data);
+                } catch (error) {
+                    console.warn('Invalid Lanyard socket message:', error);
+                    return;
+                }
+
+                if (message.op === 1) {
+                    const heartbeatInterval = message.d?.heartbeat_interval || 30000;
+                    clearInterval(lanyardHeartbeatInterval);
+                    lanyardHeartbeatInterval = setInterval(() => {
+                        if (lanyardSocket?.readyState === WebSocket.OPEN) {
+                            lanyardSocket.send(JSON.stringify({ op: 3 }));
+                        }
+                    }, heartbeatInterval);
+
+                    lanyardSocket.send(JSON.stringify({
+                        op: 2,
+                        d: { subscribe_to_id: DISCORD_ID }
+                    }));
+                    return;
+                }
+
+                const presence = getPresenceFromLanyardMessage(message);
+                if (presence) {
+                    clearTimeout(lanyardInitialFallbackTimer);
+                    renderDiscordStatus(presence);
+                }
+            });
+
+            lanyardSocket.addEventListener('close', () => {
+                clearLanyardTimers();
+                if (!lanyardClosingForPageUnload) {
+                    fetchDiscordStatus();
+                    scheduleLanyardReconnect();
+                }
+            });
+
+            lanyardSocket.addEventListener('error', (error) => {
+                console.warn('Lanyard socket error:', error);
+            });
+        }
+
+        window.addEventListener('beforeunload', () => {
+            lanyardClosingForPageUnload = true;
+            clearLanyardTimers();
+            lanyardSocket?.close();
+        });
+
+        connectLanyardSocket();
 
         // 페이지 로드 시 실행
         fetchGitHubRepos();
@@ -639,8 +1100,25 @@
         const OVERWATCH_PLATFORM = 'pc';
         const OVERWATCH_BATTLETAG = 'SEML#3291';
         const OVERWATCH_PROFILE_ID = 'e15ba1a6fe22c9f4b8|a37cc2ea7991d102f763cb593b8348d5';
+        const OVERWATCH_API_BASE = 'https://overfast-api.tekrop.fr';
         const OVERWATCH_PROFILE_URL = `https://overwatch.blizzard.com/ko-kr/career/${encodeURIComponent(OVERWATCH_PROFILE_ID)}/`;
+        const OVERWATCH_UNRANKED_ICON = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 96 96%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop stop-color=%22%23f5f6f8%22/%3E%3Cstop offset=%221%22 stop-color=%22%239aa3af%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill=%22url(%23g)%22 d=%22M48 6l34 14v24c0 23-14 39-34 46C28 83 14 67 14 44V20L48 6z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linejoin=%22round%22 d=%22M48 16l24 10v18c0 16-9 28-24 35-15-7-24-19-24-35V26l24-10z%22/%3E%3Cpath fill=%22%235f6875%22 d=%22M31 46h34v8H31z%22/%3E%3C/svg%3E';
+        const OVERWATCH_ROLE_LABELS = {
+            tank: '돌격',
+            damage: '공격',
+            support: '지원',
+            open: '자유 경쟁전'
+        };
+        const OVERWATCH_MODAL_ANIMATION_MS = 340;
         let currentOverwatchBattletag = OVERWATCH_BATTLETAG;
+        let currentOverwatchStatsSummary = null;
+        let overwatchModalCloseTimer = 0;
+        let overwatchModalScrollLocked = false;
+        let overwatchModalPreviousBodyPaddingRight = '';
+        const overwatchStatsModalRoot = document.getElementById('overwatchStatsModal');
+        if (overwatchStatsModalRoot) {
+            document.body.appendChild(overwatchStatsModalRoot);
+        }
 
         function escapeHTML(value) {
             return String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -734,9 +1212,11 @@
         }
 
         function rankCard(label, rank) {
+            const isUnranked = !rank || (!rank.division && !rank.tier);
             const roleIcon = rank?.role_icon ? `<img src="${escapeHTML(rank.role_icon)}" alt="" class="overwatch-role-icon">` : '';
-            const rankIcon = rank?.rank_icon ? `<img src="${escapeHTML(rank.rank_icon)}" alt="" class="overwatch-rank-icon">` : '';
-            const tierIcon = rank?.tier_icon ? `<img src="${escapeHTML(rank.tier_icon)}" alt="" class="overwatch-tier-icon">` : '';
+            const rankIconSource = isUnranked ? OVERWATCH_UNRANKED_ICON : (rank?.rank_icon || OVERWATCH_UNRANKED_ICON);
+            const rankIcon = `<img src="${escapeHTML(rankIconSource)}" alt="" class="overwatch-rank-icon${isUnranked ? ' is-unranked' : ''}">`;
+            const tierIcon = !isUnranked && rank?.tier_icon ? `<img src="${escapeHTML(rank.tier_icon)}" alt="" class="overwatch-tier-icon">` : '';
 
             return `
                 <div class="overwatch-stat-card overwatch-rank-card">
@@ -754,7 +1234,7 @@
         }
 
         function rankLabel(rank) {
-            if (!rank) return '-';
+            if (!rank || (!rank.division && !rank.tier)) return 'Unranked';
             const division = rank.division ? rank.division.charAt(0).toUpperCase() + rank.division.slice(1) : '';
             return `${division} ${rank.tier || ''}`.trim() || '-';
         }
@@ -805,6 +1285,423 @@
             `;
         }
 
+        async function fetchOverwatchData(playerId) {
+            const encodedPlayerId = encodeURIComponent(playerId);
+            const summary = await fetchJSON(`${OVERWATCH_API_BASE}/players/${encodedPlayerId}/summary`);
+            let statsSummary = null;
+            let competitiveStatsSummary = null;
+
+            try {
+                statsSummary = await fetchJSON(`${OVERWATCH_API_BASE}/players/${encodedPlayerId}/stats/summary?platform=${OVERWATCH_PLATFORM}`);
+            } catch (error) {
+                console.warn('OverFast stats summary lookup failed:', error);
+            }
+
+            try {
+                competitiveStatsSummary = await fetchJSON(`${OVERWATCH_API_BASE}/players/${encodedPlayerId}/stats/summary?platform=${OVERWATCH_PLATFORM}&gamemode=competitive`);
+            } catch (error) {
+                console.warn('OverFast competitive stats summary lookup failed:', error);
+            }
+
+            return { summary, statsSummary, competitiveStatsSummary };
+        }
+
+        function renderOverwatchDashboard(data, battletag, statsSummary, competitiveStatsSummary) {
+            const stats = document.getElementById('overwatchStats');
+            if (!stats) return;
+
+            currentOverwatchStatsSummary = statsSummary;
+            setOverwatchStatsButtonState(Boolean(statsSummary));
+
+            const competitive = data.competitive?.[OVERWATCH_PLATFORM] || data.competitive?.pc || {};
+            setOverwatchProfileHeader({
+                name: data.username || battletag,
+                title: data.title || '오버워치 공개 프로필',
+                icon: data.avatar,
+                namecard: data.namecard,
+                endorsement: data.endorsement
+            }, battletag);
+
+            stats.innerHTML = renderOverwatchCompetitivePanel(competitive, competitiveStatsSummary);
+        }
+
+        function renderOverwatchCompetitivePanel(competitive = {}, statsSummary) {
+            const general = statsSummary?.general;
+            const total = general?.total || {};
+            const recordText = general
+                ? `${formatWithSuffix(general.games_played, '전')} · ${formatWithSuffix(general.games_won, '승')} ${formatWithSuffix(general.games_lost, '패')}`
+                : '상세 통계 없음';
+
+            return `
+                <section class="overwatch-current-competitive">
+                    <div class="overwatch-current-header">
+                        <strong>현재 경쟁전</strong>
+                        <span>시즌 ${formatCompactNumber(competitive.season)} · ${recordText}</span>
+                    </div>
+                    <div class="overwatch-rank-strip">
+                        ${rankCard('돌격', competitive.tank)}
+                        ${rankCard('공격', competitive.damage)}
+                        ${rankCard('지원', competitive.support)}
+                        ${rankCard('자유 경쟁전', competitive.open)}
+                    </div>
+                    ${general ? `
+                        <div class="overwatch-compact-stat-row">
+                            ${compactStat('승률', formatPercent(general.winrate))}
+                            ${compactStat('KDA', formatCompactNumber(general.kda, 2))}
+                            ${compactStat('처치', formatCompactNumber(total.eliminations))}
+                            ${compactStat('죽음', formatCompactNumber(total.deaths))}
+                            ${compactStat('피해량', formatCompactNumber(total.damage))}
+                            ${compactStat('치유량', formatCompactNumber(total.healing))}
+                        </div>
+                    ` : '<div class="overwatch-inline-state overwatch-competitive-note">현재 경쟁전 상세 통계를 아직 가져오지 못했습니다.</div>'}
+                </section>
+            `;
+        }
+
+        function renderCurrentCompetitiveStats(statsSummary) {
+            if (!statsSummary?.general) {
+                return '<div class="overwatch-inline-state overwatch-competitive-note">현재 경쟁전 상세 통계를 아직 가져오지 못했습니다.</div>';
+            }
+
+            const general = statsSummary.general;
+            const total = general.total || {};
+
+            return `
+                <section class="overwatch-current-competitive">
+                    <div class="overwatch-current-header">
+                        <strong>현재 경쟁전</strong>
+                        <span>${formatWithSuffix(general.games_played, '전')} · ${formatWithSuffix(general.games_won, '승')} ${formatWithSuffix(general.games_lost, '패')}</span>
+                    </div>
+                    <div class="overwatch-compact-stat-row">
+                        ${compactStat('승률', formatPercent(general.winrate))}
+                        ${compactStat('KDA', formatCompactNumber(general.kda, 2))}
+                        ${compactStat('처치', formatCompactNumber(total.eliminations))}
+                        ${compactStat('죽음', formatCompactNumber(total.deaths))}
+                        ${compactStat('피해량', formatCompactNumber(total.damage))}
+                        ${compactStat('치유량', formatCompactNumber(total.healing))}
+                    </div>
+                </section>
+            `;
+        }
+
+        function compactStat(label, value) {
+            return `
+                <div class="overwatch-compact-stat">
+                    <span>${escapeHTML(label)}</span>
+                    <strong>${escapeHTML(value)}</strong>
+                </div>
+            `;
+        }
+
+        function renderOverwatchStatsSections(statsSummary) {
+            if (!statsSummary) {
+                return `
+                    <section class="overwatch-stats-section">
+                        <div class="overwatch-stats-section-header">
+                            <strong>상세 통계</strong>
+                            <span>공개 전적 없음</span>
+                        </div>
+                        <div class="overwatch-inline-state">승률, KDA, 역할별/영웅별 통계를 아직 가져오지 못했습니다.</div>
+                    </section>
+                `;
+            }
+
+            return `
+                ${renderGeneralStatsSection(statsSummary.general)}
+                ${renderRoleStatsSection(statsSummary.roles)}
+                ${renderHeroStatsSection(statsSummary.heroes)}
+            `;
+        }
+
+        function setOverwatchStatsButtonState(enabled) {
+            const button = document.getElementById('overwatchStatsButton');
+            if (!button) return;
+
+            button.disabled = !enabled;
+            button.setAttribute('aria-disabled', String(!enabled));
+        }
+
+        function lockOverwatchPageScroll() {
+            if (overwatchModalScrollLocked) return;
+
+            const scrollbarWidth = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+            const currentBodyPadding = parseFloat(window.getComputedStyle(document.body).paddingRight) || 0;
+            const supportsStableScrollbarGutter = Boolean(window.CSS?.supports?.('scrollbar-gutter', 'stable'));
+            overwatchModalPreviousBodyPaddingRight = document.body.style.paddingRight;
+
+            document.documentElement.style.setProperty('--overwatch-scrollbar-width', '0px');
+            document.documentElement.style.setProperty('--overwatch-scrollbar-half-width', '0px');
+
+            if (scrollbarWidth > 0 && !supportsStableScrollbarGutter) {
+                document.body.style.paddingRight = `${currentBodyPadding + scrollbarWidth}px`;
+                document.documentElement.style.setProperty('--overwatch-scrollbar-width', `${scrollbarWidth}px`);
+                document.documentElement.style.setProperty('--overwatch-scrollbar-half-width', `${scrollbarWidth / 2}px`);
+            }
+
+            document.documentElement.classList.add('overwatch-modal-open');
+            overwatchModalScrollLocked = true;
+        }
+
+        function unlockOverwatchPageScroll() {
+            if (!overwatchModalScrollLocked) {
+                document.documentElement.classList.remove('overwatch-modal-open');
+                document.documentElement.style.removeProperty('--overwatch-scrollbar-width');
+                document.documentElement.style.removeProperty('--overwatch-scrollbar-half-width');
+                return;
+            }
+
+            document.body.style.paddingRight = overwatchModalPreviousBodyPaddingRight;
+            document.documentElement.classList.remove('overwatch-modal-open');
+            document.documentElement.style.removeProperty('--overwatch-scrollbar-width');
+            document.documentElement.style.removeProperty('--overwatch-scrollbar-half-width');
+            overwatchModalPreviousBodyPaddingRight = '';
+            overwatchModalScrollLocked = false;
+        }
+
+        function openOverwatchStatsModal() {
+            if (!currentOverwatchStatsSummary) return;
+
+            const modal = document.getElementById('overwatchStatsModal');
+            const body = document.getElementById('overwatchStatsModalBody');
+            if (!modal || !body) return;
+
+            clearTimeout(overwatchModalCloseTimer);
+            body.innerHTML = renderOverwatchStatsSections(currentOverwatchStatsSummary);
+            modal.classList.remove('is-closing');
+            modal.hidden = false;
+            modal.setAttribute('aria-hidden', 'false');
+            lockOverwatchPageScroll();
+
+            requestAnimationFrame(() => {
+                if (!modal.hidden) modal.classList.add('is-visible');
+            });
+
+            const closeButton = modal.querySelector('.overwatch-modal-close');
+            if (closeButton) closeButton.focus();
+        }
+
+        function closeOverwatchStatsModal() {
+            const modal = document.getElementById('overwatchStatsModal');
+            if (!modal || modal.hidden || modal.classList.contains('is-closing')) return;
+
+            const finishClose = () => {
+                modal.hidden = true;
+                modal.classList.remove('is-closing');
+                unlockOverwatchPageScroll();
+                const statsButton = document.getElementById('overwatchStatsButton');
+                if (statsButton) statsButton.focus();
+            };
+
+            clearTimeout(overwatchModalCloseTimer);
+            modal.classList.remove('is-visible');
+            modal.classList.add('is-closing');
+            modal.setAttribute('aria-hidden', 'true');
+
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                finishClose();
+                return;
+            }
+
+            overwatchModalCloseTimer = setTimeout(finishClose, OVERWATCH_MODAL_ANIMATION_MS);
+        }
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') closeOverwatchStatsModal();
+        });
+
+        function renderStatsSection(title, subtitle, content) {
+            return `
+                <section class="overwatch-stats-section">
+                    <div class="overwatch-stats-section-header">
+                        <strong>${escapeHTML(title)}</strong>
+                        <span>${escapeHTML(subtitle)}</span>
+                    </div>
+                    ${content}
+                </section>
+            `;
+        }
+
+        function renderGeneralStatsSection(general = {}) {
+            const total = general.total || {};
+            const average = general.average || {};
+            const content = `
+                <div class="overwatch-metric-grid">
+                    ${metricCard('총 전적', formatWithSuffix(general.games_played, '전'), `${formatWithSuffix(general.games_won, '승')} ${formatWithSuffix(general.games_lost, '패')}`)}
+                    ${metricCard('승률', formatPercent(general.winrate), '전체 모드 기준')}
+                    ${metricCard('KDA', formatCompactNumber(general.kda, 2), '(처치+도움)/죽음')}
+                    ${metricCard('플레이 시간', formatDurationSeconds(general.time_played), '공개 프로필 합산')}
+                    ${metricCard('처치', formatCompactNumber(total.eliminations), `평균 ${formatCompactNumber(average.eliminations, 2)}/10분`)}
+                    ${metricCard('도움', formatCompactNumber(total.assists), `평균 ${formatCompactNumber(average.assists, 2)}/10분`)}
+                    ${metricCard('죽음', formatCompactNumber(total.deaths), `평균 ${formatCompactNumber(average.deaths, 2)}/10분`)}
+                    ${metricCard('피해량', formatCompactNumber(total.damage), `평균 ${formatCompactNumber(average.damage, 2)}/10분`)}
+                    ${metricCard('치유량', formatCompactNumber(total.healing), `평균 ${formatCompactNumber(average.healing, 2)}/10분`)}
+                </div>
+            `;
+            return renderStatsSection('종합 통계', '전체 모드 · PC', content);
+        }
+
+        function renderRoleStatsSection(roles = {}) {
+            const roleCards = ['tank', 'damage', 'support']
+                .map(role => renderRoleStatsCard(role, roles[role]))
+                .join('');
+
+            return renderStatsSection('역할별 통계', '승률 · KDA · 누적 기록', `<div class="overwatch-role-grid">${roleCards}</div>`);
+        }
+
+        function renderRoleStatsCard(role, stats = {}) {
+            const total = stats?.total || {};
+            return `
+                <article class="overwatch-role-stat-card">
+                    <div class="overwatch-role-stat-header">
+                        <span>${escapeHTML(OVERWATCH_ROLE_LABELS[role] || role)}</span>
+                        <strong>${formatPercent(stats?.winrate)}</strong>
+                    </div>
+                    <div class="overwatch-role-stat-main">
+                        <strong>${formatCompactNumber(stats?.kda, 2)}</strong>
+                        <span>KDA</span>
+                    </div>
+                    <div class="overwatch-mini-stat-list">
+                        ${miniStat('경기', formatWithSuffix(stats?.games_played, '전'))}
+                        ${miniStat('시간', formatDurationSeconds(stats?.time_played))}
+                        ${miniStat('처치', formatCompactNumber(total.eliminations))}
+                        ${miniStat('죽음', formatCompactNumber(total.deaths))}
+                        ${miniStat('피해', formatCompactNumber(total.damage))}
+                        ${miniStat('치유', formatCompactNumber(total.healing))}
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderHeroStatsSection(heroes = {}) {
+            const heroEntries = Object.entries(heroes)
+                .filter(([, stats]) => hasHeroStats(stats))
+                .sort(([, a], [, b]) => (b.time_played || 0) - (a.time_played || 0));
+
+            if (!heroEntries.length) {
+                return renderStatsSection('영웅별 통계', '공개 전적 없음', '<div class="overwatch-inline-state">표시할 영웅 통계가 없습니다.</div>');
+            }
+
+            const content = `
+                <div class="overwatch-hero-list">
+                    ${heroEntries.map(([hero, stats]) => renderHeroStatsRow(hero, stats)).join('')}
+                </div>
+            `;
+
+            return renderStatsSection('영웅별 통계', `${heroEntries.length}명 · 플레이 시간순`, content);
+        }
+
+        function renderHeroStatsRow(heroKey, stats = {}) {
+            const total = stats.total || {};
+            return `
+                <article class="overwatch-hero-row">
+                    <div class="overwatch-hero-main">
+                        <strong>${escapeHTML(formatHeroName(heroKey))}</strong>
+                        <span>${formatDurationSeconds(stats.time_played)} · ${formatWithSuffix(stats.games_played, '전')}</span>
+                    </div>
+                    <div class="overwatch-hero-chips">
+                        ${statChip('승률', formatPercent(stats.winrate))}
+                        ${statChip('KDA', formatCompactNumber(stats.kda, 2))}
+                        ${statChip('처치', formatCompactNumber(total.eliminations))}
+                        ${statChip('죽음', formatCompactNumber(total.deaths))}
+                        ${statChip('피해', formatCompactNumber(total.damage))}
+                        ${statChip('치유', formatCompactNumber(total.healing))}
+                    </div>
+                </article>
+            `;
+        }
+
+        function metricCard(label, value, detail) {
+            return `
+                <div class="overwatch-stat-card overwatch-metric-card">
+                    <span>${escapeHTML(label)}</span>
+                    <strong>${escapeHTML(value)}</strong>
+                    <small>${escapeHTML(detail)}</small>
+                </div>
+            `;
+        }
+
+        function miniStat(label, value) {
+            return `
+                <div class="overwatch-mini-stat">
+                    <span>${escapeHTML(label)}</span>
+                    <strong>${escapeHTML(value)}</strong>
+                </div>
+            `;
+        }
+
+        function statChip(label, value) {
+            return `
+                <span class="overwatch-stat-chip">
+                    ${escapeHTML(label)}
+                    <strong>${escapeHTML(value)}</strong>
+                </span>
+            `;
+        }
+
+        function hasHeroStats(stats = {}) {
+            const total = stats?.total || {};
+            return Boolean(
+                stats?.time_played ||
+                stats?.games_played ||
+                total.eliminations ||
+                total.assists ||
+                total.deaths ||
+                total.damage ||
+                total.healing
+            );
+        }
+
+        function formatHeroName(heroKey) {
+            const specialNames = {
+                dva: 'D.Va',
+                'soldier-76': 'Soldier: 76',
+                'wrecking-ball': 'Wrecking Ball'
+            };
+
+            if (specialNames[heroKey]) return specialNames[heroKey];
+            return heroKey
+                .split('-')
+                .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+                .join(' ');
+        }
+
+        function formatPercent(value) {
+            const number = parseStatNumber(value);
+            return number === null ? '-' : `${formatCompactNumber(number, 2)}%`;
+        }
+
+        function formatCompactNumber(value, maximumFractionDigits = 0) {
+            const number = parseStatNumber(value);
+            if (number === null) return '-';
+            return number.toLocaleString('ko-KR', {
+                maximumFractionDigits
+            });
+        }
+
+        function formatWithSuffix(value, suffix) {
+            const formatted = formatCompactNumber(value);
+            return formatted === '-' ? '-' : `${formatted}${suffix}`;
+        }
+
+        function formatDurationSeconds(value) {
+            const number = parseStatNumber(value);
+            if (number === null) return '-';
+
+            const seconds = Math.max(0, Math.round(number));
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+
+            if (hours > 0) return `${hours.toLocaleString('ko-KR')}시간 ${minutes}분`;
+            if (minutes > 0) return `${minutes}분`;
+            return `${seconds}초`;
+        }
+
+        function parseStatNumber(value) {
+            if (value === null || value === undefined || value === '') return null;
+            const number = Number(value);
+            return Number.isFinite(number) ? number : null;
+        }
+
         async function fetchJSON(url) {
             const response = await fetch(url);
             let body = null;
@@ -827,18 +1724,20 @@
             const normalizedBattletag = normalizeBattletag(battletag);
             const visibleBattletag = displayBattletag(battletag);
             currentOverwatchBattletag = visibleBattletag;
+            currentOverwatchStatsSummary = null;
+            setOverwatchStatsButtonState(false);
             setOverwatchProfileHeader({ name: visibleBattletag, title: '프로필 정보를 불러오는 중...' }, visibleBattletag);
             setOverwatchState('Loading...');
 
             try {
-                const summary = await fetchJSON(`https://overfast-api.tekrop.fr/players/${encodeURIComponent(OVERWATCH_PROFILE_ID)}/summary`);
-                renderOverwatchSummary(summary, visibleBattletag);
+                const { summary, statsSummary, competitiveStatsSummary } = await fetchOverwatchData(OVERWATCH_PROFILE_ID);
+                renderOverwatchDashboard(summary, visibleBattletag, statsSummary, competitiveStatsSummary);
             } catch (error) {
                 console.warn('OverFast profile ID lookup failed, trying BattleTag APIs:', error);
 
                 try {
-                    const summary = await fetchJSON(`https://overfast-api.tekrop.fr/players/${encodeURIComponent(normalizedBattletag)}/summary`);
-                    renderOverwatchSummary(summary, visibleBattletag);
+                    const { summary, statsSummary, competitiveStatsSummary } = await fetchOverwatchData(normalizedBattletag);
+                    renderOverwatchDashboard(summary, visibleBattletag, statsSummary, competitiveStatsSummary);
                 } catch (fallbackError) {
                     console.warn('OverFast BattleTag lookup failed, trying OWAPI:', fallbackError);
 
@@ -925,105 +1824,8 @@
 
         // ─── 플로팅 바 간섭 감지 → 자동 compact 축소 ───
         // 스크롤 시 깜빡임을 막기 위해 window.innerWidth 고정 breakpoint 기준으로 판단
-        const LAYOUT_CARD_SELECTOR = '.hero, .instagram-section, .discord-section, .overwatch-section, .github-section, .featured-section';
-        const bentoModeQuery = window.matchMedia('(min-width: 1250px)');
-        let layoutRects = new Map();
-        let layoutTransitionCleanupTimer = 0;
-        let layoutTransitionRun = 0;
-        let layoutResizeFrame = 0;
-        const LAYOUT_ANIMATION_EASING = 'cubic-bezier(0.22, 1, 0.36, 1)';
-        const LAYOUT_ANIMATION_DURATION = 720;
-        const LAYOUT_RESIZE_ANIMATION_DURATION = 560;
 
-        function getLayoutCards() {
-            return Array.from(document.querySelectorAll(LAYOUT_CARD_SELECTOR));
-        }
-
-        function isBentoLayoutActive() {
-            return bentoModeQuery.matches && html.getAttribute('data-wide-bento') !== 'off';
-        }
-
-        function rememberLayoutRects() {
-            layoutRects = new Map(getLayoutCards().map(card => [card, card.getBoundingClientRect()]));
-        }
-
-        function animateLayoutShift({ duration = LAYOUT_ANIMATION_DURATION } = {}) {
-            const cards = getLayoutCards();
-            const runId = ++layoutTransitionRun;
-            html.classList.add('layout-transitioning');
-            window.clearTimeout(layoutTransitionCleanupTimer);
-
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    const animations = [];
-                    let released = false;
-                    const releaseLayoutTransition = () => {
-                        if (released || runId !== layoutTransitionRun) return;
-                        released = true;
-                        window.clearTimeout(layoutTransitionCleanupTimer);
-                        html.classList.remove('layout-transitioning');
-                        rememberLayoutRects();
-                    };
-
-                    cards.forEach(card => {
-                        const previous = layoutRects.get(card);
-                        const current = card.getBoundingClientRect();
-                        if (!previous) return;
-
-                        const deltaX = previous.left - current.left;
-                        const deltaY = previous.top - current.top;
-                        if (Math.abs(deltaX) < 1 && Math.abs(deltaY) < 1) return;
-
-                        if (card.__layoutAnimation) {
-                            card.__layoutAnimation.cancel();
-                        }
-
-                        card.__layoutAnimation = card.animate(
-                            [
-                                { transform: `translate(${deltaX}px, ${deltaY}px)` },
-                                { transform: 'translate(0, 0)' }
-                            ],
-                            {
-                                duration,
-                                easing: LAYOUT_ANIMATION_EASING
-                            }
-                        );
-                        animations.push(card.__layoutAnimation.finished.catch(() => {}));
-                    });
-
-                    rememberLayoutRects();
-                    if (animations.length === 0) {
-                        releaseLayoutTransition();
-                        return;
-                    }
-
-                    Promise.all(animations).then(releaseLayoutTransition);
-                    layoutTransitionCleanupTimer = window.setTimeout(releaseLayoutTransition, duration + 180);
-                });
-            });
-        }
-
-        function queueBentoResizeLayoutShift() {
-            if (layoutResizeFrame) return;
-
-            layoutResizeFrame = window.requestAnimationFrame(() => {
-                layoutResizeFrame = 0;
-
-                if (isBentoLayoutActive()) {
-                    animateLayoutShift({ duration: LAYOUT_RESIZE_ANIMATION_DURATION });
-                    return;
-                }
-
-                rememberLayoutRects();
-            });
-        }
-
-        rememberLayoutRects();
-        bentoModeQuery.addEventListener('change', () => animateLayoutShift());
-        window.addEventListener('resize', queueBentoResizeLayoutShift);
-        window.addEventListener('load', rememberLayoutRects);
-
-        const COMPACT_BREAKPOINT = 700; // px 이하이면 compact 모드
+        const COMPACT_BREAKPOINT = 768; // px 이하이면 compact 모드
 
         function checkNavbarOverlap() {
             const logo = document.querySelector('.floating-logo');
@@ -1032,7 +1834,7 @@
             const themeBar = document.querySelector('.theme-bar');
             if (!logo || !navbar || !themeControls) return;
 
-            const isOverlapping = window.innerWidth < COMPACT_BREAKPOINT;
+            const isOverlapping = window.innerWidth <= COMPACT_BREAKPOINT;
 
             [logo, navbar, themeControls, themeBar].forEach(el => {
                 if (el) el.classList.toggle('compact', isOverlapping);
@@ -1042,6 +1844,7 @@
         // 초기 + 리사이즈 시만 감지 (스크롤 이벤트에는 반응 안 함)
         checkNavbarOverlap();
         window.addEventListener('resize', checkNavbarOverlap);
+        window.addEventListener('resize', handleWindowResize, { passive: true });
     </script>
 </body>
 </html>
