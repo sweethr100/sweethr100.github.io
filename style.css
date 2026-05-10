@@ -6469,3 +6469,281 @@ html[data-discord-card="on"] .discord-custom-status {
     }
 }
 
+/* Works page: keep app cards as a centered vertical list at every width. */
+.container:has(> .works-section) {
+    display: block;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 6rem 20px 3rem;
+}
+
+.container:has(> .works-section) > .works-section {
+    width: min(100%, 455px);
+    margin: 0 auto;
+    padding: 2rem 0 3rem;
+}
+
+.container:has(> .works-section) .works-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.container:has(> .works-section) .work-card {
+    width: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.1);
+}
+
+.container:has(> .works-section) .work-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 24px 58px rgba(15, 23, 42, 0.16);
+}
+
+.container:has(> .works-section) .work-preview {
+    position: relative;
+    height: 142px;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 18% 42%, rgba(255, 255, 255, 0.88) 0 2px, transparent 3px),
+        linear-gradient(135deg, rgba(112, 160, 255, 0.9), rgba(255, 205, 112, 0.85));
+}
+
+.container:has(> .works-section) .work-preview::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 48%),
+        radial-gradient(circle at 20% 74%, rgba(255, 255, 255, 0.72), transparent 18%),
+        radial-gradient(circle at 78% 58%, rgba(15, 23, 42, 0.28), transparent 28%);
+}
+
+.container:has(> .works-section) .work-preview::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 58%;
+    background:
+        linear-gradient(10deg, rgba(15, 23, 42, 0.22), transparent 58%),
+        radial-gradient(ellipse at 30% 100%, rgba(15, 23, 42, 0.22), transparent 46%),
+        radial-gradient(ellipse at 76% 100%, rgba(15, 23, 42, 0.16), transparent 42%);
+    opacity: 0.72;
+}
+
+.container:has(> .works-section) .entry-card .work-preview {
+    background:
+        radial-gradient(circle at 26% 28%, rgba(255, 255, 255, 0.72), transparent 20%),
+        linear-gradient(135deg, #45d56a, #87f08b 48%, #dff9b8);
+}
+
+.container:has(> .works-section) .search-card .work-preview {
+    background:
+        radial-gradient(circle at 72% 42%, rgba(255, 255, 255, 0.7), transparent 18%),
+        linear-gradient(135deg, #334155, #38bdf8 48%, #dbeafe);
+}
+
+.container:has(> .works-section) .game-card .work-preview {
+    background:
+        radial-gradient(circle at 24% 30%, rgba(255, 236, 179, 0.95), transparent 22%),
+        linear-gradient(135deg, #4c1d95, #f59e0b 48%, #fef3c7);
+}
+
+.container:has(> .works-section) .python-card .work-preview {
+    background:
+        radial-gradient(circle at 72% 30%, rgba(255, 255, 255, 0.8), transparent 20%),
+        linear-gradient(135deg, #2563eb, #facc15 58%, #fef9c3);
+}
+
+.container:has(> .works-section) .work-card-body {
+    display: grid;
+    gap: 0.7rem;
+    padding: 1rem 1rem 0.95rem;
+}
+
+.container:has(> .works-section) .work-card-main {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 0.85rem;
+    align-items: start;
+}
+
+.container:has(> .works-section) .work-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.74);
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
+}
+
+.container:has(> .works-section) .work-copy {
+    min-width: 0;
+}
+
+.container:has(> .works-section) .work-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    min-width: 0;
+}
+
+.container:has(> .works-section) .work-title {
+    min-width: 0;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.2;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.container:has(> .works-section) .work-description {
+    margin: 0.28rem 0 0;
+    color: var(--text-primary);
+    font-size: 0.96rem;
+    line-height: 1.25;
+    opacity: 0.9;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.container:has(> .works-section) .work-tags,
+.container:has(> .works-section) .work-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.42rem;
+}
+
+.container:has(> .works-section) .work-tags span {
+    min-height: 25px;
+    padding: 0.24rem 0.55rem;
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.56);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    line-height: 1;
+}
+
+.container:has(> .works-section) .work-meta {
+    justify-content: space-between;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.2;
+}
+
+.container:has(> .works-section) .work-stats {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding-top: 0.1rem;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+.container:has(> .works-section) .work-stat,
+.container:has(> .works-section) .work-like-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+    min-height: 28px;
+    color: inherit;
+    text-decoration: none;
+}
+
+.container:has(> .works-section) .work-stat i,
+.container:has(> .works-section) .work-like-button i {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.container:has(> .works-section) .work-like-button {
+    cursor: pointer;
+    border-radius: 999px;
+    transition: color 0.18s ease, transform 0.18s ease;
+}
+
+.container:has(> .works-section) .work-like-button:hover,
+.container:has(> .works-section) .work-like-button:focus-visible {
+    color: #e11d48;
+    outline: none;
+}
+
+.container:has(> .works-section) .work-like-button:focus-visible {
+    box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.18);
+}
+
+.container:has(> .works-section) .work-like-button.is-liked {
+    color: #e11d48;
+    transform: scale(1.03);
+}
+
+.container:has(> .works-section) .work-stat-spacer {
+    flex: 1 1 auto;
+}
+
+[data-theme="light"] .container:has(> .works-section) .work-card {
+    background: rgba(255, 255, 255, 0.86);
+}
+
+html:not([data-theme="light"]) .container:has(> .works-section) .work-card {
+    background: rgba(26, 28, 46, 0.88);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+}
+
+html:not([data-theme="light"]) .container:has(> .works-section) .work-tags span {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+@media (max-width: 480px) {
+    .container:has(> .works-section) {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .container:has(> .works-section) .work-preview {
+        height: 132px;
+    }
+
+    .container:has(> .works-section) .work-card-main {
+        grid-template-columns: 58px minmax(0, 1fr);
+        gap: 0.72rem;
+    }
+
+    .container:has(> .works-section) .work-icon-wrapper {
+        width: 58px;
+        height: 58px;
+    }
+
+    .container:has(> .works-section) .work-heading {
+        display: block;
+    }
+
+}
+
+@media (min-width: 1250px) {
+    .container:has(> .works-section) {
+        display: block;
+        grid-template-columns: none;
+        grid-auto-rows: auto;
+        gap: 0;
+        padding: 8rem 20px 3rem;
+    }
+}
+

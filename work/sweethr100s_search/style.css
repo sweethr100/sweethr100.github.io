@@ -1,0 +1,30 @@
+#google {
+    display: block; 
+    margin-left: auto;  
+    margin-right: auto;
+    margin-top: 100px;
+}
+#naver {
+    display: block;
+    margin-left: auto;  
+    margin-right: auto;
+    margin-top: 50px;
+}
+#daum {
+    display: block;
+    margin-left: auto;  
+    margin-right: auto;
+    margin-top: 50px;
+}
+
+.search-bar {
+    width: 600px;
+}
+
+.mail-button {
+    margin-top: 15px;
+}
+
+.naver-mail {
+    margin-left: 15px;
+}
