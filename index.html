@@ -114,7 +114,7 @@
             };
 
             function handleBentoMediaChange() {
-                applyDiscordCardMode(localStorage.getItem(WIDE_BENTO_KEY) === 'on');
+                applyDiscordCardMode(localStorage.getItem(WIDE_BENTO_KEY) !== 'off');
             }
 
             if (bentoMediaQuery.addEventListener) {
@@ -123,7 +123,7 @@
                 bentoMediaQuery.addListener(handleBentoMediaChange);
             }
 
-            window.applyWideBentoPreference(localStorage.getItem(WIDE_BENTO_KEY) === 'on');
+            window.applyWideBentoPreference(localStorage.getItem(WIDE_BENTO_KEY) !== 'off');
         })();
     </script>
 </head>
@@ -695,7 +695,7 @@
         themeSelect.value = initialTheme;
         applyTheme(initialTheme);
 
-        const initialWideBento = localStorage.getItem(WIDE_BENTO_KEY) === 'on';
+        const initialWideBento = localStorage.getItem(WIDE_BENTO_KEY) !== 'off';
         wideBentoToggle.checked = initialWideBento;
         if (typeof window.applyWideBentoPreference === 'function') {
             window.applyWideBentoPreference(initialWideBento);
