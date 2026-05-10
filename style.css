@@ -708,18 +708,18 @@ html {
 
 .discord-copy-btn-compact.is-copied,
 .discord-copy-btn-compact.is-copied:hover {
-    background: #22c55e;
+    background: rgba(255, 255, 255, 0.12);
     border-color: #16a34a;
-    color: #ffffff;
-    box-shadow: 0 10px 24px rgba(34, 197, 94, 0.32);
+    color: #22c55e;
+    box-shadow: 0 8px 18px rgba(34, 197, 94, 0.16);
 }
 
 [data-theme="light"] .discord-copy-btn-compact.is-copied,
 [data-theme="light"] .discord-copy-btn-compact.is-copied:hover {
-    background: #22c55e !important;
+    background: #f0f2f5 !important;
     border-color: #16a34a !important;
-    color: #ffffff !important;
-    box-shadow: 0 8px 20px rgba(22, 163, 74, 0.24) !important;
+    color: #15803d !important;
+    box-shadow: 0 6px 16px rgba(22, 163, 74, 0.14) !important;
 }
 
 .discord-copy-btn-compact i {
@@ -1570,73 +1570,34 @@ html[data-discord-card="on"][data-theme="light"] .discord-section.theme-gaming .
     text-align: right;
 }
 
+.overwatch-bento-role-kda {
+    display: flex;
+    align-items: end;
+    gap: 0.3rem;
+    margin: -0.18rem 0 0.56rem;
+}
+
+.overwatch-bento-role-kda strong {
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+.overwatch-bento-role-kda span {
+    color: var(--text-secondary);
+    font-size: 0.66rem;
+    font-weight: 900;
+    padding-bottom: 0.08rem;
+}
+
 .overwatch-bento-mini-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.45rem;
 }
 
 .overwatch-bento-mini-grid .overwatch-compact-stat {
     padding: 0.54rem 0.48rem;
-}
-
-.overwatch-bento-hero-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.42rem;
-}
-
-.overwatch-bento-hero-row {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 0.55rem;
-    min-width: 0;
-}
-
-.overwatch-bento-hero-row > span {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.45rem;
-    height: 1.45rem;
-    border-radius: 50%;
-    background: rgba(255, 156, 0, 0.16);
-    color: #ffb23f;
-    font-size: 0.72rem;
-    font-weight: 900;
-}
-
-[data-theme="light"] .overwatch-bento-hero-row > span {
-    color: #b56500;
-}
-
-.overwatch-bento-hero-row div {
-    min-width: 0;
-}
-
-.overwatch-bento-hero-row strong,
-.overwatch-bento-hero-row small {
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.overwatch-bento-hero-row strong {
-    color: var(--text-primary);
-    font-size: 0.86rem;
-    font-weight: 900;
-    line-height: 1.15;
-}
-
-.overwatch-bento-hero-row small,
-.overwatch-bento-hero-row em,
-.overwatch-bento-empty {
-    color: var(--text-secondary);
-    font-size: 0.72rem;
-    font-weight: 800;
-    font-style: normal;
 }
 
 .overwatch-competitive-note {
@@ -4376,6 +4337,27 @@ html.layout-discord-gradient-muted .discord-body::before {
     }
 }
 
+@media (min-width: 360px) and (max-width: 480px) {
+    .overwatch-rank-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .overwatch-rank-card {
+        min-height: 132px;
+    }
+
+    .overwatch-rank-card strong {
+        font-size: 1.08rem;
+    }
+
+    .overwatch-rank-emblem {
+        --overwatch-rank-icon-size: 58px;
+        --overwatch-tier-icon-size: 60px;
+        --overwatch-unranked-icon-size: 46px;
+        width: 76px;
+    }
+}
+
 @media (max-width: 340px) {
     :root {
         --floating-mobile-bar-width: 92px;
@@ -4625,7 +4607,7 @@ html.layout-discord-gradient-muted .discord-body::before {
     }
 }
 
-@media (max-width: 330px) {
+@media (max-width: 390px) {
     .instagram-section .insta-profile-card {
         border-radius: 24px;
     }
@@ -4634,7 +4616,7 @@ html.layout-discord-gradient-muted .discord-body::before {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 0.85rem;
+        gap: 1rem;
         text-align: center;
     }
 
@@ -4657,6 +4639,7 @@ html.layout-discord-gradient-muted .discord-body::before {
         display: flex;
         align-self: stretch;
         justify-content: center;
+        margin-top: 0.12rem;
         border-radius: 16px;
         padding-inline: 0.75rem;
         white-space: nowrap;
@@ -5275,7 +5258,7 @@ html.layout-discord-gradient-muted .discord-body::before {
 
     .overwatch-section .overwatch-bento-details {
         display: grid;
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 0.55rem;
         overflow: hidden;
     }
@@ -5289,35 +5272,16 @@ html.layout-discord-gradient-muted .discord-body::before {
         margin-bottom: 0.44rem;
     }
 
+    .overwatch-section .overwatch-bento-role-kda {
+        margin-bottom: 0.42rem;
+    }
+
     .overwatch-section .overwatch-bento-mini-grid {
         gap: 0.38rem;
     }
 
     .overwatch-section .overwatch-bento-mini-grid .overwatch-compact-stat {
         padding: 0.46rem 0.38rem;
-    }
-
-    .overwatch-section .overwatch-bento-hero-list {
-        gap: 0.3rem;
-    }
-
-    .overwatch-section .overwatch-bento-hero-row {
-        gap: 0.45rem;
-    }
-
-    .overwatch-section .overwatch-bento-hero-row > span {
-        width: 1.28rem;
-        height: 1.28rem;
-        font-size: 0.66rem;
-    }
-
-    .overwatch-section .overwatch-bento-hero-row strong {
-        font-size: 0.8rem;
-    }
-
-    .overwatch-section .overwatch-bento-hero-row small,
-    .overwatch-section .overwatch-bento-hero-row em {
-        font-size: 0.66rem;
     }
 
     @media (max-width: 1450px) {
@@ -5420,8 +5384,7 @@ html.layout-discord-gradient-muted .discord-body::before {
             margin-bottom: 0;
         }
 
-        .overwatch-section .overwatch-bento-mini-grid,
-        .overwatch-section .overwatch-bento-hero-list {
+        .overwatch-section .overwatch-bento-mini-grid {
             display: none;
         }
     }
@@ -5435,8 +5398,7 @@ html.layout-discord-gradient-muted .discord-body::before {
             min-height: 0;
         }
 
-        .overwatch-section .overwatch-bento-mini-grid,
-        .overwatch-section .overwatch-bento-hero-list {
+        .overwatch-section .overwatch-bento-mini-grid {
             display: none;
         }
     }
@@ -5619,6 +5581,15 @@ html.layout-discord-gradient-muted .discord-body::before {
 }
 
 @media (max-width: 480px) {
+    .instagram-section .section-title,
+    .discord-section .section-title,
+    .overwatch-section .section-title {
+        font-size: 2.2rem;
+        font-weight: 850;
+        line-height: 1.1;
+        letter-spacing: -1px;
+    }
+
     html[data-wide-bento="on"] .container > .instagram-section {
         padding: 1.05rem;
         overflow: visible;
@@ -5666,6 +5637,25 @@ html.layout-discord-gradient-muted .discord-body::before {
         padding: 0.56rem 1.25rem;
         font-size: 0.9rem;
         line-height: 1.25;
+    }
+}
+
+@media (max-width: 390px) {
+    html[data-wide-bento="on"] .instagram-section .insta-card-body {
+        gap: 1rem;
+    }
+
+    html[data-wide-bento="on"] .instagram-section .insta-card-btn {
+        margin-top: 0.12rem;
+    }
+}
+
+@media (min-width: 391px) and (max-width: 480px) {
+    .instagram-section .insta-card-btn,
+    html[data-wide-bento="on"] .instagram-section .insta-card-btn {
+        padding: 0.72rem 1.55rem;
+        font-size: 1rem;
+        border-radius: 999px;
     }
 }
 
@@ -5726,9 +5716,9 @@ html[data-discord-card="on"][data-theme="light"] .discord-section {
         rgba(255, 255, 255, 0.34);
     --discord-surface-border: rgba(255, 255, 255, 0.38);
     --discord-surface-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82), 0 16px 36px rgba(79, 70, 229, 0.12);
-    --discord-status-field-bg: rgba(255, 255, 255, 0.46);
-    --discord-status-field-border: rgba(255, 255, 255, 0.46);
-    --discord-status-field-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    --discord-status-field-bg: rgba(255, 255, 255, 0.72);
+    --discord-status-field-border: rgba(100, 116, 139, 0.2);
+    --discord-status-field-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 8px rgba(15, 23, 42, 0.055);
     --discord-panel-bg: rgba(255, 255, 255, 0.86);
     --discord-panel-border: rgba(100, 116, 139, 0.18);
     --discord-field-bg: rgba(255, 255, 255, 0.92);
@@ -5795,8 +5785,8 @@ html[data-discord-card="on"] .discord-section .section-title {
     margin-bottom: 1.1rem;
     padding-left: 0;
     text-align: center;
-    font-size: 2rem;
-    letter-spacing: 0;
+    font-size: 2.2rem;
+    letter-spacing: -1px;
 }
 
 html[data-discord-card="on"] .discord-plate-content {
@@ -5929,10 +5919,10 @@ html[data-discord-card="on"] .discord-copy-btn-compact:hover {
 
 html[data-discord-card="on"] .discord-copy-btn-compact.is-copied,
 html[data-discord-card="on"] .discord-copy-btn-compact.is-copied:hover {
-    background: #22c55e;
+    background: var(--discord-copy-bg);
     border-color: #16a34a;
-    color: #ffffff;
-    box-shadow: 0 10px 24px rgba(34, 197, 94, 0.28);
+    color: #22c55e;
+    box-shadow: 0 8px 18px rgba(34, 197, 94, 0.14);
 }
 
 html[data-discord-card="on"] .discord-custom-status {
@@ -6123,10 +6113,10 @@ html[data-discord-card="on"][data-theme="light"] .discord-copy-btn-compact:hover
 
 html[data-discord-card="on"][data-theme="light"] .discord-copy-btn-compact.is-copied,
 html[data-discord-card="on"][data-theme="light"] .discord-copy-btn-compact.is-copied:hover {
-    background: #22c55e !important;
+    background: var(--discord-copy-bg) !important;
     border-color: #16a34a !important;
-    color: #ffffff !important;
-    box-shadow: 0 8px 20px rgba(22, 163, 74, 0.24) !important;
+    color: #15803d !important;
+    box-shadow: 0 6px 16px rgba(22, 163, 74, 0.14) !important;
 }
 
 html[data-discord-card="on"][data-theme="light"] .discord-activity-details-text,

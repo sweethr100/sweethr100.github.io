@@ -1558,7 +1558,7 @@
                             ${compactStat('치유량', formatCompactNumber(total.healing))}
                         </div>
                     ` : '<div class="overwatch-inline-state overwatch-competitive-note">현재 경쟁전 상세 통계를 아직 가져오지 못했습니다.</div>'}
-                    ${renderOverwatchBentoDetails(overallStatsSummary)}
+                    ${renderOverwatchBentoDetails(statsSummary)}
                 </section>
             `;
         }
@@ -1601,55 +1601,34 @@
         function renderOverwatchBentoDetails(statsSummary) {
             if (!statsSummary) return '';
 
-            const general = statsSummary.general || {};
-            const topHeroes = getTopOverwatchHeroEntries(statsSummary.heroes, 3);
-            const heroRows = topHeroes.length
-                ? topHeroes.map(([hero, stats], index) => renderOverwatchBentoHeroRow(hero, stats, index + 1)).join('')
-                : '<div class="overwatch-inline-state overwatch-bento-empty">표시할 영웅 통계가 없습니다.</div>';
+            const roles = statsSummary.roles || {};
+            const roleCards = ['tank', 'damage', 'support']
+                .map(role => renderOverwatchBentoRoleCard(role, roles[role]))
+                .join('');
 
             return `
                 <div class="overwatch-bento-details">
-                    <article class="overwatch-bento-panel">
-                        <div class="overwatch-bento-panel-header">
-                            <span>전체 요약</span>
-                            <strong>${escapeHTML(formatDurationSeconds(general.time_played))}</strong>
-                        </div>
-                        <div class="overwatch-bento-mini-grid">
-                            ${compactStat('전적', formatWithSuffix(general.games_played, '전'))}
-                            ${compactStat('승률', formatPercent(general.winrate))}
-                            ${compactStat('KDA', formatCompactNumber(general.kda, 2))}
-                        </div>
-                    </article>
-                    <article class="overwatch-bento-panel">
-                        <div class="overwatch-bento-panel-header">
-                            <span>많이 한 영웅</span>
-                            <strong>${topHeroes.length ? `${topHeroes.length}명` : '-'}</strong>
-                        </div>
-                        <div class="overwatch-bento-hero-list">
-                            ${heroRows}
-                        </div>
-                    </article>
+                    ${roleCards}
                 </div>
             `;
         }
 
-        function getTopOverwatchHeroEntries(heroes = {}, limit = 3) {
-            return Object.entries(heroes || {})
-                .filter(([, stats]) => hasHeroStats(stats))
-                .sort(([, a], [, b]) => (b.time_played || 0) - (a.time_played || 0))
-                .slice(0, limit);
-        }
-
-        function renderOverwatchBentoHeroRow(heroKey, stats = {}, rank) {
+        function renderOverwatchBentoRoleCard(role, stats = {}) {
             return `
-                <div class="overwatch-bento-hero-row">
-                    <span>${escapeHTML(rank)}</span>
-                    <div>
-                        <strong>${escapeHTML(formatHeroName(heroKey))}</strong>
-                        <small>${escapeHTML(formatDurationSeconds(stats.time_played))} · ${escapeHTML(formatWithSuffix(stats.games_played, '전'))}</small>
+                <article class="overwatch-bento-panel overwatch-bento-role-card">
+                    <div class="overwatch-bento-panel-header">
+                        <span>${escapeHTML(OVERWATCH_ROLE_LABELS[role] || role)}</span>
+                        <strong>${escapeHTML(formatPercent(stats?.winrate))}</strong>
                     </div>
-                    <em>${escapeHTML(formatPercent(stats.winrate))}</em>
-                </div>
+                    <div class="overwatch-bento-role-kda">
+                        <strong>${escapeHTML(formatCompactNumber(stats?.kda, 2))}</strong>
+                        <span>KDA</span>
+                    </div>
+                    <div class="overwatch-bento-mini-grid">
+                        ${compactStat('경기', formatWithSuffix(stats?.games_played, '전'))}
+                        ${compactStat('시간', formatDurationSeconds(stats?.time_played))}
+                    </div>
+                </article>
             `;
         }
 
