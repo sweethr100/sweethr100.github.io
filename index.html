@@ -41,8 +41,7 @@
             const bentoMediaQuery = window.matchMedia(BENTO_MEDIA_QUERY);
 
             function applyDiscordCardMode(enabled) {
-                const isBentoActive = enabled && bentoMediaQuery.matches;
-                document.documentElement.setAttribute('data-discord-card', isBentoActive ? 'off' : 'on');
+                document.documentElement.setAttribute('data-discord-card', 'on');
             }
 
             function getResponsiveLayoutRules() {
@@ -190,23 +189,8 @@
             </div>
         </section>
 
-
-
-        <section class="featured-section">
-            <h2 class="section-title">YouTube 대표 영상</h2>
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/RiYA19LdzSc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            </div>
-            <div class="profile-link-container">
-                <a href="https://www.youtube.com/@%EC%84%B8%EB%AF%88" target="_blank" class="profile-btn youtube-profile-btn">
-                    <i class="fi fi-brands-youtube"></i>
-                    <span>YouTube 채널 방문</span>
-                </a>
-            </div>
-        </section>
-
         <!-- Discord Live Activity Section -->
-        <section class="discord-section bento-span-1x1" id="discordWideWidget">
+        <section class="discord-section bento-span-2x1" id="discordWideWidget">
             <h2 class="section-title">Discord</h2>
             <div class="discord-plate-content">
                 <div class="discord-header">
@@ -334,9 +318,40 @@
         </section>
 
         <section class="github-section">
-            <h2 class="section-title">GitHub 최근 활동</h2>
+            <h2 class="section-title">GitHub</h2>
+
+            <p class="github-repo-count">공개 레포 <span id="githubPublicRepoCount">--</span>개</p>
             <div class="github-list" id="githubRepoList">
                 <p style="text-align: center; color: var(--text-secondary);">Loading repositories...</p>
+            </div>
+
+            <div class="github-contribution-card" id="githubContributionCard">
+                <div class="contribution-header">
+                    <div class="contribution-title-group">
+                        <h3>GitHub 잔디</h3>
+                        <p class="contribution-total">지난 1년 기여 <strong id="githubContributionTotal">--</strong>개</p>
+                    </div>
+                    <span class="contribution-range" id="githubContributionRange">Actions 실행 후 업데이트</span>
+                </div>
+                <div class="calendar-container">
+                    <div class="contribution-calendar" id="githubContributionCalendar" role="img" aria-label="GitHub contribution calendar">
+                        <p class="contribution-placeholder">잔디 데이터를 불러오는 중...</p>
+                    </div>
+                </div>
+                <div class="contribution-footer">
+                    <span class="footer-note" id="githubContributionUpdated">GitHub Actions가 매일 자동으로 갱신합니다.</span>
+                    <div class="contribution-legend" aria-hidden="true">
+                        <span>Less</span>
+                        <div class="legend-squares">
+                            <span class="square level-0"></span>
+                            <span class="square level-1"></span>
+                            <span class="square level-2"></span>
+                            <span class="square level-3"></span>
+                            <span class="square level-4"></span>
+                        </div>
+                        <span>More</span>
+                    </div>
+                </div>
             </div>
 
             <div class="profile-link-container">
@@ -368,7 +383,6 @@
         const WIDE_BENTO_KEY = 'wideBentoMode';
         const LAYOUT_MOTION_SELECTOR = [
             '.container > .hero',
-            '.container > .featured-section',
             '.container > .discord-section',
             '.container > .overwatch-section',
             '.container > .instagram-section',
@@ -740,13 +754,35 @@
             }
         });
 
+        const GITHUB_USERNAME = 'sweethr100';
+        const GITHUB_PROFILE_API_URL = `https://api.github.com/users/${GITHUB_USERNAME}`;
+        const GITHUB_REPOS_API_URL = `${GITHUB_PROFILE_API_URL}/repos?sort=pushed&per_page=3`;
+        const GITHUB_CONTRIBUTIONS_DATA_URL = './data/github-contributions.json';
+
+        function formatGitHubNumber(value) {
+            const number = Number(value);
+            return Number.isFinite(number) ? new Intl.NumberFormat('ko-KR').format(number) : '--';
+        }
+
+        function formatGitHubDate(value) {
+            if (!value) return '--';
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return '--';
+            return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+        }
+
+        function setTextContent(id, value) {
+            const element = document.getElementById(id);
+            if (element) element.textContent = value;
+        }
+
         // 깃허브 실시간 레포지토리 로드 기능
         async function fetchGitHubRepos() {
             const listContainer = document.getElementById('githubRepoList');
             if (!listContainer) return;
             
             try {
-                const response = await fetch('https://api.github.com/users/sweethr100/repos?sort=pushed&per_page=3');
+                const response = await fetch(GITHUB_REPOS_API_URL);
                 if (!response.ok) throw new Error('Network response was not ok');
                 const repos = await response.json();
                 
@@ -783,6 +819,130 @@
             } catch (error) {
                 console.error('Failed to fetch GitHub repos:', error);
                 listContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">GitHub 데이터를 불러오지 못했습니다.</p>';
+            }
+        }
+
+        async function fetchGitHubProfile() {
+            try {
+                const response = await fetch(GITHUB_PROFILE_API_URL);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const profile = await response.json();
+                setTextContent('githubPublicRepoCount', formatGitHubNumber(profile.public_repos));
+            } catch (error) {
+                console.error('Failed to fetch GitHub profile:', error);
+            }
+        }
+
+        function getContributionLevel(day) {
+            if (Number.isInteger(day.level)) return Math.max(0, Math.min(4, day.level));
+
+            const levelMap = {
+                NONE: 0,
+                FIRST_QUARTILE: 1,
+                SECOND_QUARTILE: 2,
+                THIRD_QUARTILE: 3,
+                FOURTH_QUARTILE: 4,
+            };
+
+            return levelMap[day.contributionLevel] ?? 0;
+        }
+
+        function getContributionMonthLabel(week, isFirstWeek = false) {
+            const days = week.contributionDays || [];
+            const monthStart = isFirstWeek ? days[0] : days.find(day => {
+                const date = new Date(day.date);
+                return !Number.isNaN(date.getTime()) && date.getDate() <= 7;
+            });
+
+            if (!monthStart) return '';
+
+            const date = new Date(monthStart.date);
+            return `${date.getMonth() + 1}월`;
+        }
+
+        function renderGitHubContributions(data) {
+            const calendarContainer = document.getElementById('githubContributionCalendar');
+            if (!calendarContainer) return;
+
+            const weeks = data?.calendar?.weeks || [];
+            const days = weeks.flatMap(week => week.contributionDays || []);
+
+            if (data?.publicRepos != null) {
+                setTextContent('githubPublicRepoCount', formatGitHubNumber(data.publicRepos));
+            }
+            if (data?.totalContributions != null) {
+                setTextContent('githubContributionTotal', formatGitHubNumber(data.totalContributions));
+            }
+
+            if (!weeks.length || !days.length) {
+                calendarContainer.innerHTML = '<p class="contribution-placeholder">아직 생성된 잔디 데이터가 없습니다.</p>';
+                setTextContent('githubContributionRange', 'Actions 수동 실행 또는 다음 자동 실행 후 표시됩니다');
+                return;
+            }
+
+            const firstDate = data?.range?.from || days[0]?.date;
+            const lastDate = data?.range?.to || days[days.length - 1]?.date;
+            setTextContent('githubContributionRange', `${formatGitHubDate(firstDate)} - ${formatGitHubDate(lastDate)}`);
+
+            if (data?.generatedAt) {
+                setTextContent('githubContributionUpdated', `마지막 업데이트: ${formatGitHubDate(data.generatedAt)}`);
+            }
+
+            calendarContainer.setAttribute(
+                'aria-label',
+                `${firstDate}부터 ${lastDate}까지 GitHub 기여 ${formatGitHubNumber(data?.totalContributions)}개`
+            );
+
+            const monthMarkup = weeks.map((week, index) => {
+                const label = getContributionMonthLabel(week, index === 0);
+                const previousLabel = index > 0 ? getContributionMonthLabel(weeks[index - 1], index === 1) : '';
+                return `<span>${label && label !== previousLabel ? label : ''}</span>`;
+            }).join('');
+
+            const gridMarkup = weeks.map(week => {
+                const weekDays = week.contributionDays || [];
+                const dayMarkup = weekDays.map(day => {
+                    const count = Number(day.count ?? day.contributionCount ?? 0);
+                    const level = getContributionLevel(day);
+                    const date = day.date || '';
+                    const title = `${formatGitHubDate(date)} 기여 ${formatGitHubNumber(count)}개`;
+                    return `<span class="contribution-day level-${level}" title="${title}" aria-label="${title}"></span>`;
+                }).join('');
+
+                return `<div class="contribution-week">${dayMarkup}</div>`;
+            }).join('');
+
+            calendarContainer.innerHTML = `
+                <div class="contribution-calendar-frame">
+                    <div class="contribution-months">${monthMarkup}</div>
+                    <div class="contribution-body">
+                        <div class="contribution-weekdays" aria-hidden="true">
+                            <span></span>
+                            <span>월</span>
+                            <span></span>
+                            <span>수</span>
+                            <span></span>
+                            <span>금</span>
+                            <span></span>
+                        </div>
+                        <div class="contribution-grid">${gridMarkup}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function fetchGitHubContributions() {
+            try {
+                const response = await fetch(GITHUB_CONTRIBUTIONS_DATA_URL, { cache: 'no-store' });
+                if (!response.ok) throw new Error('Contribution data not found');
+                const data = await response.json();
+                renderGitHubContributions(data);
+            } catch (error) {
+                console.error('Failed to fetch GitHub contribution data:', error);
+                const calendarContainer = document.getElementById('githubContributionCalendar');
+                if (calendarContainer) {
+                    calendarContainer.innerHTML = '<p class="contribution-placeholder">잔디 데이터를 불러오지 못했습니다.</p>';
+                }
             }
         }
 
@@ -849,7 +1009,7 @@
 
                 // 2. 커스텀 상태 메시지 업데이트
                 const customStatus = data.activities.find(a => a.type === 4);
-                let useWideDiscordBento = Boolean(customStatus && customStatus.state && customStatus.state.length > 42);
+                let useWideDiscordBento = true;
                 if (customStatusText) {
                     const span = customStatusText.querySelector('.discord-status-text') || customStatusText;
                     span.innerText = customStatus && customStatus.state ? customStatus.state : '상태메시지가 없습니다';
@@ -1095,7 +1255,9 @@
         connectLanyardSocket();
 
         // 페이지 로드 시 실행
+        fetchGitHubProfile();
         fetchGitHubRepos();
+        fetchGitHubContributions();
 
         const OVERWATCH_PLATFORM = 'pc';
         const OVERWATCH_BATTLETAG = 'SEML#3291';
@@ -1109,9 +1271,26 @@
             support: '지원',
             open: '자유 경쟁전'
         };
+        const OVERWATCH_STATS_MODE_META = {
+            quickplay: {
+                label: '빠른 대전',
+                title: '빠른 대전 통계',
+                subtitle: '빠른 대전 · PC'
+            },
+            competitive: {
+                label: '현재 경쟁전',
+                title: '현재 경쟁전 통계',
+                subtitle: '현재 경쟁전 시즌 · PC'
+            }
+        };
         const OVERWATCH_MODAL_ANIMATION_MS = 340;
         let currentOverwatchBattletag = OVERWATCH_BATTLETAG;
         let currentOverwatchStatsSummary = null;
+        let currentOverwatchStatsSummaries = {
+            quickplay: null,
+            competitive: null
+        };
+        let currentOverwatchStatsMode = 'quickplay';
         let overwatchModalCloseTimer = 0;
         let overwatchModalScrollLocked = false;
         let overwatchModalPreviousBodyPaddingRight = '';
@@ -1211,9 +1390,9 @@
             `;
         }
 
-        function rankCard(label, rank) {
+        function rankCard(label, rank, role) {
             const isUnranked = !rank || (!rank.division && !rank.tier);
-            const roleIcon = rank?.role_icon ? `<img src="${escapeHTML(rank.role_icon)}" alt="" class="overwatch-role-icon">` : '';
+            const roleIcon = renderOverwatchRoleIcon(rank, role);
             const rankIconSource = isUnranked ? OVERWATCH_UNRANKED_ICON : (rank?.rank_icon || OVERWATCH_UNRANKED_ICON);
             const rankIcon = `<img src="${escapeHTML(rankIconSource)}" alt="" class="overwatch-rank-icon${isUnranked ? ' is-unranked' : ''}">`;
             const tierIcon = !isUnranked && rank?.tier_icon ? `<img src="${escapeHTML(rank.tier_icon)}" alt="" class="overwatch-tier-icon">` : '';
@@ -1233,10 +1412,23 @@
             `;
         }
 
+        function renderOverwatchRoleIcon(rank, role) {
+            const roleClass = role ? ` overwatch-role-icon-${escapeHTML(role)}` : '';
+            return rank?.role_icon
+                ? `<img src="${escapeHTML(rank.role_icon)}" alt="" class="overwatch-role-icon${roleClass}" onerror="this.hidden=true">`
+                : '';
+        }
+
         function rankLabel(rank) {
             if (!rank || (!rank.division && !rank.tier)) return 'Unranked';
             const division = rank.division ? rank.division.charAt(0).toUpperCase() + rank.division.slice(1) : '';
             return `${division} ${rank.tier || ''}`.trim() || '-';
+        }
+
+        function formatOverwatchSeason(value) {
+            const number = parseStatNumber(value);
+            if (number === null) return formatCompactNumber(value);
+            return String(number >= 20 && number < 100 ? number - 20 : number);
         }
 
         function renderOverwatchSummary(data, battletag) {
@@ -1253,10 +1445,10 @@
             }, battletag);
 
             stats.innerHTML = `
-                ${rankCard('돌격', competitive.tank)}
-                ${rankCard('공격', competitive.damage)}
-                ${rankCard('지원', competitive.support)}
-                ${rankCard('자유 경쟁전', competitive.open)}
+                ${rankCard('돌격', competitive.tank, 'tank')}
+                ${rankCard('공격', competitive.damage, 'damage')}
+                ${rankCard('지원', competitive.support, 'support')}
+                ${rankCard('자유 경쟁전', competitive.open, 'open')}
                 ${statCard('경쟁전 시즌', competitive.season)}
             `;
         }
@@ -1289,6 +1481,7 @@
             const encodedPlayerId = encodeURIComponent(playerId);
             const summary = await fetchJSON(`${OVERWATCH_API_BASE}/players/${encodedPlayerId}/summary`);
             let statsSummary = null;
+            let quickplayStatsSummary = null;
             let competitiveStatsSummary = null;
 
             try {
@@ -1298,20 +1491,31 @@
             }
 
             try {
+                quickplayStatsSummary = await fetchJSON(`${OVERWATCH_API_BASE}/players/${encodedPlayerId}/stats/summary?platform=${OVERWATCH_PLATFORM}&gamemode=quickplay`);
+            } catch (error) {
+                console.warn('OverFast quickplay stats summary lookup failed:', error);
+            }
+
+            try {
                 competitiveStatsSummary = await fetchJSON(`${OVERWATCH_API_BASE}/players/${encodedPlayerId}/stats/summary?platform=${OVERWATCH_PLATFORM}&gamemode=competitive`);
             } catch (error) {
                 console.warn('OverFast competitive stats summary lookup failed:', error);
             }
 
-            return { summary, statsSummary, competitiveStatsSummary };
+            return { summary, statsSummary, quickplayStatsSummary, competitiveStatsSummary };
         }
 
-        function renderOverwatchDashboard(data, battletag, statsSummary, competitiveStatsSummary) {
+        function renderOverwatchDashboard(data, battletag, statsSummary, quickplayStatsSummary, competitiveStatsSummary) {
             const stats = document.getElementById('overwatchStats');
             if (!stats) return;
 
             currentOverwatchStatsSummary = statsSummary;
-            setOverwatchStatsButtonState(Boolean(statsSummary));
+            currentOverwatchStatsSummaries = {
+                quickplay: quickplayStatsSummary,
+                competitive: competitiveStatsSummary
+            };
+            currentOverwatchStatsMode = quickplayStatsSummary ? 'quickplay' : 'competitive';
+            setOverwatchStatsButtonState(Boolean(quickplayStatsSummary || competitiveStatsSummary));
 
             const competitive = data.competitive?.[OVERWATCH_PLATFORM] || data.competitive?.pc || {};
             setOverwatchProfileHeader({
@@ -1322,10 +1526,10 @@
                 endorsement: data.endorsement
             }, battletag);
 
-            stats.innerHTML = renderOverwatchCompetitivePanel(competitive, competitiveStatsSummary);
+            stats.innerHTML = renderOverwatchCompetitivePanel(competitive, competitiveStatsSummary, statsSummary);
         }
 
-        function renderOverwatchCompetitivePanel(competitive = {}, statsSummary) {
+        function renderOverwatchCompetitivePanel(competitive = {}, statsSummary, overallStatsSummary) {
             const general = statsSummary?.general;
             const total = general?.total || {};
             const recordText = general
@@ -1336,13 +1540,13 @@
                 <section class="overwatch-current-competitive">
                     <div class="overwatch-current-header">
                         <strong>현재 경쟁전</strong>
-                        <span>시즌 ${formatCompactNumber(competitive.season)} · ${recordText}</span>
+                        <span>시즌 ${formatOverwatchSeason(competitive.season)} · ${recordText}</span>
                     </div>
                     <div class="overwatch-rank-strip">
-                        ${rankCard('돌격', competitive.tank)}
-                        ${rankCard('공격', competitive.damage)}
-                        ${rankCard('지원', competitive.support)}
-                        ${rankCard('자유 경쟁전', competitive.open)}
+                        ${rankCard('돌격', competitive.tank, 'tank')}
+                        ${rankCard('공격', competitive.damage, 'damage')}
+                        ${rankCard('지원', competitive.support, 'support')}
+                        ${rankCard('자유 경쟁전', competitive.open, 'open')}
                     </div>
                     ${general ? `
                         <div class="overwatch-compact-stat-row">
@@ -1354,6 +1558,7 @@
                             ${compactStat('치유량', formatCompactNumber(total.healing))}
                         </div>
                     ` : '<div class="overwatch-inline-state overwatch-competitive-note">현재 경쟁전 상세 통계를 아직 가져오지 못했습니다.</div>'}
+                    ${renderOverwatchBentoDetails(overallStatsSummary)}
                 </section>
             `;
         }
@@ -1393,12 +1598,105 @@
             `;
         }
 
-        function renderOverwatchStatsSections(statsSummary) {
+        function renderOverwatchBentoDetails(statsSummary) {
+            if (!statsSummary) return '';
+
+            const general = statsSummary.general || {};
+            const topHeroes = getTopOverwatchHeroEntries(statsSummary.heroes, 3);
+            const heroRows = topHeroes.length
+                ? topHeroes.map(([hero, stats], index) => renderOverwatchBentoHeroRow(hero, stats, index + 1)).join('')
+                : '<div class="overwatch-inline-state overwatch-bento-empty">표시할 영웅 통계가 없습니다.</div>';
+
+            return `
+                <div class="overwatch-bento-details">
+                    <article class="overwatch-bento-panel">
+                        <div class="overwatch-bento-panel-header">
+                            <span>전체 요약</span>
+                            <strong>${escapeHTML(formatDurationSeconds(general.time_played))}</strong>
+                        </div>
+                        <div class="overwatch-bento-mini-grid">
+                            ${compactStat('전적', formatWithSuffix(general.games_played, '전'))}
+                            ${compactStat('승률', formatPercent(general.winrate))}
+                            ${compactStat('KDA', formatCompactNumber(general.kda, 2))}
+                        </div>
+                    </article>
+                    <article class="overwatch-bento-panel">
+                        <div class="overwatch-bento-panel-header">
+                            <span>많이 한 영웅</span>
+                            <strong>${topHeroes.length ? `${topHeroes.length}명` : '-'}</strong>
+                        </div>
+                        <div class="overwatch-bento-hero-list">
+                            ${heroRows}
+                        </div>
+                    </article>
+                </div>
+            `;
+        }
+
+        function getTopOverwatchHeroEntries(heroes = {}, limit = 3) {
+            return Object.entries(heroes || {})
+                .filter(([, stats]) => hasHeroStats(stats))
+                .sort(([, a], [, b]) => (b.time_played || 0) - (a.time_played || 0))
+                .slice(0, limit);
+        }
+
+        function renderOverwatchBentoHeroRow(heroKey, stats = {}, rank) {
+            return `
+                <div class="overwatch-bento-hero-row">
+                    <span>${escapeHTML(rank)}</span>
+                    <div>
+                        <strong>${escapeHTML(formatHeroName(heroKey))}</strong>
+                        <small>${escapeHTML(formatDurationSeconds(stats.time_played))} · ${escapeHTML(formatWithSuffix(stats.games_played, '전'))}</small>
+                    </div>
+                    <em>${escapeHTML(formatPercent(stats.winrate))}</em>
+                </div>
+            `;
+        }
+
+        function renderOverwatchStatsModeTabs(activeMode) {
+            const buttons = Object.entries(OVERWATCH_STATS_MODE_META)
+                .map(([mode, meta]) => {
+                    const hasData = Boolean(currentOverwatchStatsSummaries[mode]);
+                    const isActive = mode === activeMode;
+                    return `
+                        <button type="button"
+                                class="overwatch-stats-mode-btn${isActive ? ' is-active' : ''}"
+                                onclick="switchOverwatchStatsMode('${mode}')"
+                                aria-pressed="${isActive}"
+                                ${hasData ? '' : 'disabled'}>
+                            ${escapeHTML(meta.label)}
+                        </button>
+                    `;
+                })
+                .join('');
+
+            return `<div class="overwatch-stats-mode-tabs" role="group" aria-label="Overwatch stats mode">${buttons}</div>`;
+        }
+
+        function renderOverwatchStatsModalContent(mode = currentOverwatchStatsMode) {
+            const summary = currentOverwatchStatsSummaries[mode];
+            const meta = OVERWATCH_STATS_MODE_META[mode] || OVERWATCH_STATS_MODE_META.quickplay;
+
+            return `
+                ${renderOverwatchStatsModeTabs(mode)}
+                ${renderOverwatchStatsSections(summary, meta)}
+            `;
+        }
+
+        function switchOverwatchStatsMode(mode) {
+            if (!currentOverwatchStatsSummaries[mode]) return;
+
+            currentOverwatchStatsMode = mode;
+            const body = document.getElementById('overwatchStatsModalBody');
+            if (body) body.innerHTML = renderOverwatchStatsModalContent(mode);
+        }
+
+        function renderOverwatchStatsSections(statsSummary, meta = {}) {
             if (!statsSummary) {
                 return `
                     <section class="overwatch-stats-section">
                         <div class="overwatch-stats-section-header">
-                            <strong>상세 통계</strong>
+                            <strong>${escapeHTML(meta.title || '상세 통계')}</strong>
                             <span>공개 전적 없음</span>
                         </div>
                         <div class="overwatch-inline-state">승률, KDA, 역할별/영웅별 통계를 아직 가져오지 못했습니다.</div>
@@ -1407,8 +1705,8 @@
             }
 
             return `
-                ${renderGeneralStatsSection(statsSummary.general)}
-                ${renderRoleStatsSection(statsSummary.roles)}
+                ${renderGeneralStatsSection(statsSummary.general, meta)}
+                ${renderRoleStatsSection(statsSummary.roles, meta)}
                 ${renderHeroStatsSection(statsSummary.heroes)}
             `;
         }
@@ -1459,14 +1757,14 @@
         }
 
         function openOverwatchStatsModal() {
-            if (!currentOverwatchStatsSummary) return;
+            if (!currentOverwatchStatsSummaries.quickplay && !currentOverwatchStatsSummaries.competitive) return;
 
             const modal = document.getElementById('overwatchStatsModal');
             const body = document.getElementById('overwatchStatsModalBody');
             if (!modal || !body) return;
 
             clearTimeout(overwatchModalCloseTimer);
-            body.innerHTML = renderOverwatchStatsSections(currentOverwatchStatsSummary);
+            body.innerHTML = renderOverwatchStatsModalContent(currentOverwatchStatsMode);
             modal.classList.remove('is-closing');
             modal.hidden = false;
             modal.setAttribute('aria-hidden', 'false');
@@ -1521,13 +1819,13 @@
             `;
         }
 
-        function renderGeneralStatsSection(general = {}) {
+        function renderGeneralStatsSection(general = {}, meta = {}) {
             const total = general.total || {};
             const average = general.average || {};
             const content = `
                 <div class="overwatch-metric-grid">
                     ${metricCard('총 전적', formatWithSuffix(general.games_played, '전'), `${formatWithSuffix(general.games_won, '승')} ${formatWithSuffix(general.games_lost, '패')}`)}
-                    ${metricCard('승률', formatPercent(general.winrate), '전체 모드 기준')}
+                    ${metricCard('승률', formatPercent(general.winrate), `${meta.label || '전체 모드'} 기준`)}
                     ${metricCard('KDA', formatCompactNumber(general.kda, 2), '(처치+도움)/죽음')}
                     ${metricCard('플레이 시간', formatDurationSeconds(general.time_played), '공개 프로필 합산')}
                     ${metricCard('처치', formatCompactNumber(total.eliminations), `평균 ${formatCompactNumber(average.eliminations, 2)}/10분`)}
@@ -1537,15 +1835,15 @@
                     ${metricCard('치유량', formatCompactNumber(total.healing), `평균 ${formatCompactNumber(average.healing, 2)}/10분`)}
                 </div>
             `;
-            return renderStatsSection('종합 통계', '전체 모드 · PC', content);
+            return renderStatsSection(meta.title || '종합 통계', meta.subtitle || '전체 모드 · PC', content);
         }
 
-        function renderRoleStatsSection(roles = {}) {
+        function renderRoleStatsSection(roles = {}, meta = {}) {
             const roleCards = ['tank', 'damage', 'support']
                 .map(role => renderRoleStatsCard(role, roles[role]))
                 .join('');
 
-            return renderStatsSection('역할별 통계', '승률 · KDA · 누적 기록', `<div class="overwatch-role-grid">${roleCards}</div>`);
+            return renderStatsSection('역할별 통계', meta.label ? `${meta.label} · 승률 · KDA · 누적 기록` : '승률 · KDA · 누적 기록', `<div class="overwatch-role-grid">${roleCards}</div>`);
         }
 
         function renderRoleStatsCard(role, stats = {}) {
@@ -1725,19 +2023,24 @@
             const visibleBattletag = displayBattletag(battletag);
             currentOverwatchBattletag = visibleBattletag;
             currentOverwatchStatsSummary = null;
+            currentOverwatchStatsSummaries = {
+                quickplay: null,
+                competitive: null
+            };
+            currentOverwatchStatsMode = 'quickplay';
             setOverwatchStatsButtonState(false);
             setOverwatchProfileHeader({ name: visibleBattletag, title: '프로필 정보를 불러오는 중...' }, visibleBattletag);
             setOverwatchState('Loading...');
 
             try {
-                const { summary, statsSummary, competitiveStatsSummary } = await fetchOverwatchData(OVERWATCH_PROFILE_ID);
-                renderOverwatchDashboard(summary, visibleBattletag, statsSummary, competitiveStatsSummary);
+                const { summary, statsSummary, quickplayStatsSummary, competitiveStatsSummary } = await fetchOverwatchData(OVERWATCH_PROFILE_ID);
+                renderOverwatchDashboard(summary, visibleBattletag, statsSummary, quickplayStatsSummary, competitiveStatsSummary);
             } catch (error) {
                 console.warn('OverFast profile ID lookup failed, trying BattleTag APIs:', error);
 
                 try {
-                    const { summary, statsSummary, competitiveStatsSummary } = await fetchOverwatchData(normalizedBattletag);
-                    renderOverwatchDashboard(summary, visibleBattletag, statsSummary, competitiveStatsSummary);
+                    const { summary, statsSummary, quickplayStatsSummary, competitiveStatsSummary } = await fetchOverwatchData(normalizedBattletag);
+                    renderOverwatchDashboard(summary, visibleBattletag, statsSummary, quickplayStatsSummary, competitiveStatsSummary);
                 } catch (fallbackError) {
                     console.warn('OverFast BattleTag lookup failed, trying OWAPI:', fallbackError);
 
