@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>심호령 Works</title>
-    <link rel="stylesheet" href="../style.css?v=20260511-work-stats">
+    <link rel="stylesheet" href="../style.css?v=20260511-no-work-title">
     <link rel="icon" href="../favicon.jpg">
     <link rel="apple-touch-icon" href="../favicon.jpg">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-brands/css/uicons-brands.css'>
@@ -13,6 +13,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
     <script>
+        if (window.location.pathname.endsWith('/index.html')) {
+            window.history.replaceState(null, '', window.location.pathname.replace(/index\.html$/, ''));
+        }
+
         // 페이지 깜빡임 방지: 로드 전에 저장된 테마 적용
         (function() {
             const saved = localStorage.getItem('theme') || 'auto';
@@ -31,16 +35,16 @@
     </script>
 </head>
 <body>
-    <a href="../index.html" class="floating-logo">심호령</a>
+    <a href="/" class="floating-logo">심호령</a>
     <nav class="navbar floating-nav">
         <ul class="nav-links">
             <li>
-                <a href="../index.html">
+                <a href="/">
                     <span>프로필</span>
                 </a>
             </li>
             <li>
-                <a href="./index.html" class="active">
+                <a href="/work/" class="active">
                     <span>앱</span>
                 </a>
             </li>
@@ -77,10 +81,9 @@
 
     <main class="container">
         <section class="works-section">
-            <h1 class="section-title">작품</h1>
             <div class="works-grid">
                 
-                <a href="./find_the_vaccine/find_the_vaccine.html" target="_blank" class="work-card vaccine-card" data-work-id="find-the-vaccine">
+                <article class="work-card vaccine-card" data-work-id="find-the-vaccine" data-work-url="./find_the_vaccine/" data-work-action="visit">
                     <div class="work-preview" aria-hidden="true"></div>
                     <div class="work-card-body">
                         <div class="work-card-main">
@@ -100,29 +103,9 @@
                             <span>Game</span>
                         </div>
                     </div>
-                </a>
+                </article>
 
-                <a href="./sweethr100s_search/index.html" target="_blank" class="work-card search-card" data-work-id="sweethr100s-search">
-                    <div class="work-preview" aria-hidden="true"></div>
-                    <div class="work-card-body">
-                        <div class="work-card-main">
-                            <div class="work-icon-wrapper">
-                                <img src="./sweethr100s_search/search-icon.png" alt="Sweethr100's Search" class="work-icon">
-                            </div>
-                            <div class="work-copy">
-                                <div class="work-heading">
-                                    <h3 class="work-title">Sweethr100's Search</h3>
-                                </div>
-                                <p class="work-description">직접 만든 검색 페이지를 새 창에서 열어볼 수 있습니다.</p>
-                            </div>
-                        </div>
-                        <div class="work-tags">
-                            <span>Web</span>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="./witch_adventure/witch_adventure.apk" download class="work-card game-card" data-work-id="witch-adventure">
+                <article class="work-card game-card" data-work-id="witch-adventure" data-work-url="./witch_adventure/witch_adventure.apk" data-work-action="download">
                     <div class="work-preview" aria-hidden="true"></div>
                     <div class="work-card-body">
                         <div class="work-card-main">
@@ -142,9 +125,9 @@
                             <span>APK</span>
                         </div>
                     </div>
-                </a>
+                </article>
 
-                <a href="./second_game/%EB%91%90%EB%B2%88%EC%A7%B8.zip" download class="work-card game-card" data-work-id="second-game">
+                <article class="work-card game-card" data-work-id="second-game" data-work-url="./second_game/%EB%91%90%EB%B2%88%EC%A7%B8.zip" data-work-action="download">
                     <div class="work-preview" aria-hidden="true"></div>
                     <div class="work-card-body">
                         <div class="work-card-main">
@@ -164,9 +147,9 @@
                             <span>Windows</span>
                         </div>
                     </div>
-                </a>
+                </article>
 
-                <a href="./superhard_game/superhard_game.zip" download class="work-card game-card" data-work-id="superhard-game">
+                <article class="work-card game-card" data-work-id="superhard-game" data-work-url="./superhard_game/superhard_game.zip" data-work-action="download">
                     <div class="work-preview" aria-hidden="true"></div>
                     <div class="work-card-body">
                         <div class="work-card-main">
@@ -186,9 +169,9 @@
                             <span>Windows</span>
                         </div>
                     </div>
-                </a>
+                </article>
 
-                <a href="./jumpup/JumpUp.apk" download class="work-card game-card" data-work-id="jumpup">
+                <article class="work-card game-card" data-work-id="jumpup" data-work-url="./jumpup/JumpUp.apk" data-work-action="download">
                     <div class="work-preview" aria-hidden="true"></div>
                     <div class="work-card-body">
                         <div class="work-card-main">
@@ -208,9 +191,9 @@
                             <span>APK</span>
                         </div>
                     </div>
-                </a>
+                </article>
 
-                <a href="./second_3d_game/second_3d_game.zip" download class="work-card game-card" data-work-id="second-3d-game">
+                <article class="work-card game-card" data-work-id="second-3d-game" data-work-url="./second_3d_game/second_3d_game.zip" data-work-action="download">
                     <div class="work-preview" aria-hidden="true"></div>
                     <div class="work-card-body">
                         <div class="work-card-main">
@@ -230,15 +213,37 @@
                             <span>Windows</span>
                         </div>
                     </div>
-                </a>
+                </article>
+
+                <article class="work-card search-card" data-work-id="sweethr100s-search" data-work-url="./sweethr100s_search/" data-work-action="visit">
+                    <div class="work-preview" aria-hidden="true"></div>
+                    <div class="work-card-body">
+                        <div class="work-card-main">
+                            <div class="work-icon-wrapper">
+                                <img src="./sweethr100s_search/search-icon.png" alt="Sweethr100's Search" class="work-icon">
+                            </div>
+                            <div class="work-copy">
+                                <div class="work-heading">
+                                    <h3 class="work-title">Sweethr100's Search</h3>
+                                </div>
+                                <p class="work-description">직접 만든 검색 페이지를 새 창에서 열어볼 수 있습니다.</p>
+                            </div>
+                        </div>
+                        <div class="work-tags">
+                            <span>Web</span>
+                        </div>
+                    </div>
+                </article>
 
             </div>
         </section>
     </main>
 
     <script>
-        const workStatsStorageKey = 'sweethr100.workStats.v1';
-        const workLikeStorageKey = 'sweethr100.workLikes.v1';
+        const workStatsStorageKey = 'sweethr100.workStats.v2';
+        const workLikeStorageKey = 'sweethr100.workLikes.v2';
+        const workStatsNamespace = 'sweethr100githubio';
+        const workStatsApiBase = 'https://api.counterapi.dev/v1';
 
         function readWorkStorage(key) {
             try {
@@ -259,25 +264,89 @@
             }).format(value);
         }
 
+        function getCounterName(id, type) {
+            return `${id.replace(/[^a-z0-9]/gi, '').toLowerCase()}${type}`;
+        }
+
+        async function requestSharedCounter(id, type, action) {
+            const counterName = getCounterName(id, type);
+            const actionPath = action ? `/${action}` : '';
+            const response = await fetch(`${workStatsApiBase}/${workStatsNamespace}/${counterName}${actionPath}`, {
+                cache: 'no-store'
+            });
+
+            if (!response.ok) {
+                const error = new Error(`Counter request failed: ${response.status}`);
+                error.status = response.status;
+                throw error;
+            }
+
+            const data = await response.json();
+            return Number(data.count) || 0;
+        }
+
+        async function loadSharedCounter(id, type, fallback) {
+            try {
+                return await requestSharedCounter(id, type);
+            } catch (_error) {
+                return 0;
+            }
+        }
+
+        async function changeSharedCounter(id, type, action, fallback) {
+            try {
+                return await requestSharedCounter(id, type, action);
+            } catch (error) {
+                if ((error?.status === 400 || error?.status === 404) && action === 'down') return 0;
+                return fallback;
+            }
+        }
+
         function createWorkStatsRow(card, id, stats, likes) {
             const body = card.querySelector('.work-card-body');
-            if (!body || body.querySelector('.work-stats')) return;
+            if (!body || body.querySelector('.work-card-footer')) return;
 
-            const row = document.createElement('div');
-            row.className = 'work-stats';
-            row.innerHTML = `
-                <span class="work-stat work-download-stat" title="Downloads">
-                    <i class="fi fi-rr-download" aria-hidden="true"></i>
-                    <span data-stat="downloads">0</span>
-                </span>
-                <span class="work-stat-spacer" aria-hidden="true"></span>
-                <span class="work-like-button" role="button" tabindex="0" aria-pressed="false" title="Like this project">
-                    <i class="fi fi-rr-heart" aria-hidden="true"></i>
-                    <span data-stat="likes">0</span>
-                </span>
+            const actionType = card.dataset.workAction === 'download' ? 'download' : 'visit';
+            const actionLabel = actionType === 'download' ? '다운로드' : '페이지 방문';
+            const statTitle = actionType === 'download' ? 'Downloads' : 'Page visits';
+
+            const footer = document.createElement('div');
+            footer.className = 'work-card-footer';
+            footer.innerHTML = `
+                <div class="work-stats">
+                    <span class="work-stat work-download-stat" title="${statTitle}">
+                        <i class="fi fi-rr-download" aria-hidden="true"></i>
+                        <span data-stat="downloads">0</span>
+                    </span>
+                    <span class="work-like-button" role="button" tabindex="0" aria-pressed="false" title="Like this project">
+                        <svg class="work-heart-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M20.8 4.6c-2.1-2-5.4-1.9-7.4.2L12 6.2l-1.4-1.4c-2-2.1-5.3-2.2-7.4-.2-2.3 2.2-2.4 5.8-.2 8.1l7.9 8.1c.6.6 1.6.6 2.2 0l7.9-8.1c2.2-2.3 2.1-5.9-.2-8.1Z"></path>
+                        </svg>
+                        <span data-stat="likes">0</span>
+                    </span>
+                </div>
+                <span class="work-action-button" aria-hidden="true">${actionLabel}</span>
             `;
-            body.appendChild(row);
+            body.appendChild(footer);
             updateWorkStatsRow(card, id, stats, likes);
+        }
+
+        function openWorkCard(card) {
+            const actionType = card.dataset.workAction === 'download' ? 'download' : 'visit';
+            const actionUrl = card.dataset.workUrl;
+            if (!actionUrl) return;
+
+            if (actionType === 'download') {
+                const link = document.createElement('a');
+                link.href = actionUrl;
+                link.download = '';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                return;
+            }
+
+            window.open(actionUrl, '_blank', 'noopener');
         }
 
         function updateWorkStatsRow(card, id, stats, likes) {
@@ -302,39 +371,93 @@
 
             cards.forEach((card) => {
                 const id = card.dataset.workId;
+                const countType = card.dataset.workAction === 'download' ? 'downloads' : 'visits';
+                card.tabIndex = 0;
+                card.setAttribute('role', 'link');
+                card.setAttribute('aria-label', `${card.querySelector('.work-title')?.textContent || '작품'} ${card.dataset.workAction === 'download' ? '다운로드' : '페이지 방문'}`);
                 stats[id] = {
                     likes: Number(stats[id]?.likes) || 0,
                     downloads: Number(stats[id]?.downloads) || 0
                 };
                 createWorkStatsRow(card, id, stats, likes);
+                updateWorkStatsRow(card, id, stats, likes);
+
+                Promise.all([
+                    loadSharedCounter(id, countType, stats[id].downloads),
+                    loadSharedCounter(id, 'likes', stats[id].likes)
+                ]).then(([downloads, likeCount]) => {
+                    stats[id].downloads = downloads;
+                    stats[id].likes = likeCount;
+                    writeWorkStorage(workStatsStorageKey, stats);
+                    updateWorkStatsRow(card, id, stats, likes);
+                });
 
                 card.addEventListener('click', (event) => {
                     const target = event.target instanceof Element ? event.target : null;
                     const likeButton = target?.closest('.work-like-button');
+                    const actionButton = target?.closest('.work-action-button');
+
                     if (likeButton) {
                         event.preventDefault();
                         event.stopPropagation();
-                        stats[id].likes += likes[id] ? -1 : 1;
+                        const action = likes[id] ? 'down' : 'up';
+                        const fallbackLikes = Math.max(0, stats[id].likes + (likes[id] ? -1 : 1));
+                        stats[id].likes = fallbackLikes;
                         stats[id].likes = Math.max(0, stats[id].likes);
                         likes[id] = !likes[id];
                         writeWorkStorage(workStatsStorageKey, stats);
                         writeWorkStorage(workLikeStorageKey, likes);
                         updateWorkStatsRow(card, id, stats, likes);
+
+                        changeSharedCounter(id, 'likes', action, fallbackLikes).then((likeCount) => {
+                            stats[id].likes = Math.max(0, likeCount);
+                            writeWorkStorage(workStatsStorageKey, stats);
+                            updateWorkStatsRow(card, id, stats, likes);
+                        });
                         return;
                     }
 
-                    stats[id].downloads += 1;
+                    if (actionButton) {
+                        const fallbackDownloads = stats[id].downloads + 1;
+                        stats[id].downloads = fallbackDownloads;
+                        writeWorkStorage(workStatsStorageKey, stats);
+                        updateWorkStatsRow(card, id, stats, likes);
+
+                        changeSharedCounter(id, countType, 'up', fallbackDownloads).then((downloadCount) => {
+                            stats[id].downloads = downloadCount;
+                            writeWorkStorage(workStatsStorageKey, stats);
+                            updateWorkStatsRow(card, id, stats, likes);
+                        });
+                        openWorkCard(card);
+                        return;
+                    }
+
+                    const fallbackDownloads = stats[id].downloads + 1;
+                    stats[id].downloads = fallbackDownloads;
                     writeWorkStorage(workStatsStorageKey, stats);
                     updateWorkStatsRow(card, id, stats, likes);
+
+                    changeSharedCounter(id, countType, 'up', fallbackDownloads).then((downloadCount) => {
+                        stats[id].downloads = downloadCount;
+                        writeWorkStorage(workStatsStorageKey, stats);
+                        updateWorkStatsRow(card, id, stats, likes);
+                    });
+                    openWorkCard(card);
                 });
 
                 card.addEventListener('keydown', (event) => {
                     const target = event.target instanceof Element ? event.target : null;
                     const likeButton = target?.closest('.work-like-button');
-                    if (!likeButton || (event.key !== 'Enter' && event.key !== ' ')) return;
+                    if (likeButton && (event.key === 'Enter' || event.key === ' ')) {
+                        event.preventDefault();
+                        likeButton.click();
+                        return;
+                    }
 
-                    event.preventDefault();
-                    likeButton.click();
+                    if (event.target === card && (event.key === 'Enter' || event.key === ' ')) {
+                        event.preventDefault();
+                        card.click();
+                    }
                 });
             });
 
