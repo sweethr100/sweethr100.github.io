@@ -113,11 +113,20 @@ const server = createServer(async (request, response) => {
       return;
     }
 
-    response.writeHead(200, {
+    const fileExt = extname(filePath);
+    const isBrotli = filePath.endsWith(".br");
+    const contentExt = isBrotli ? extname(filePath.slice(0, -3)) : fileExt;
+    const headers = {
       "Cache-Control": "no-store",
       "Content-Length": stat.size,
-      "Content-Type": mimeTypes.get(extname(filePath)) || "application/octet-stream",
-    });
+      "Content-Type": mimeTypes.get(contentExt) || "application/octet-stream",
+    };
+
+    if (isBrotli) {
+      headers["Content-Encoding"] = "br";
+    }
+
+    response.writeHead(200, headers);
     createReadStream(filePath).pipe(response);
   } catch (error) {
     response.writeHead(500);
