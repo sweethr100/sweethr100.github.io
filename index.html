@@ -1296,6 +1296,8 @@
             competitive: null
         };
         let currentOverwatchStatsMode = 'quickplay';
+        let currentOverwatchHeroCatalog = {};
+        let overwatchHeroCatalogPromise = null;
         let overwatchModalCloseTimer = 0;
         let overwatchModalScrollLocked = false;
         let overwatchModalPreviousBodyPaddingRight = '';
@@ -1507,7 +1509,30 @@
                 console.warn('OverFast competitive stats summary lookup failed:', error);
             }
 
+            await loadOverwatchHeroCatalog();
+
             return { summary, statsSummary, quickplayStatsSummary, competitiveStatsSummary };
+        }
+
+        async function loadOverwatchHeroCatalog() {
+            if (!overwatchHeroCatalogPromise) {
+                overwatchHeroCatalogPromise = fetchJSON(`${OVERWATCH_API_BASE}/heroes`)
+                    .then(heroes => {
+                        currentOverwatchHeroCatalog = Object.fromEntries(
+                            (Array.isArray(heroes) ? heroes : [])
+                                .filter(hero => hero?.key)
+                                .map(hero => [hero.key, hero])
+                        );
+                        return currentOverwatchHeroCatalog;
+                    })
+                    .catch(error => {
+                        console.warn('OverFast hero catalog lookup failed:', error);
+                        overwatchHeroCatalogPromise = null;
+                        return currentOverwatchHeroCatalog;
+                    });
+            }
+
+            return overwatchHeroCatalogPromise;
         }
 
         function renderOverwatchDashboard(data, battletag, statsSummary, quickplayStatsSummary, competitiveStatsSummary) {
@@ -1874,11 +1899,22 @@
 
         function renderHeroStatsRow(heroKey, stats = {}) {
             const total = stats.total || {};
+            const hero = getOverwatchHeroInfo(heroKey);
+            const heroName = hero?.name || formatHeroName(heroKey);
+            const portrait = hero?.portrait
+                ? `<img src="${escapeHTML(hero.portrait)}" alt="${escapeHTML(heroName)} portrait" class="overwatch-hero-portrait" loading="lazy" onerror="this.hidden=true">`
+                : '';
+
             return `
                 <article class="overwatch-hero-row">
                     <div class="overwatch-hero-main">
-                        <strong>${escapeHTML(formatHeroName(heroKey))}</strong>
-                        <span>${formatDurationSeconds(stats.time_played)} · ${formatWithSuffix(stats.games_played, '전')}</span>
+                        <div class="overwatch-hero-portrait-wrapper" aria-hidden="${portrait ? 'false' : 'true'}">
+                            ${portrait}
+                        </div>
+                        <div class="overwatch-hero-copy">
+                            <strong>${escapeHTML(heroName)}</strong>
+                            <span>${formatDurationSeconds(stats.time_played)} · ${formatWithSuffix(stats.games_played, '전')}</span>
+                        </div>
                     </div>
                     <div class="overwatch-hero-chips">
                         ${statChip('승률', formatPercent(stats.winrate))}
@@ -1931,6 +1967,10 @@
                 total.damage ||
                 total.healing
             );
+        }
+
+        function getOverwatchHeroInfo(heroKey) {
+            return currentOverwatchHeroCatalog[heroKey] || null;
         }
 
         function formatHeroName(heroKey) {

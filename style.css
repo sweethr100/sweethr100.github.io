@@ -1776,10 +1776,49 @@ html[data-discord-card="on"][data-theme="light"] .discord-section.theme-gaming .
 }
 
 .overwatch-hero-main {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.65rem;
     min-width: 0;
 }
 
-.overwatch-hero-main strong {
+.overwatch-hero-portrait-wrapper {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    background:
+        linear-gradient(145deg, rgba(255, 156, 0, 0.18), rgba(88, 166, 255, 0.12)),
+        rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="light"] .overwatch-hero-portrait-wrapper {
+    background:
+        linear-gradient(145deg, rgba(255, 156, 0, 0.12), rgba(9, 105, 218, 0.06)),
+        rgba(255, 255, 255, 0.72);
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+.overwatch-hero-portrait {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.overwatch-hero-portrait[hidden],
+.overwatch-hero-portrait-wrapper:empty {
+    display: none;
+}
+
+.overwatch-hero-copy {
+    min-width: 0;
+}
+
+.overwatch-hero-copy strong {
     display: block;
     color: var(--text-primary);
     font-size: 0.94rem;
@@ -1787,7 +1826,7 @@ html[data-discord-card="on"][data-theme="light"] .discord-section.theme-gaming .
     overflow-wrap: anywhere;
 }
 
-.overwatch-hero-main span {
+.overwatch-hero-copy span {
     display: block;
     color: var(--text-secondary);
     font-size: 0.72rem;
