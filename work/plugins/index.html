@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>심호령 Minecraft Plugins</title>
+    <script>
+        if (window.location.pathname.endsWith('/index.html')) {
+            window.location.replace(window.location.pathname.replace(/index\.html$/, '') + window.location.search + window.location.hash);
+        }
+    </script>
+    <link rel="stylesheet" href="/style.css?v=20260526-minecraft-plugins">
+    <link rel="icon" href="/favicon.jpg">
+    <link rel="apple-touch-icon" href="/favicon.jpg">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-brands/css/uicons-brands.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script>
+        (function() {
+            const saved = localStorage.getItem('theme') || 'auto';
+            if (saved === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+            } else if (saved === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else if (saved === 'auto') {
+                if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                } else {
+                    document.documentElement.removeAttribute('data-theme');
+                }
+            }
+        })();
+    </script>
+</head>
+<body>
+    <a href="/" class="floating-logo">심호령</a>
+    <nav class="navbar floating-nav">
+        <ul class="nav-links">
+            <li>
+                <a href="/">
+                    <span>프로필</span>
+                </a>
+            </li>
+            <li>
+                <a href="/work/" class="active">
+                    <span>앱</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="theme-controls">
+        <div class="theme-bar floating-nav">
+            <button class="theme-toggle" id="themeToggle" aria-label="테마 전환">
+                <div class="theme-icon-wrapper" style="font-size: 1.5rem; line-height: 1;">🌙</div>
+            </button>
+            <button class="settings-btn" id="settingsBtn" aria-label="설정">
+                <i class="fi fi-rr-settings"></i>
+            </button>
+        </div>
+
+        <div class="settings-dropdown" id="settingsModal">
+            <div class="dropdown-header">
+                <h3>설정</h3>
+            </div>
+            <div class="dropdown-body">
+                <div class="setting-item">
+                    <label for="themeSelect">테마 설정</label>
+                    <select id="themeSelect" class="custom-select">
+                        <option value="light">라이트 모드</option>
+                        <option value="dark">다크 모드</option>
+                        <option value="auto">시스템 설정 사용</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <section class="works-section plugins-section">
+            <div class="plugins-page-header">
+                <a href="/work/" class="plugins-back-link">&lt; 돌아가기</a>
+                <h1>더 많은 마인크래프트 플러그인들</h1>
+            </div>
+
+            <div class="works-grid plugins-grid">
+                <article class="work-card plugin-list-card" data-plugin-id="advancement-anonymous" data-plugin-url="https://github.com/sweethr100/AdvancementAnonymous/releases">
+                    <div class="work-card-body">
+                        <div class="work-card-main">
+                            <div class="work-copy">
+                                <div class="work-heading">
+                                    <h3 class="work-title">AdvancementAnonymous</h3>
+                                </div>
+                                <p class="work-description">발전과제 달성 시 채팅에 표시되는 메시지의 플레이어 닉네임을 익명으로 교체합니다.</p>
+                            </div>
+                        </div>
+                        <div class="work-card-footer"></div>
+                    </div>
+                </article>
+
+                <article class="work-card plugin-list-card" data-plugin-id="end-teleport" data-plugin-url="https://github.com/sweethr100/EndTeleportPlugin/releases">
+                    <div class="work-card-body">
+                        <div class="work-card-main">
+                            <div class="work-copy">
+                                <div class="work-heading">
+                                    <h3 class="work-title">EndTeleportPlugin</h3>
+                                </div>
+                                <p class="work-description">엔더포탈을 타서 엔드월드에 입장 시 (0,150,0)으로 TP되고 느린 낙하 15초를 부여합니다.</p>
+                            </div>
+                        </div>
+                        <div class="work-card-footer"></div>
+                    </div>
+                </article>
+
+                <article class="work-card plugin-list-card" data-plugin-id="nether-ratio" data-plugin-url="https://github.com/sweethr100/NetherRatioPlugin/releases">
+                    <div class="work-card-body">
+                        <div class="work-card-main">
+                            <div class="work-copy">
+                                <div class="work-heading">
+                                    <h3 class="work-title">NetherRatioPlugin</h3>
+                                </div>
+                                <p class="work-description">오버월드와 네더의 포탈 연결 좌표 비율을 1:1로 설정합니다.</p>
+                            </div>
+                        </div>
+                        <div class="work-card-footer"></div>
+                    </div>
+                </article>
+
+                <article class="work-card plugin-list-card" data-plugin-id="double-dragon-health" data-plugin-url="https://github.com/sweethr100/DoubleDragonHealthPlugin/releases">
+                    <div class="work-card-body">
+                        <div class="work-card-main">
+                            <div class="work-copy">
+                                <div class="work-heading">
+                                    <h3 class="work-title">DoubleDragonHealthPlugin</h3>
+                                </div>
+                                <p class="work-description">엔더 드래곤의 HP를 2배(200에서 400)로 증가시키는 플러그인입니다.</p>
+                            </div>
+                        </div>
+                        <div class="work-card-footer"></div>
+                    </div>
+                </article>
+
+                <article class="work-card plugin-list-card" data-plugin-id="end-gateway-blocker" data-plugin-url="https://github.com/sweethr100/EndGatewayBlocker/releases">
+                    <div class="work-card-body">
+                        <div class="work-card-main">
+                            <div class="work-copy">
+                                <div class="work-heading">
+                                    <h3 class="work-title">EndGatewayBlocker</h3>
+                                </div>
+                                <p class="work-description">엔드 게이트웨이를 넘어가는 것을 방지하는 플러그인입니다.</p>
+                            </div>
+                        </div>
+                        <div class="work-card-footer"></div>
+                    </div>
+                </article>
+
+                <article class="work-card plugin-list-card" data-plugin-id="no-brake-blaze-spawner" data-plugin-url="https://github.com/sweethr100/NoBrakeBlazeSpawner/releases">
+                    <div class="work-card-body">
+                        <div class="work-card-main">
+                            <div class="work-copy">
+                                <div class="work-heading">
+                                    <h3 class="work-title">NoBrakeBlazeSpawner</h3>
+                                </div>
+                                <p class="work-description">블레이즈 스포너를 부술 수 없게 만드는 플러그인입니다.</p>
+                            </div>
+                        </div>
+                        <div class="work-card-footer"></div>
+                    </div>
+                </article>
+
+                <article class="work-card plugin-list-card" data-plugin-id="random-start-tp" data-plugin-url="https://github.com/sweethr100/RandomStartTP/releases">
+                    <div class="work-card-body">
+                        <div class="work-card-main">
+                            <div class="work-copy">
+                                <div class="work-heading">
+                                    <h3 class="work-title">RandomStartTP</h3>
+                                </div>
+                                <p class="work-description">서버에 처음 접속할 때 설정한 좌표 범위 안에서 랜덤 TP를 실행합니다.</p>
+                            </div>
+                        </div>
+                        <div class="work-card-footer"></div>
+                    </div>
+                </article>
+
+                <article class="work-card plugin-list-card" data-plugin-id="kill-message-anonymous" data-plugin-url="https://github.com/sweethr100/KillMessageAnonymous/releases">
+                    <div class="work-card-body">
+                        <div class="work-card-main">
+                            <div class="work-copy">
+                                <div class="work-heading">
+                                    <h3 class="work-title">KillMessageAnonymous</h3>
+                                </div>
+                                <p class="work-description">킬로그에서 닉네임과 사유를 숨기는 플러그인입니다.</p>
+                            </div>
+                        </div>
+                        <div class="work-card-footer"></div>
+                    </div>
+                </article>
+
+                <article class="work-card plugin-list-card" data-plugin-id="do-not-chat" data-plugin-url="https://github.com/sweethr100/DoNotChat/releases">
+                    <div class="work-card-body">
+                        <div class="work-card-main">
+                            <div class="work-copy">
+                                <div class="work-heading">
+                                    <h3 class="work-title">DoNotChat</h3>
+                                </div>
+                                <p class="work-description">마인크래프트에서 채팅, /msg, /tell, /w, /me, /teammsg 사용을 금지시키는 플러그인입니다.</p>
+                            </div>
+                        </div>
+                        <div class="work-card-footer"></div>
+                    </div>
+                </article>
+
+                <article class="work-card plugin-list-card" data-plugin-id="auto-message-plugin" data-plugin-url="https://github.com/sweethr100/AutoMessage-Plugin/releases">
+                    <div class="work-card-body">
+                        <div class="work-card-main">
+                            <div class="work-copy">
+                                <div class="work-heading">
+                                    <h3 class="work-title">AutoMessage-Plugin</h3>
+                                </div>
+                                <p class="work-description">설정한 시간마다 설정된 문구를 채팅에 띄우는 플러그인입니다.</p>
+                            </div>
+                        </div>
+                        <div class="work-card-footer"></div>
+                    </div>
+                </article>
+
+                <article class="work-card plugin-list-card" data-plugin-id="wild-winner" data-plugin-url="https://github.com/sweethr100/WildWinner/releases">
+                    <div class="work-card-body">
+                        <div class="work-card-main">
+                            <div class="work-copy">
+                                <div class="work-heading">
+                                    <h3 class="work-title">WildWinner</h3>
+                                </div>
+                                <p class="work-description">엔더 드래곤을 먼저 잡은 사람에게 TP하는 플러그인입니다.</p>
+                            </div>
+                        </div>
+                        <div class="work-card-footer"></div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function createPluginCardFooter(card) {
+            const footer = card.querySelector('.work-card-footer');
+            if (!footer || footer.querySelector('.work-action-button')) return;
+            footer.insertAdjacentHTML('beforeend', '<span class="work-action-button" aria-hidden="true">릴리즈 보기</span>');
+        }
+
+        function openPluginCard(card) {
+            const pluginUrl = card.dataset.pluginUrl;
+            if (pluginUrl) window.open(pluginUrl, '_blank', 'noopener');
+        }
+
+        function initPluginCards() {
+            const cards = Array.from(document.querySelectorAll('.plugin-list-card[data-plugin-id]'));
+
+            cards.forEach((card) => {
+                card.tabIndex = 0;
+                card.setAttribute('role', 'link');
+                card.setAttribute('aria-label', `${card.querySelector('.work-title')?.textContent || '플러그인'} 릴리즈 보기`);
+                createPluginCardFooter(card);
+
+                card.addEventListener('click', () => openPluginCard(card));
+                card.addEventListener('keydown', (event) => {
+                    if (event.target === card && (event.key === 'Enter' || event.key === ' ')) {
+                        event.preventDefault();
+                        card.click();
+                    }
+                });
+            });
+        }
+
+        initPluginCards();
+
+        const themeToggle = document.getElementById('themeToggle');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsDropdown = document.getElementById('settingsModal');
+        const themeSelect = document.getElementById('themeSelect');
+        const html = document.documentElement;
+
+        function updateThemeIcon() {
+            const savedTheme = localStorage.getItem('theme') || 'auto';
+            const iconWrapper = themeToggle.querySelector('.theme-icon-wrapper');
+            if (!iconWrapper) return;
+
+            if (savedTheme === 'auto') {
+                iconWrapper.textContent = '🌓';
+            } else {
+                const isDark = html.getAttribute('data-theme') !== 'light';
+                iconWrapper.textContent = isDark ? '🌙' : '☀️';
+            }
+        }
+
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                html.removeAttribute('data-theme');
+            } else if (theme === 'light') {
+                html.setAttribute('data-theme', 'light');
+            } else if (theme === 'auto') {
+                if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+                    html.setAttribute('data-theme', 'light');
+                } else {
+                    html.removeAttribute('data-theme');
+                }
+            }
+            updateThemeIcon();
+
+            const savedTheme = localStorage.getItem('theme') || 'auto';
+            if (themeSelect.value !== savedTheme) {
+                themeSelect.value = savedTheme;
+            }
+        }
+
+        const initialTheme = localStorage.getItem('theme') || 'auto';
+        themeSelect.value = initialTheme;
+        applyTheme(initialTheme);
+
+        themeToggle.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const isDark = html.getAttribute('data-theme') !== 'light';
+            const newTheme = isDark ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+            themeSelect.value = newTheme;
+            applyTheme(newTheme);
+        });
+
+        settingsBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            settingsDropdown.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!settingsDropdown.contains(event.target) && event.target !== settingsBtn) {
+                settingsDropdown.classList.remove('active');
+            }
+        });
+
+        themeSelect.addEventListener('change', (event) => {
+            const selectedTheme = event.target.value;
+            localStorage.setItem('theme', selectedTheme);
+            applyTheme(selectedTheme);
+        });
+
+        window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
+            const savedTheme = localStorage.getItem('theme') || 'auto';
+            if (savedTheme === 'auto') applyTheme('auto');
+        });
+    </script>
+</body>
+</html>

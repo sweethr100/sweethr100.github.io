@@ -6743,6 +6743,58 @@ html[data-discord-card="on"] .discord-custom-status {
         linear-gradient(135deg, #334155, #38bdf8 48%, #dbeafe);
 }
 
+.container:has(> .works-section) .semlpack-card .work-preview {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 42%),
+        linear-gradient(0deg, rgba(87, 53, 31, 0.9) 0 34%, transparent 34%),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.22) 0 6px, transparent 6px 12px),
+        linear-gradient(135deg, #4ade80, #38bdf8 54%, #6366f1);
+}
+
+.container:has(> .works-section) .battlefield-card .work-preview {
+    background:
+        radial-gradient(circle at 50% 42%, rgba(254, 243, 199, 0.86), transparent 14%),
+        linear-gradient(90deg, rgba(239, 68, 68, 0.78) 0 5px, transparent 5px calc(100% - 5px), rgba(239, 68, 68, 0.78) calc(100% - 5px)),
+        linear-gradient(0deg, rgba(239, 68, 68, 0.78) 0 5px, transparent 5px calc(100% - 5px), rgba(239, 68, 68, 0.78) calc(100% - 5px)),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.16) 0 7px, transparent 7px 14px),
+        linear-gradient(135deg, #166534, #22c55e 38%, #a16207 72%, #451a03);
+}
+
+.container:has(> .works-section) .battleroyal2-card .work-preview {
+    background:
+        radial-gradient(circle at 50% 45%, rgba(250, 204, 21, 0.88), transparent 16%),
+        radial-gradient(circle at 50% 45%, transparent 0 30%, rgba(239, 68, 68, 0.78) 31% 35%, transparent 36%),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.34) 0 3px, transparent 3px 16px),
+        linear-gradient(135deg, #1d4ed8, #22c55e 44%, #854d0e 78%, #431407);
+}
+
+.container:has(> .works-section) .plugins-folder-card .work-preview {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.24), transparent 44%),
+        linear-gradient(135deg, #475569, #0f766e 48%, #facc15);
+}
+
+.container:has(> .works-section) .folder-work-icon {
+    position: relative;
+    display: block;
+    width: 38px;
+    height: 30px;
+    border-radius: 6px 7px 7px 7px;
+    background: #facc15;
+    box-shadow: inset 0 -5px 0 rgba(161, 98, 7, 0.22);
+}
+
+.container:has(> .works-section) .folder-work-icon::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: -7px;
+    width: 18px;
+    height: 10px;
+    border-radius: 5px 5px 0 0;
+    background: #fde68a;
+}
+
 .container:has(> .works-section) .game-card .work-preview {
     background:
         radial-gradient(circle at 24% 30%, rgba(255, 236, 179, 0.95), transparent 22%),
@@ -6950,6 +7002,68 @@ html:not([data-theme="light"]) .container:has(> .works-section) .work-action-but
 html:not([data-theme="light"]) .container:has(> .works-section) .work-action-button:focus-visible {
     background: #60a5fa;
     color: #0f172a;
+}
+
+.container:has(> .plugins-section) > .plugins-section {
+    width: min(100%, 760px);
+}
+
+.container:has(> .plugins-section) .plugins-page-header {
+    display: grid;
+    gap: 0.72rem;
+    margin: 0 0 1.35rem;
+}
+
+.container:has(> .plugins-section) .plugins-page-header h1 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.85rem;
+    font-weight: 900;
+    line-height: 1.15;
+}
+
+.container:has(> .plugins-section) .plugins-back-link {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-decoration: none;
+    width: fit-content;
+    transition: color 0.18s ease;
+}
+
+.container:has(> .plugins-section) .plugins-back-link:hover,
+.container:has(> .plugins-section) .plugins-back-link:focus-visible {
+    color: var(--accent);
+    outline: none;
+}
+
+.container:has(> .plugins-section) .plugins-grid {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.container:has(> .plugins-section) .plugin-list-card .work-card-body {
+    gap: 0.9rem;
+    padding: 1.1rem;
+}
+
+.container:has(> .plugins-section) .plugin-list-card .work-card-main {
+    display: block;
+}
+
+.container:has(> .plugins-section) .plugin-list-card .work-card-footer {
+    justify-content: flex-end;
+}
+
+.container:has(> .plugins-section) .plugin-list-card .work-heading {
+    display: block;
+}
+
+.container:has(> .plugins-section) .plugin-list-card .work-title {
+    white-space: normal;
+}
+
+.container:has(> .plugins-section) .plugin-list-card .work-description {
+    -webkit-line-clamp: 3;
 }
 
 @media (max-width: 480px) {
