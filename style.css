@@ -6768,6 +6768,13 @@ html[data-discord-card="on"] .discord-custom-status {
         linear-gradient(135deg, #1d4ed8, #22c55e 44%, #854d0e 78%, #431407);
 }
 
+.container:has(> .works-section) .goat-range-card .work-preview {
+    background:
+        radial-gradient(circle at 66% 48%, #f8fafc 0 10px, #ef4444 11px 22px, #f8fafc 23px 34px, #ef4444 35px 46px, transparent 47px),
+        linear-gradient(135deg, rgba(15, 23, 42, 0.16), transparent 58%),
+        linear-gradient(135deg, #111827, #1d4ed8 52%, #22d3ee);
+}
+
 .container:has(> .works-section) .plugins-folder-card .work-preview {
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.24), transparent 44%),

@@ -9,7 +9,7 @@
             window.location.replace(window.location.pathname.replace(/index\.html$/, '') + window.location.search + window.location.hash);
         }
     </script>
-    <link rel="stylesheet" href="/style.css?v=20260526-minecraft-plugins">
+    <link rel="stylesheet" href="/style.css?v=20260601-goat-range">
     <link rel="icon" href="/favicon.jpg">
     <link rel="apple-touch-icon" href="/favicon.jpg">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-brands/css/uicons-brands.css'>
@@ -147,6 +147,28 @@
                         <div class="work-card-footer">
                             <div class="work-tags">
                                 <span>Minecraft</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="work-card goat-range-card" data-work-id="goat-range" data-work-url="https://jjack.netlify.app/" data-work-assets-url="./goat_range/" data-work-action="visit">
+                    <div class="work-preview" aria-hidden="true"></div>
+                    <div class="work-card-body">
+                        <div class="work-card-main">
+                            <div class="work-icon-wrapper">
+                                <img src="./goat_range/icon.png" alt="GOAT Range" class="work-icon">
+                            </div>
+                            <div class="work-copy">
+                                <div class="work-heading">
+                                    <h3 class="work-title">GOAT Range</h3>
+                                </div>
+                                <p class="work-description">WebGPU와 Chrome Built-in AI를 이용한 에임 트레이닝 프로그램입니다.</p>
+                            </div>
+                        </div>
+                        <div class="work-card-footer">
+                            <div class="work-tags">
+                                <span>Web</span>
                             </div>
                         </div>
                     </div>
@@ -429,18 +451,23 @@
 
         function setWorkFilter(cards, buttons, activeTag) {
             const archive = document.getElementById('workArchive');
-            let hasVisibleArchiveCard = false;
+            const archiveCount = archive?.querySelector('.work-archive-count');
+            let visibleArchiveCardCount = 0;
 
             cards.forEach((card) => {
                 const isMatch = activeTag === 'all' || getWorkCardTags(card).includes(activeTag);
                 card.hidden = !isMatch;
                 if (isMatch && card.closest('.work-archive')) {
-                    hasVisibleArchiveCard = true;
+                    visibleArchiveCardCount += 1;
                 }
             });
 
             if (archive) {
-                archive.hidden = activeTag !== 'all' && !hasVisibleArchiveCard;
+                archive.hidden = activeTag !== 'all' && visibleArchiveCardCount === 0;
+            }
+
+            if (archiveCount) {
+                archiveCount.textContent = String(visibleArchiveCardCount);
             }
 
             buttons.forEach((button) => {
