@@ -2,28 +2,20 @@
   "username": "sweethr100",
   "name": "심호령",
   "profileUrl": "https://github.com/sweethr100",
-  "generatedAt": "2026-06-05T17:24:20.531Z",
+  "generatedAt": "2026-06-06T16:19:39.915Z",
   "range": {
-    "from": "2025-06-05",
-    "to": "2026-06-05"
+    "from": "2025-06-06",
+    "to": "2026-06-06"
   },
   "publicRepos": 26,
-  "totalContributions": 260,
-  "activeDays": 79,
+  "totalContributions": 261,
+  "activeDays": 80,
   "maxDailyContributions": 17,
   "calendar": {
     "weeks": [
       {
-        "firstDay": "2025-06-05",
+        "firstDay": "2025-06-06",
         "contributionDays": [
-          {
-            "date": "2025-06-05",
-            "count": 0,
-            "color": "#ebedf0",
-            "level": 0,
-            "contributionLevel": "NONE",
-            "weekday": 4
-          },
           {
             "date": "2025-06-06",
             "count": 1,
@@ -3203,6 +3195,14 @@
             "level": 0,
             "contributionLevel": "NONE",
             "weekday": 5
+          },
+          {
+            "date": "2026-06-06",
+            "count": 1,
+            "color": "#9be9a8",
+            "level": 1,
+            "contributionLevel": "FIRST_QUARTILE",
+            "weekday": 6
           }
         ]
       }
