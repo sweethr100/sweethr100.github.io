@@ -2,28 +2,20 @@
   "username": "sweethr100",
   "name": "심호령",
   "profileUrl": "https://github.com/sweethr100",
-  "generatedAt": "2026-06-26T17:08:06.654Z",
+  "generatedAt": "2026-06-27T16:19:25.450Z",
   "range": {
-    "from": "2025-06-26",
-    "to": "2026-06-26"
+    "from": "2025-06-27",
+    "to": "2026-06-27"
   },
   "publicRepos": 28,
-  "totalContributions": 311,
-  "activeDays": 85,
+  "totalContributions": 332,
+  "activeDays": 86,
   "maxDailyContributions": 17,
   "calendar": {
     "weeks": [
       {
-        "firstDay": "2025-06-26",
+        "firstDay": "2025-06-27",
         "contributionDays": [
-          {
-            "date": "2025-06-26",
-            "count": 0,
-            "color": "#ebedf0",
-            "level": 0,
-            "contributionLevel": "NONE",
-            "weekday": 4
-          },
           {
             "date": "2025-06-27",
             "count": 0,
@@ -369,9 +361,9 @@
           {
             "date": "2025-08-05",
             "count": 5,
-            "color": "#30a14e",
-            "level": 3,
-            "contributionLevel": "THIRD_QUARTILE",
+            "color": "#40c463",
+            "level": 2,
+            "contributionLevel": "SECOND_QUARTILE",
             "weekday": 2
           },
           {
@@ -1634,9 +1626,9 @@
           {
             "date": "2025-12-28",
             "count": 5,
-            "color": "#30a14e",
-            "level": 3,
-            "contributionLevel": "THIRD_QUARTILE",
+            "color": "#40c463",
+            "level": 2,
+            "contributionLevel": "SECOND_QUARTILE",
             "weekday": 0
           },
           {
@@ -2061,9 +2053,9 @@
           {
             "date": "2026-02-15",
             "count": 5,
-            "color": "#30a14e",
-            "level": 3,
-            "contributionLevel": "THIRD_QUARTILE",
+            "color": "#40c463",
+            "level": 2,
+            "contributionLevel": "SECOND_QUARTILE",
             "weekday": 0
           },
           {
@@ -2146,22 +2138,22 @@
           {
             "date": "2026-02-25",
             "count": 5,
-            "color": "#30a14e",
-            "level": 3,
-            "contributionLevel": "THIRD_QUARTILE",
+            "color": "#40c463",
+            "level": 2,
+            "contributionLevel": "SECOND_QUARTILE",
             "weekday": 3
           },
           {
             "date": "2026-02-26",
-            "count": 2,
-            "color": "#9be9a8",
-            "level": 1,
-            "contributionLevel": "FIRST_QUARTILE",
+            "count": 4,
+            "color": "#40c463",
+            "level": 2,
+            "contributionLevel": "SECOND_QUARTILE",
             "weekday": 4
           },
           {
             "date": "2026-02-27",
-            "count": 4,
+            "count": 5,
             "color": "#40c463",
             "level": 2,
             "contributionLevel": "SECOND_QUARTILE",
@@ -2169,10 +2161,10 @@
           },
           {
             "date": "2026-02-28",
-            "count": 4,
-            "color": "#40c463",
-            "level": 2,
-            "contributionLevel": "SECOND_QUARTILE",
+            "count": 7,
+            "color": "#30a14e",
+            "level": 3,
+            "contributionLevel": "THIRD_QUARTILE",
             "weekday": 6
           }
         ]
@@ -2182,7 +2174,7 @@
         "contributionDays": [
           {
             "date": "2026-03-01",
-            "count": 10,
+            "count": 17,
             "color": "#216e39",
             "level": 4,
             "contributionLevel": "FOURTH_QUARTILE",
@@ -2198,10 +2190,10 @@
           },
           {
             "date": "2026-03-03",
-            "count": 2,
-            "color": "#9be9a8",
-            "level": 1,
-            "contributionLevel": "FIRST_QUARTILE",
+            "count": 4,
+            "color": "#40c463",
+            "level": 2,
+            "contributionLevel": "SECOND_QUARTILE",
             "weekday": 2
           },
           {
@@ -2414,9 +2406,9 @@
           {
             "date": "2026-03-28",
             "count": 7,
-            "color": "#216e39",
-            "level": 4,
-            "contributionLevel": "FOURTH_QUARTILE",
+            "color": "#30a14e",
+            "level": 3,
+            "contributionLevel": "THIRD_QUARTILE",
             "weekday": 6
           }
         ]
@@ -2475,9 +2467,9 @@
           {
             "date": "2026-04-04",
             "count": 7,
-            "color": "#216e39",
-            "level": 4,
-            "contributionLevel": "FOURTH_QUARTILE",
+            "color": "#30a14e",
+            "level": 3,
+            "contributionLevel": "THIRD_QUARTILE",
             "weekday": 6
           }
         ]
@@ -3203,6 +3195,14 @@
             "level": 0,
             "contributionLevel": "NONE",
             "weekday": 5
+          },
+          {
+            "date": "2026-06-27",
+            "count": 6,
+            "color": "#30a14e",
+            "level": 3,
+            "contributionLevel": "THIRD_QUARTILE",
+            "weekday": 6
           }
         ]
       }
