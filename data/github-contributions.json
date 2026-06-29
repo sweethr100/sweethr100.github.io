@@ -2,10 +2,10 @@
   "username": "sweethr100",
   "name": "심호령",
   "profileUrl": "https://github.com/sweethr100",
-  "generatedAt": "2026-06-28T16:36:50.335Z",
+  "generatedAt": "2026-06-29T17:48:08.153Z",
   "range": {
     "from": "2025-06-29",
-    "to": "2026-06-28"
+    "to": "2026-06-29"
   },
   "publicRepos": 28,
   "totalContributions": 332,
@@ -3195,6 +3195,14 @@
             "level": 0,
             "contributionLevel": "NONE",
             "weekday": 0
+          },
+          {
+            "date": "2026-06-29",
+            "count": 0,
+            "color": "#ebedf0",
+            "level": 0,
+            "contributionLevel": "NONE",
+            "weekday": 1
           }
         ]
       }
