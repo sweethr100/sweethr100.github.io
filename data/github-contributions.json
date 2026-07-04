@@ -2,28 +2,20 @@
   "username": "sweethr100",
   "name": "심호령",
   "profileUrl": "https://github.com/sweethr100",
-  "generatedAt": "2026-07-03T16:45:24.902Z",
+  "generatedAt": "2026-07-04T16:15:22.847Z",
   "range": {
-    "from": "2025-07-03",
-    "to": "2026-07-03"
+    "from": "2025-07-04",
+    "to": "2026-07-04"
   },
   "publicRepos": 28,
-  "totalContributions": 332,
-  "activeDays": 86,
+  "totalContributions": 316,
+  "activeDays": 85,
   "maxDailyContributions": 17,
   "calendar": {
     "weeks": [
       {
-        "firstDay": "2025-07-03",
+        "firstDay": "2025-07-04",
         "contributionDays": [
-          {
-            "date": "2025-07-03",
-            "count": 16,
-            "color": "#216e39",
-            "level": 4,
-            "contributionLevel": "FOURTH_QUARTILE",
-            "weekday": 4
-          },
           {
             "date": "2025-07-04",
             "count": 0,
@@ -308,9 +300,9 @@
           {
             "date": "2025-08-05",
             "count": 5,
-            "color": "#40c463",
-            "level": 2,
-            "contributionLevel": "SECOND_QUARTILE",
+            "color": "#30a14e",
+            "level": 3,
+            "contributionLevel": "THIRD_QUARTILE",
             "weekday": 2
           },
           {
@@ -1573,9 +1565,9 @@
           {
             "date": "2025-12-28",
             "count": 5,
-            "color": "#40c463",
-            "level": 2,
-            "contributionLevel": "SECOND_QUARTILE",
+            "color": "#30a14e",
+            "level": 3,
+            "contributionLevel": "THIRD_QUARTILE",
             "weekday": 0
           },
           {
@@ -2000,9 +1992,9 @@
           {
             "date": "2026-02-15",
             "count": 5,
-            "color": "#40c463",
-            "level": 2,
-            "contributionLevel": "SECOND_QUARTILE",
+            "color": "#30a14e",
+            "level": 3,
+            "contributionLevel": "THIRD_QUARTILE",
             "weekday": 0
           },
           {
@@ -2085,9 +2077,9 @@
           {
             "date": "2026-02-25",
             "count": 5,
-            "color": "#40c463",
-            "level": 2,
-            "contributionLevel": "SECOND_QUARTILE",
+            "color": "#30a14e",
+            "level": 3,
+            "contributionLevel": "THIRD_QUARTILE",
             "weekday": 3
           },
           {
@@ -2101,17 +2093,17 @@
           {
             "date": "2026-02-27",
             "count": 5,
-            "color": "#40c463",
-            "level": 2,
-            "contributionLevel": "SECOND_QUARTILE",
+            "color": "#30a14e",
+            "level": 3,
+            "contributionLevel": "THIRD_QUARTILE",
             "weekday": 5
           },
           {
             "date": "2026-02-28",
             "count": 7,
-            "color": "#30a14e",
-            "level": 3,
-            "contributionLevel": "THIRD_QUARTILE",
+            "color": "#216e39",
+            "level": 4,
+            "contributionLevel": "FOURTH_QUARTILE",
             "weekday": 6
           }
         ]
@@ -2353,9 +2345,9 @@
           {
             "date": "2026-03-28",
             "count": 7,
-            "color": "#30a14e",
-            "level": 3,
-            "contributionLevel": "THIRD_QUARTILE",
+            "color": "#216e39",
+            "level": 4,
+            "contributionLevel": "FOURTH_QUARTILE",
             "weekday": 6
           }
         ]
@@ -2414,9 +2406,9 @@
           {
             "date": "2026-04-04",
             "count": 7,
-            "color": "#30a14e",
-            "level": 3,
-            "contributionLevel": "THIRD_QUARTILE",
+            "color": "#216e39",
+            "level": 4,
+            "contributionLevel": "FOURTH_QUARTILE",
             "weekday": 6
           }
         ]
@@ -3203,6 +3195,14 @@
             "level": 0,
             "contributionLevel": "NONE",
             "weekday": 5
+          },
+          {
+            "date": "2026-07-04",
+            "count": 0,
+            "color": "#ebedf0",
+            "level": 0,
+            "contributionLevel": "NONE",
+            "weekday": 6
           }
         ]
       }
