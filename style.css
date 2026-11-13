@@ -1,7 +1,7 @@
 /* 심호령 — 먼작귀 파자마 파티즈 (Pajama Parties) 테마 */
 
 :root {
-    color-scheme: dark;
+    color-scheme: only dark;
     --pajama-mint: #8ce0b8;
     --pajama-mint-soft: rgba(140, 224, 184, 0.22);
     --pajama-pink: #ffadc6;
@@ -26,7 +26,7 @@
 }
 
 [data-theme="light"] {
-    color-scheme: light;
+    color-scheme: only light;
     --bg: #8fd1b1;
     --patch-1: rgba(154, 219, 187, 0.75);
     --patch-2: rgba(128, 198, 169, 0.7);
@@ -40,6 +40,12 @@
     --tag-bg: rgba(255, 255, 255, 0.78);
     --link: #d95d89;
     --shadow: 0 8px 24px rgba(42, 92, 68, 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        color-scheme: only dark;
+    }
 }
 
 * {
