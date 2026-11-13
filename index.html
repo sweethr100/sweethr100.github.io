@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/style.css?v=20261114-pajama8">
+    <link rel="stylesheet" href="/style.css?v=20261114-pajama11">
     <script>
         // 페이지 깜빡임 방지: 로드 전에 테마 적용 (기본값은 파스텔 파자마 라이트)
         (function() {
@@ -46,7 +46,7 @@
     <main>
         <!-- Hero -->
         <header class="hero">
-            <img class="avatar" src="/seml.jpg" alt="심호령 프로필 사진">
+            <img class="avatar" src="/seml.jpg" alt="심호령 프로필 사진" width="156" height="156" fetchpriority="high">
 
             <h1>심호령</h1>
 
@@ -86,12 +86,59 @@
             </p>
         </section>
 
+        <!-- Overwatch -->
+        <section class="card-section accent-pink overwatch-section">
+            <h2>Overwatch</h2>
+            <div class="overwatch-rank-strip" id="overwatchStats">
+                <div class="overwatch-rank-card">
+                    <div class="overwatch-rank-card-header">
+                        <img src="https://static.playoverwatch.com/images/pages/career/icons/role/tank.e363265db45af83a0a5613072d7a888b1bf8a5b5.svg#icon" alt="" class="overwatch-role-icon" width="16" height="16" loading="lazy">
+                        <span>돌격</span>
+                    </div>
+                    <div class="overwatch-rank-emblem">
+                        <img src="https://static.playoverwatch.com/images/pages/career/icons/rank/Rank_GoldTier.8d40eab551020b46a84002019dd98714149ed5e2.png" alt="Gold 3" class="overwatch-rank-icon" width="54" height="54" loading="lazy" decoding="async">
+                        <img src="https://static.playoverwatch.com/images/pages/career/icons/rank/TierDivision_3.e9d892e479ca14e5543e71762459d11674504ed0.png" alt="" class="overwatch-tier-icon" width="58" height="58" loading="lazy" decoding="async">
+                    </div>
+                    <strong>Gold 3</strong>
+                </div>
+                <div class="overwatch-rank-card">
+                    <div class="overwatch-rank-card-header">
+                        <span>공격</span>
+                    </div>
+                    <div class="overwatch-rank-emblem">
+                        <img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 96 96%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop stop-color=%22%23f5f6f8%22/%3E%3Cstop offset=%221%22 stop-color=%22%239aa3af%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill=%22url(%23g)%22 d=%22M48 6l34 14v24c0 23-14 39-34 46C28 83 14 67 14 44V20L48 6z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linejoin=%22round%22 d=%22M48 16l24 10v18c0 16-9 28-24 35-15-7-24-19-24-35V26l24-10z%22/%3E%3Cpath fill=%22%235f6875%22 d=%22M31 46h34v8H31z%22/%3E%3C/svg%3E" alt="Unranked" class="overwatch-rank-icon is-unranked" width="42" height="42">
+                    </div>
+                    <strong>Unranked</strong>
+                </div>
+                <div class="overwatch-rank-card">
+                    <div class="overwatch-rank-card-header">
+                        <img src="https://static.playoverwatch.com/images/pages/career/icons/role/support.f4dbde20ae498cf0d6fd01e697fada8d99ec3a72.svg#icon" alt="" class="overwatch-role-icon" width="16" height="16" loading="lazy">
+                        <span>지원</span>
+                    </div>
+                    <div class="overwatch-rank-emblem">
+                        <img src="https://static.playoverwatch.com/images/pages/career/icons/rank/Rank_PlatinumTier.694340e3a5b2031d4fac9eb1d8f52c6855d4c072.png" alt="Platinum 3" class="overwatch-rank-icon" width="54" height="54" loading="lazy" decoding="async">
+                        <img src="https://static.playoverwatch.com/images/pages/career/icons/rank/TierDivision_3.e9d892e479ca14e5543e71762459d11674504ed0.png" alt="" class="overwatch-tier-icon" width="58" height="58" loading="lazy" decoding="async">
+                    </div>
+                    <strong>Platinum 3</strong>
+                </div>
+                <div class="overwatch-rank-card">
+                    <div class="overwatch-rank-card-header">
+                        <span>자유 경쟁전</span>
+                    </div>
+                    <div class="overwatch-rank-emblem">
+                        <img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 96 96%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop stop-color=%22%23f5f6f8%22/%3E%3Cstop offset=%221%22 stop-color=%22%239aa3af%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill=%22url(%23g)%22 d=%22M48 6l34 14v24c0 23-14 39-34 46C28 83 14 67 14 44V20L48 6z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linejoin=%22round%22 d=%22M48 16l24 10v18c0 16-9 28-24 35-15-7-24-19-24-35V26l24-10z%22/%3E%3Cpath fill=%22%235f6875%22 d=%22M31 46h34v8H31z%22/%3E%3C/svg%3E" alt="Unranked" class="overwatch-rank-icon is-unranked" width="42" height="42">
+                    </div>
+                    <strong>Unranked</strong>
+                </div>
+            </div>
+        </section>
+
         <!-- Works -->
         <section class="card-section accent-cream">
             <h2>Works</h2>
             <div class="works-compact-grid">
                 <a class="work-mini-card" href="/work/find_the_vaccine/" target="_blank" rel="noopener">
-                    <img class="work-mini-icon" src="/work/find_the_vaccine/icon.png" alt="Find the vaccine">
+                    <img class="work-mini-icon" src="/work/find_the_vaccine/icon.png" alt="Find the vaccine" width="30" height="30" loading="lazy" decoding="async">
                     <div class="work-mini-body">
                         <div class="work-mini-top">
                             <span class="work-mini-title">Find the vaccine</span>
@@ -102,7 +149,7 @@
                 </a>
 
                 <a class="work-mini-card" href="/work/sweethr100s_search/" target="_blank" rel="noopener">
-                    <img class="work-mini-icon" src="/work/sweethr100s_search/icon.png" alt="Sweethr100's Search">
+                    <img class="work-mini-icon" src="/work/sweethr100s_search/icon.png" alt="Sweethr100's Search" width="30" height="30" loading="lazy" decoding="async">
                     <div class="work-mini-body">
                         <div class="work-mini-top">
                             <span class="work-mini-title">Sweethr100's Search</span>
@@ -113,7 +160,7 @@
                 </a>
 
                 <a class="work-mini-card" href="/work/second_game/" target="_blank" rel="noopener">
-                    <img class="work-mini-icon" src="/work/second_game/icon.png" alt="Second Game">
+                    <img class="work-mini-icon" src="/work/second_game/icon.png" alt="Second Game" width="30" height="30" loading="lazy" decoding="async">
                     <div class="work-mini-body">
                         <div class="work-mini-top">
                             <span class="work-mini-title">Second Game</span>
@@ -124,7 +171,7 @@
                 </a>
 
                 <a class="work-mini-card" href="/work/superhard_game/superhard_game.zip" download>
-                    <img class="work-mini-icon" src="/work/superhard_game/icon.png" alt="SuperHard Game">
+                    <img class="work-mini-icon" src="/work/superhard_game/icon.png" alt="SuperHard Game" width="30" height="30" loading="lazy" decoding="async">
                     <div class="work-mini-body">
                         <div class="work-mini-top">
                             <span class="work-mini-title">SuperHard Game</span>
@@ -135,7 +182,7 @@
                 </a>
 
                 <a class="work-mini-card" href="/work/second_3d_game/second_3d_game.zip" download>
-                    <img class="work-mini-icon" src="/work/second_3d_game/icon.png" alt="Second 3D Game">
+                    <img class="work-mini-icon" src="/work/second_3d_game/icon.png" alt="Second 3D Game" width="30" height="30" loading="lazy" decoding="async">
                     <div class="work-mini-body">
                         <div class="work-mini-top">
                             <span class="work-mini-title">Second 3D Game</span>
@@ -146,7 +193,7 @@
                 </a>
 
                 <a class="work-mini-card" href="/work/witch_adventure/witch_adventure.apk" download>
-                    <img class="work-mini-icon" src="/work/witch_adventure/icon.png" alt="Witch Adventure">
+                    <img class="work-mini-icon" src="/work/witch_adventure/icon.png" alt="Witch Adventure" width="30" height="30" loading="lazy" decoding="async">
                     <div class="work-mini-body">
                         <div class="work-mini-top">
                             <span class="work-mini-title">Witch Adventure</span>
@@ -157,7 +204,7 @@
                 </a>
 
                 <a class="work-mini-card" href="/work/jumpup/JumpUp.apk" download>
-                    <img class="work-mini-icon" src="/work/jumpup/icon.png" alt="JumpUp">
+                    <img class="work-mini-icon" src="/work/jumpup/icon.png" alt="JumpUp" width="30" height="30" loading="lazy" decoding="async">
                     <div class="work-mini-body">
                         <div class="work-mini-top">
                             <span class="work-mini-title">JumpUp</span>
@@ -249,6 +296,66 @@
             audio.addEventListener('pause', function() { syncUi(false); });
 
             tryPlay();
+        })();
+
+        (function() {
+            var BATTLETAG = 'SEML-3291';
+            var PROFILE_ID = 'e15ba1a6fe22c9f4b8|a37cc2ea7991d102f763cb593b8348d5';
+            var API_BASE = 'https://overfast-api.tekrop.fr';
+            var UNRANKED_ICON = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 96 96%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop stop-color=%22%23f5f6f8%22/%3E%3Cstop offset=%221%22 stop-color=%22%239aa3af%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill=%22url(%23g)%22 d=%22M48 6l34 14v24c0 23-14 39-34 46C28 83 14 67 14 44V20L48 6z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23fff%22 stroke-width=%226%22 stroke-linejoin=%22round%22 d=%22M48 16l24 10v18c0 16-9 28-24 35-15-7-24-19-24-35V26l24-10z%22/%3E%3Cpath fill=%22%235f6875%22 d=%22M31 46h34v8H31z%22/%3E%3C/svg%3E';
+
+            function esc(v) {
+                return String(v == null ? '' : v).replace(/[&<>"']/g, function(ch) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+                });
+            }
+
+            function fmtRankLabel(rank) {
+                if (!rank || (!rank.division && !rank.tier)) return 'Unranked';
+                var div = rank.division ? rank.division.charAt(0).toUpperCase() + rank.division.slice(1) : '';
+                return (div + ' ' + (rank.tier || '')).trim() || '-';
+            }
+
+            function renderRankCard(label, rank) {
+                var isUnranked = !rank || (!rank.division && !rank.tier);
+                var roleIcon = rank && rank.role_icon
+                    ? '<img src="' + esc(rank.role_icon) + '" alt="" class="overwatch-role-icon" width="16" height="16" loading="lazy" onerror="this.hidden=true">'
+                    : '';
+                var rankSrc = isUnranked ? UNRANKED_ICON : (rank.rank_icon || UNRANKED_ICON);
+                var rankIcon = '<img src="' + esc(rankSrc) + '" alt="' + esc(fmtRankLabel(rank)) + '" class="overwatch-rank-icon' + (isUnranked ? ' is-unranked' : '') + '" width="' + (isUnranked ? 42 : 54) + '" height="' + (isUnranked ? 42 : 54) + '" loading="lazy" decoding="async">';
+                var tierIcon = !isUnranked && rank.tier_icon
+                    ? '<img src="' + esc(rank.tier_icon) + '" alt="" class="overwatch-tier-icon" width="58" height="58" loading="lazy" decoding="async">'
+                    : '';
+
+                return '<div class="overwatch-rank-card">' +
+                    '<div class="overwatch-rank-card-header">' + roleIcon + '<span>' + esc(label) + '</span></div>' +
+                    '<div class="overwatch-rank-emblem">' + rankIcon + tierIcon + '</div>' +
+                    '<strong>' + esc(fmtRankLabel(rank)) + '</strong>' +
+                    '</div>';
+            }
+
+            function applyTiers(summary) {
+                var el = document.getElementById('overwatchStats');
+                var comp = summary && summary.competitive && summary.competitive.pc;
+                if (!el || !comp) return;
+                el.innerHTML =
+                    renderRankCard('돌격', comp.tank) +
+                    renderRankCard('공격', comp.damage) +
+                    renderRankCard('지원', comp.support) +
+                    renderRankCard('자유 경쟁전', comp.open);
+            }
+
+            function fetchSummary(id) {
+                return fetch(API_BASE + '/players/' + encodeURIComponent(id) + '/summary').then(function(res) {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.json();
+                });
+            }
+
+            fetchSummary(PROFILE_ID)
+                .catch(function() { return fetchSummary(BATTLETAG); })
+                .then(applyTiers)
+                .catch(function() {});
         })();
     </script>
 </body>

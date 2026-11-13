@@ -5,11 +5,10 @@
     --pajama-mint: #8ce0b8;
     --pajama-mint-soft: rgba(140, 224, 184, 0.22);
     --pajama-pink: #ffadc6;
-    --pajama-pink-soft: rgba(255, 173, 198, 0.22);
+    --pajama-pink-soft: rgba(255, 173, 198, 0.24);
     --pajama-cream: #ffe699;
     --pajama-cream-soft: rgba(255, 230, 153, 0.28);
     --pajama-purple: #cdb4f6;
-    --pajama-purple-soft: rgba(205, 180, 246, 0.24);
 
     --bg: #1e352b;
     --patch-1: rgba(46, 82, 66, 0.65);
@@ -188,7 +187,6 @@ h2 {
 .accent-mint h2 { background: var(--pajama-mint-soft); }
 .accent-pink h2 { background: var(--pajama-pink-soft); }
 .accent-cream h2 { background: var(--pajama-cream-soft); }
-.accent-purple h2 { background: var(--pajama-purple-soft); }
 
 section p {
     margin-bottom: 12px;
@@ -279,6 +277,92 @@ section p:last-child {
     text-overflow: ellipsis;
 }
 
+/* ---- Overwatch Section ---- */
+.overwatch-rank-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 9px;
+}
+
+.overwatch-rank-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 12px 8px;
+    border-radius: 15px;
+    background: var(--tag-bg);
+    border: 1.5px solid var(--line);
+    text-align: center;
+}
+
+.overwatch-rank-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.overwatch-rank-card-header span {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-soft);
+}
+
+.overwatch-role-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+[data-theme="light"] .overwatch-role-icon {
+    filter: brightness(0);
+    opacity: 0.78;
+}
+
+.overwatch-rank-emblem {
+    position: relative;
+    width: 68px;
+    height: 82px;
+    margin: 2px 0;
+}
+
+.overwatch-rank-icon {
+    display: block;
+    width: 54px;
+    height: 54px;
+    margin: 0 auto;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.overwatch-rank-icon.is-unranked {
+    width: 42px;
+    height: 42px;
+    margin-top: 12px;
+    opacity: 0.85;
+}
+
+.overwatch-tier-icon {
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    transform: translateX(-50%);
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.18));
+}
+
+.overwatch-rank-card strong {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+}
+
 /* ---- BGM & Theme toggles ---- */
 #bgm-toggle {
     position: fixed;
@@ -364,10 +448,11 @@ footer p {
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 520px) {
+@media (max-width: 560px) {
     .hero { padding-top: 56px; }
     h1 { font-size: 1.7rem; }
     .hero-links { grid-template-columns: 1fr; }
     .card-section { padding: 20px 18px; border-radius: 20px; }
+    .overwatch-rank-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .works-compact-grid { grid-template-columns: 1fr; }
 }
