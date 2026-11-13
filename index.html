@@ -248,6 +248,7 @@
             var iconEl = bgmBtn.querySelector('.bgm-icon');
             var labelEl = bgmBtn.querySelector('.bgm-label');
             var userPaused = false;
+            var gestureEvents = ['pointerdown', 'mousedown', 'mouseup', 'click', 'touchstart', 'touchend', 'keydown'];
 
             function syncUi(playing) {
                 bgmBtn.classList.toggle('is-playing', playing);
@@ -255,29 +256,55 @@
                 labelEl.textContent = playing ? '파자마 파티즈 ♪' : '노래 켜기';
             }
 
+            function removeGestureListeners() {
+                gestureEvents.forEach(function(evt) {
+                    document.removeEventListener(evt, unlockOnGesture, true);
+                });
+            }
+
             function tryPlay() {
-                if (userPaused) return;
+                if (userPaused || !audio.paused) return;
                 audio.volume = 0.45;
                 var p = audio.play();
                 if (p && typeof p.then === 'function') {
                     p.then(function() {
                         syncUi(true);
+                        removeGestureListeners();
                     }).catch(function() {
                         syncUi(false);
                     });
+                } else if (!audio.paused) {
+                    syncUi(true);
+                    removeGestureListeners();
                 } else {
-                    syncUi(!audio.paused);
+                    syncUi(false);
                 }
             }
 
-            function unlockOnGesture() {
-                if (!userPaused && audio.paused) {
+            function unlockOnGesture(e) {
+                if (userPaused) return;
+                if (e && e.target && bgmBtn.contains(e.target)) return;
+                if (audio.paused) {
+                    tryPlay();
+                } else {
+                    removeGestureListeners();
+                }
+            }
+
+            gestureEvents.forEach(function(evt) {
+                document.addEventListener(evt, unlockOnGesture, { capture: true, passive: true });
+            });
+
+            ['canplay', 'loadeddata'].forEach(function(evt) {
+                audio.addEventListener(evt, tryPlay);
+            });
+            ['load', 'pageshow'].forEach(function(evt) {
+                window.addEventListener(evt, tryPlay);
+            });
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden && !userPaused && audio.paused) {
                     tryPlay();
                 }
-            }
-
-            ['pointerdown', 'click', 'keydown', 'touchstart'].forEach(function(evt) {
-                document.addEventListener(evt, unlockOnGesture, { once: true, passive: true });
             });
 
             bgmBtn.addEventListener('click', function(e) {
@@ -292,6 +319,10 @@
                 }
             });
 
+            audio.addEventListener('playing', function() {
+                syncUi(true);
+                removeGestureListeners();
+            });
             audio.addEventListener('play', function() { syncUi(true); });
             audio.addEventListener('pause', function() { syncUi(false); });
 
