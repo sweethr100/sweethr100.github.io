@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
-    <meta name="description" content="심호령 (seml) — 문제를 코드로 해결하고 시스템을 만드는 고등학생 개발자">
-    <title>심호령 (seml)</title>
+    <meta name="description" content="심호령">
+    <title>심호령</title>
     <link rel="icon" href="/favicon.jpg">
     <link rel="apple-touch-icon" href="/favicon.jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/style.css?v=20261029-minimal">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css?v=20261114-pajama8">
     <script>
-        // 페이지 깜빡임 방지: 로드 전에 테마 적용
+        // 페이지 깜빡임 방지: 로드 전에 테마 적용 (기본값은 파스텔 파자마 라이트)
         (function() {
             var saved = localStorage.getItem('theme');
-            if (saved === 'light' || (saved !== 'dark' && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+            if (saved !== 'dark') {
                 document.documentElement.setAttribute('data-theme', 'light');
             }
         })();
@@ -26,7 +26,14 @@
     </script>
 </head>
 <body>
-    <button id="theme-toggle" type="button" aria-label="테마 전환" title="테마 전환">
+    <audio id="bgm" src="/pajama-party.m4a" autoplay loop preload="auto"></audio>
+
+    <button id="bgm-toggle" type="button" aria-label="배경음악 켜기/끄기" title="파자마 파티즈 노래 재생/일시정지">
+        <span class="bgm-icon" aria-hidden="true">🎵</span>
+        <span class="bgm-label">파자마 파티즈 ♪</span>
+    </button>
+
+    <button id="theme-toggle" type="button" aria-label="테마 전환" title="파자마 낮/밤 테마 전환">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
             <circle cx="12" cy="12" r="4.2"/>
             <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.5 1.5M17.2 17.2l1.5 1.5M18.7 5.3l-1.5 1.5M6.8 17.2l-1.5 1.5"/>
@@ -40,73 +47,136 @@
         <!-- Hero -->
         <header class="hero">
             <img class="avatar" src="/seml.jpg" alt="심호령 프로필 사진">
-            <h1>심호령 <span class="handle">seml</span></h1>
-            <p class="tagline">문제를 코드로 해결하고 시스템을 만드는 고등학생 개발자</p>
+
+            <h1>심호령</h1>
+
+            <div class="hero-links">
+                <a class="hero-link link-github" href="https://github.com/sweethr100" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.11.79-.25.79-.56v-2c-3.2.7-3.88-1.38-3.88-1.38-.52-1.33-1.28-1.68-1.28-1.68-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11.05 11.05 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.77.12 3.06.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+                    <span class="hero-link-name">GitHub</span>
+                    <span class="hero-link-handle">@sweethr100</span>
+                </a>
+                <a class="hero-link link-insta" href="https://www.instagram.com/5_ryung/" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1" fill="currentColor" stroke="none"/></svg>
+                    <span class="hero-link-name">Instagram</span>
+                    <span class="hero-link-handle">@5_ryung</span>
+                </a>
+                <a class="hero-link link-email" href="mailto:sweethr100@gmail.com">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg>
+                    <span class="hero-link-name">Email</span>
+                    <span class="hero-link-handle">sweethr100@gmail.com</span>
+                </a>
+            </div>
         </header>
 
         <!-- About -->
-        <section>
+        <section class="card-section accent-mint">
             <h2>About</h2>
             <p>
-                가운고등학교 1학년 (2010년생). 2021년부터 오픈소스와 다양한 시스템 프로그래밍을 탐구해 왔습니다.
+                내가 좋아하는 게임을 더 재미있게 즐기고, 친구들과 함께하는 공간을 직접 바꾸고 싶다는 호기심에서 개발을 시작했습니다.
             </p>
             <p>
-                코틀린(Kotlin)으로 마인크래프트 서버 플러그인을 개발하며 객체지향과 이벤트 아키텍처를 배웠고,
-                파이썬(Python)으로 디스코드 봇과 자동화 프로그램을 구축해 왔습니다.
+                친구들과 마인크래프트를 할 때 색다른 룰과 시스템을 넣어 더 재미있게 즐기고 싶어 코틀린(Kotlin)으로 플러그인을 직접 개발하기 시작했고, 상상한 플레이 방식을 직접 구현해보고 싶어 유니티(Unity)로 게임을 제작했습니다. 또한 집에 직접 구상한 스마트홈을 구축하기 위해 필요한 센서를 내 손으로 만들어 스마트홈에 연결해 보고 싶어 아두이노(Arduino)를 공부했습니다.
             </p>
             <p>
-                최근에는 아두이노와 센서를 활용한 임베디드 시스템 및 물리 컴퓨팅에 관심을 두고 공부하고 있습니다.
+                친구들과 매일 소통하는 디스코드 환경을 더 흥미롭게 만들고 싶어 AI 기술도 연계했습니다. 통화방에서 유저별 오디오를 분리 녹음한 뒤 RVC(Retrieval-based Voice Conversion) 모델을 직접 학습시켜 AI 커버곡과 실시간 음성 출력을 구현하는 보이스 파이프라인을 완성했고, 여러 LLM을 연동해 필요한 작업을 자율적으로 처리하는 디스코드 AI 에이전트 봇을 개발했습니다.
             </p>
             <p>
-                AI로 코드를 쉽게 찍어낼 수 있는 시대일수록, 도구 뒤편의 근본적인 로직과 아키텍처를 직접
-                이해하고 해결하는 엔지니어링 역량을 소중히 여깁니다.
+                앞으로는 현대 컴퓨터공학에서 핵심적인 주제인 <strong>네트워킹과 AI, 그리고 보안</strong>에 대해 깊이 있게 탐구해 나가고자 합니다. 새로운 기술을 만났을 때 주저 없이 파고들어, 일상에서 떠오르는 재미있는 아이디어나 마주하는 문제들을 언제든 내 손으로 직접 동작하는 탄탄한 시스템으로 만들어내는 개발자가 되는 것이 목표입니다.
             </p>
         </section>
 
-        <!-- Interests & Stacks -->
-        <section>
-            <h2>Interests &amp; Stacks</h2>
-            <p class="stack-label">Languages</p>
-            <ul class="tags">
-                <li>Kotlin</li>
-                <li>Python</li>
-                <li>JavaScript</li>
-                <li>C/Arduino</li>
-            </ul>
-            <p class="stack-label">Interests</p>
-            <ul class="tags">
-                <li>Systems</li>
-                <li>Open Source</li>
-                <li>Backend</li>
-                <li>Embedded</li>
-            </ul>
-        </section>
+        <!-- Works -->
+        <section class="card-section accent-cream">
+            <h2>Works</h2>
+            <div class="works-compact-grid">
+                <a class="work-mini-card" href="/work/find_the_vaccine/" target="_blank" rel="noopener">
+                    <img class="work-mini-icon" src="/work/find_the_vaccine/icon.png" alt="Find the vaccine">
+                    <div class="work-mini-body">
+                        <div class="work-mini-top">
+                            <span class="work-mini-title">Find the vaccine</span>
+                            <span class="work-mini-badge">Unity · Web ↗</span>
+                        </div>
+                        <p class="work-mini-desc">Unity WebGL 백신 찾기 게임</p>
+                    </div>
+                </a>
 
-        <!-- Links -->
-        <section>
-            <h2>Links</h2>
-            <ul class="links">
-                <li>
-                    <a href="https://github.com/sweethr100" target="_blank" rel="noopener">GitHub <span class="link-detail">@sweethr100</span></a>
-                </li>
-                <li>
-                    <a href="https://www.instagram.com/5_ryung/" target="_blank" rel="noopener">Instagram <span class="link-detail">@5_ryung</span></a>
-                </li>
-                <li>
-                    <a href="mailto:sweethr100@gmail.com">Email <span class="link-detail">sweethr100@gmail.com</span></a>
-                </li>
-            </ul>
+                <a class="work-mini-card" href="/work/sweethr100s_search/" target="_blank" rel="noopener">
+                    <img class="work-mini-icon" src="/work/sweethr100s_search/icon.png" alt="Sweethr100's Search">
+                    <div class="work-mini-body">
+                        <div class="work-mini-top">
+                            <span class="work-mini-title">Sweethr100's Search</span>
+                            <span class="work-mini-badge">Web ↗</span>
+                        </div>
+                        <p class="work-mini-desc">직접 만든 검색 포털 페이지</p>
+                    </div>
+                </a>
+
+                <a class="work-mini-card" href="/work/second_game/" target="_blank" rel="noopener">
+                    <img class="work-mini-icon" src="/work/second_game/icon.png" alt="Second Game">
+                    <div class="work-mini-body">
+                        <div class="work-mini-top">
+                            <span class="work-mini-title">Second Game</span>
+                            <span class="work-mini-badge">Unity · Web ↗</span>
+                        </div>
+                        <p class="work-mini-desc">Unity WebGL 두 번째 게임</p>
+                    </div>
+                </a>
+
+                <a class="work-mini-card" href="/work/superhard_game/superhard_game.zip" download>
+                    <img class="work-mini-icon" src="/work/superhard_game/icon.png" alt="SuperHard Game">
+                    <div class="work-mini-body">
+                        <div class="work-mini-top">
+                            <span class="work-mini-title">SuperHard Game</span>
+                            <span class="work-mini-badge">Win ZIP ↓</span>
+                        </div>
+                        <p class="work-mini-desc">고난이도 Unity 게임 프로젝트</p>
+                    </div>
+                </a>
+
+                <a class="work-mini-card" href="/work/second_3d_game/second_3d_game.zip" download>
+                    <img class="work-mini-icon" src="/work/second_3d_game/icon.png" alt="Second 3D Game">
+                    <div class="work-mini-body">
+                        <div class="work-mini-top">
+                            <span class="work-mini-title">Second 3D Game</span>
+                            <span class="work-mini-badge">Win ZIP ↓</span>
+                        </div>
+                        <p class="work-mini-desc">3D 공간 활용 게임 프로젝트</p>
+                    </div>
+                </a>
+
+                <a class="work-mini-card" href="/work/witch_adventure/witch_adventure.apk" download>
+                    <img class="work-mini-icon" src="/work/witch_adventure/icon.png" alt="Witch Adventure">
+                    <div class="work-mini-body">
+                        <div class="work-mini-top">
+                            <span class="work-mini-title">Witch Adventure</span>
+                            <span class="work-mini-badge">APK ↓</span>
+                        </div>
+                        <p class="work-mini-desc">32비트 안드로이드 전용 게임</p>
+                    </div>
+                </a>
+
+                <a class="work-mini-card" href="/work/jumpup/JumpUp.apk" download>
+                    <img class="work-mini-icon" src="/work/jumpup/icon.png" alt="JumpUp">
+                    <div class="work-mini-body">
+                        <div class="work-mini-top">
+                            <span class="work-mini-title">JumpUp</span>
+                            <span class="work-mini-badge">APK ↓</span>
+                        </div>
+                        <p class="work-mini-desc">32비트 안드로이드 점프 게임</p>
+                    </div>
+                </a>
+            </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 심호령 (seml).</p>
+        <p>&copy; 2026 심호령.</p>
     </footer>
 
     <script>
         (function() {
             var btn = document.getElementById('theme-toggle');
-            var mq = window.matchMedia('(prefers-color-scheme: light)');
             function apply() {
                 var light = document.documentElement.getAttribute('data-theme') === 'light';
                 document.body.classList.toggle('is-light', light);
@@ -122,10 +192,63 @@
                 }
                 apply();
             });
-            mq.addEventListener('change', function(e) {
-                if (!localStorage.getItem('theme')) apply();
-            });
             apply();
+        })();
+
+        (function() {
+            var audio = document.getElementById('bgm');
+            var bgmBtn = document.getElementById('bgm-toggle');
+            var iconEl = bgmBtn.querySelector('.bgm-icon');
+            var labelEl = bgmBtn.querySelector('.bgm-label');
+            var userPaused = false;
+
+            function syncUi(playing) {
+                bgmBtn.classList.toggle('is-playing', playing);
+                iconEl.textContent = playing ? '🎵' : '🔇';
+                labelEl.textContent = playing ? '파자마 파티즈 ♪' : '노래 켜기';
+            }
+
+            function tryPlay() {
+                if (userPaused) return;
+                audio.volume = 0.45;
+                var p = audio.play();
+                if (p && typeof p.then === 'function') {
+                    p.then(function() {
+                        syncUi(true);
+                    }).catch(function() {
+                        syncUi(false);
+                    });
+                } else {
+                    syncUi(!audio.paused);
+                }
+            }
+
+            function unlockOnGesture() {
+                if (!userPaused && audio.paused) {
+                    tryPlay();
+                }
+            }
+
+            ['pointerdown', 'click', 'keydown', 'touchstart'].forEach(function(evt) {
+                document.addEventListener(evt, unlockOnGesture, { once: true, passive: true });
+            });
+
+            bgmBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (audio.paused) {
+                    userPaused = false;
+                    tryPlay();
+                } else {
+                    userPaused = true;
+                    audio.pause();
+                    syncUi(false);
+                }
+            });
+
+            audio.addEventListener('play', function() { syncUi(true); });
+            audio.addEventListener('pause', function() { syncUi(false); });
+
+            tryPlay();
         })();
     </script>
 </body>
